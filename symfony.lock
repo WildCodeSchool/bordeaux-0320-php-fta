@@ -111,6 +111,9 @@
     "justinrainbow/json-schema": {
         "version": "5.2.8"
     },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.0.4"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
@@ -148,7 +151,7 @@
         "version": "2.5.2"
     },
     "php": {
-        "version": "7.2"
+        "version": "7.4"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -428,6 +431,9 @@
     "symfony/polyfill-php73": {
         "version": "v1.11.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.0"
+    },
     "symfony/process": {
         "version": "v4.2.8"
     },
@@ -595,6 +601,9 @@
     },
     "twig/twig": {
         "version": "v2.9.0"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.0.1"
     },
     "webmozart/assert": {
         "version": "1.4.0"
