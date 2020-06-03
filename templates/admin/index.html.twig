@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Acceuil{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1 class="center-align">Espace administrateur</h1>
+        </div>
+        <div class="row">
+            <div class="col s6 center-align">
+                {% include 'admin/_components/_table.html.twig' %}
+                <button class="waves-effect waves-light btn">En voir plus</button>
+            </div>
+            <div class="col s6 center-align">
+                {% include 'admin/_components/_table.html.twig' %}
+                <button class="waves-effect waves-light btn">En voir plus</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
