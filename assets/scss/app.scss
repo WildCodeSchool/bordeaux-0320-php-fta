@@ -1,5 +1,8 @@
 @import "vars";
 
+/* Materialize import CSS */
+@import "~materialize-css/sass/materialize";
+
 body {
     background-color: $secondary-color;
 }
