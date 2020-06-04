@@ -7,6 +7,8 @@
 
 // any CSS you require will output into a single css file (app.css in this case)
 require('../scss/app.scss');
+import './schedule/calendar';
+import './axios/ajaxSchedule';
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
