@@ -7,7 +7,7 @@ buttonSchedule.addEventListener('click', (e) => {
     let formSchedule = document.getElementById('form_schedule')
     let formData = new FormData(formSchedule)
     buttonSchedule.setAttribute('disabled', '');
-    addSchedule(formData, (value) => {
+    addSchedule(formData).then((value) => {
         console.log(value)
         for (let i = 0; i < value.length; i++ ) {
             console.log(value.date)

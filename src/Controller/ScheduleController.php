@@ -49,7 +49,7 @@ class ScheduleController extends AbstractController
         $entityManager->persist($schedule);
         $entityManager->flush();
 
-        return new JsonResponse($user->getScheduleVolunteers());
+        json_encode($user->getScheduleVolunteers());
 
     }
 
