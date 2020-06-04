@@ -7,6 +7,7 @@ buttonSchedule.addEventListener('click', (e) => {
     let formData = new FormData(formSchedule);
     buttonSchedule.setAttribute('disabled', '');
     addSchedule(formData).then((value) => {
+        buttonSchedule.removeAttribute('disabled');
         let tableRef = document.getElementById('toto').getElementsByTagName('tbody')[0];
         tableRef.innerHTML = '';
         for (let i = 0; i < value.length; i++) {
@@ -26,9 +27,7 @@ buttonSchedule.addEventListener('click', (e) => {
             newText = document.createTextNode(value[i].isMorning);
             newCell.appendChild(newText);
         }
-
     }).catch((error) => {
-
+        buttonSchedule.removeAttribute('disabled');
     });
-
-})
+});

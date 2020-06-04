@@ -22,7 +22,7 @@ class ScheduleController extends AbstractController
             ->findAll();
 
         return $this->render('schedule/calendar.html.twig', [
-            'calendar' => $calendar
+            'calendars' => $calendar
 
         ]);
     }
@@ -35,7 +35,7 @@ class ScheduleController extends AbstractController
     public function ajaxAddSchedule(Request $request): JsonResponse
     {
         $schedule = new ScheduleVolunteer();
-        $date = new \DateTime($request->request->get('date'));
+        $date = new \DateTime($request->request->get('datePicker'));
         $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()->getRepository(User::class)->find(1);
         $schedule->setDate($date);
@@ -48,12 +48,11 @@ class ScheduleController extends AbstractController
         $users = $user->getScheduleVolunteers();
         $i = 0;
         foreach ($users as $user) {
-            $table[$i]['date'] = $user->getDate()->format('d-m-Y');
+            $table[$i]['date'] = $user->getDate()->format('d/m/Y');
             $table[$i]['isMorning'] = $user->getIsMorning();
             $table[$i]['isAfternoon'] = $user->getIsAfternoon();
             $i++;
         }
-        dump($table);
         return new JsonResponse($table);
     }
 

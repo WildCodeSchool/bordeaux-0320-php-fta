@@ -35,9 +35,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                {% for calendar in calendars %}
                     <tr>
-                        <td></td>
+                        <td>{{ calendar.date|date("m/d/Y") }}</td>
+                        <td>{{ calendar.isMorning }}</td>
+                        <td>{{ calendar.isAfternoon }}</td>
                     </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
