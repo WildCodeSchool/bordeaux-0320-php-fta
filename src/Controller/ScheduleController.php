@@ -5,11 +5,17 @@ namespace App\Controller;
 
 use App\Entity\ScheduleVolunteer;
 use App\Entity\User;
+use App\Service\CalendarService;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class ScheduleController
+ * @package App\Controller
+ */
 class ScheduleController extends AbstractController
 {
     /**
@@ -34,26 +40,11 @@ class ScheduleController extends AbstractController
      */
     public function ajaxAddSchedule(Request $request): JsonResponse
     {
-        $schedule = new ScheduleVolunteer();
-        $date = new \DateTime($request->request->get('datePicker'));
         $entityManager = $this->getDoctrine()->getManager();
-        $user = $this->getDoctrine()->getRepository(User::class)->find(1);
-        $schedule->setDate($date);
-        $schedule->setUserId($user); //TODO: change when log is ready
-        $schedule->setIsAfternoon($request->request->has('afternoon') ? true : false);
-        $schedule->setIsMorning($request->request->has('morning') ? true : false);
-        $entityManager->persist($schedule);
-        $entityManager->flush();
-        $table = [];
-        $users = $user->getScheduleVolunteers();
-        $i = 0;
-        foreach ($users as $user) {
-            $table[$i]['date'] = $user->getDate()->format('d/m/Y');
-            $table[$i]['isMorning'] = $user->getIsMorning();
-            $table[$i]['isAfternoon'] = $user->getIsAfternoon();
-            $i++;
-        }
+        $user = $this->getDoctrine()->getRepository(User::class)->find(1); //TODO: change when log is ready
+        CalendarService::addAvailability($request, $user, $entityManager);
+        $userAvailability = $user->getScheduleVolunteers();
+        $table = CalendarService::transformToJson($userAvailability);
         return new JsonResponse($table);
     }
-
 }

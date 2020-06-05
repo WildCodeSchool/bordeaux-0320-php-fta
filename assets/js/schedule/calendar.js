@@ -1,17 +1,14 @@
 import { addSchedule } from '../axios/ajaxSchedule';
 
 function createLine(tableRef, value, i) {
-    // Insert a row in the table at row index 0
     const newRow = tableRef.insertRow(tableRef.rows.length);
-    // Insert a cell in the row at index 0
     let newCell = newRow.insertCell(0);
-    // Append a text node to the cell
     let newText = document.createTextNode(value[i].date);
     newCell.appendChild(newText);
 
+    let icon = document.createElement('i');
     newCell = newRow.insertCell(1);
     newCell.className = 'center-align';
-    let icon = document.createElement('i');
     icon.className = value[i].isMorning ? 'material-icons schedule-true' : 'material-icons schedule-false';
     newText = document.createTextNode('brightness_1');
     icon.appendChild(newText);
@@ -34,8 +31,8 @@ buttonSchedule.addEventListener('click', (e) => {
     const formData = new FormData(formSchedule);
     buttonSchedule.setAttribute('disabled', '');
     addSchedule(formData).then((value) => {
+        const tableRef = document.getElementById('calendar-table').getElementsByTagName('tbody')[0];
         buttonSchedule.removeAttribute('disabled');
-        const tableRef = document.getElementById('toto').getElementsByTagName('tbody')[0];
         tableRef.innerHTML = '';
         for (let i = 0; i < value.length; i++) {
             createLine(tableRef, value, i);
