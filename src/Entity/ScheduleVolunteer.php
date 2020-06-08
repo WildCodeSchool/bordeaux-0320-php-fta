@@ -32,12 +32,6 @@ class ScheduleVolunteer
      */
     private $date;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="scheduleVolunteers")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $userId;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -75,18 +69,6 @@ class ScheduleVolunteer
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getUserId(): ?User
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(?User $userId): self
-    {
-        $this->userId = $userId;
 
         return $this;
     }

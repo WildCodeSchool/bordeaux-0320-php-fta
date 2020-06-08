@@ -3,14 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -20,9 +19,20 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=180, unique=true)
      */
     private $mobicoopId;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -35,11 +45,6 @@ class User
     private $isActive;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $role;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -49,42 +54,82 @@ class User
      */
     private $updatedAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ScheduleVolunteer::class, mappedBy="userId", orphanRemoval=true)
-     */
-    private $scheduleVolunteers;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Shelter::class, inversedBy="userId")
-     */
-    private $shelter;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Trip::class, mappedBy="userId")
-     */
-    private $trips;
-
-    public function __construct()
-    {
-        $this->scheduleVolunteers = new ArrayCollection();
-        $this->trips = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getMobicoopId(): ?int
+    public function getMobicoopId(): ?string
     {
         return $this->mobicoopId;
     }
 
-    public function setMobicoopId(int $mobicoopId): self
+    public function setMobicoopId(string $mobicoopId): self
     {
         $this->mobicoopId = $mobicoopId;
 
         return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->mobicoopId;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getStatus(): ?string
@@ -111,18 +156,6 @@ class User
         return $this;
     }
 
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -143,77 +176,6 @@ class User
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ScheduleVolunteer[]
-     */
-    public function getScheduleVolunteers(): Collection
-    {
-        return $this->scheduleVolunteers;
-    }
-
-    public function addScheduleVolunteer(ScheduleVolunteer $scheduleVolunteer): self
-    {
-        if (!$this->scheduleVolunteers->contains($scheduleVolunteer)) {
-            $this->scheduleVolunteers[] = $scheduleVolunteer;
-            $scheduleVolunteer->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeScheduleVolunteer(ScheduleVolunteer $scheduleVolunteer): self
-    {
-        if ($this->scheduleVolunteers->contains($scheduleVolunteer)) {
-            $this->scheduleVolunteers->removeElement($scheduleVolunteer);
-            // set the owning side to null (unless already changed)
-            if ($scheduleVolunteer->getUserId() === $this) {
-                $scheduleVolunteer->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getShelter(): ?Shelter
-    {
-        return $this->shelter;
-    }
-
-    public function setShelter(?Shelter $shelter): self
-    {
-        $this->shelter = $shelter;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Trip[]
-     */
-    public function getTrips(): Collection
-    {
-        return $this->trips;
-    }
-
-    public function addTrip(Trip $trip): self
-    {
-        if (!$this->trips->contains($trip)) {
-            $this->trips[] = $trip;
-            $trip->addUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTrip(Trip $trip): self
-    {
-        if ($this->trips->contains($trip)) {
-            $this->trips->removeElement($trip);
-            $trip->removeUserId($this);
-        }
 
         return $this;
     }
