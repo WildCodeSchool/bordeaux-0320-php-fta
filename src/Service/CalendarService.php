@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
+use phpDocumentor\Reflection\Types\Iterable_;
 
 /**
  * Class CalendarService
@@ -11,10 +12,10 @@ use App\Entity\User;
 class CalendarService
 {
     /**
-     * @param array $availabilityUsers
+     * @param iterable $availabilityUsers
      * @return array
      */
-    public static function transformToJson(Array $availabilityUsers): array
+    public static function transformToJson(iterable $availabilityUsers): array
     {
         $table = [];
         $increment = 0;

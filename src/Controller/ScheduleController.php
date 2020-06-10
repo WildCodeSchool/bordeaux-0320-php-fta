@@ -37,6 +37,7 @@ class ScheduleController extends AbstractController
      * @Route("/ajax/schedule", name="ajax_schedule")
      * @param Request $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function ajaxAddSchedule(Request $request): JsonResponse
     {
@@ -48,7 +49,7 @@ class ScheduleController extends AbstractController
         $schedule = new ScheduleVolunteer();
         $date = new DateTime($request->request->get('datePicker'));
         $schedule->setDate($date);
-        $schedule->setUserId($user);
+        $schedule->setUser($user);
         $schedule->setIsAfternoon($request->request->has('afternoon') ? true : false);
         $schedule->setIsMorning($request->request->has('morning') ? true : false);
         $entityManager->persist($schedule);

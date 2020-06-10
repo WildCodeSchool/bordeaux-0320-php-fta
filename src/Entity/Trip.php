@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\TripRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TripRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Trip
 {
@@ -25,6 +27,18 @@ class Trip
     private $date;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Departure::class, inversedBy="trips")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $departure;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Arrival::class, inversedBy="trips")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $arrival;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -35,16 +49,14 @@ class Trip
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Departure::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="trips")
      */
-    private $departureId;
+    private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Arrival::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $arrivalId;
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,6 +73,38 @@ class Trip
         $this->date = $date;
 
         return $this;
+    }
+
+    public function getDeparture(): ?Departure
+    {
+        return $this->departure;
+    }
+
+    public function setDeparture(?Departure $departure): self
+    {
+        $this->departure = $departure;
+
+        return $this;
+    }
+
+    public function getArrival(): ?Arrival
+    {
+        return $this->arrival;
+    }
+
+    public function setArrival(?Arrival $arrival): self
+    {
+        $this->arrival = $arrival;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new DateTime();
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -87,26 +131,28 @@ class Trip
         return $this;
     }
 
-    public function getDepartureId(): ?Departure
+    /**
+     * @return Collection|User[]
+     */
+    public function getUser(): Collection
     {
-        return $this->departureId;
+        return $this->user;
     }
 
-    public function setDepartureId(?Departure $departureId): self
+    public function addUser(User $user): self
     {
-        $this->departureId = $departureId;
+        if (!$this->user->contains($user)) {
+            $this->user[] = $user;
+        }
 
         return $this;
     }
 
-    public function getArrivalId(): ?Arrival
+    public function removeUser(User $user): self
     {
-        return $this->arrivalId;
-    }
-
-    public function setArrivalId(?Arrival $arrivalId): self
-    {
-        $this->arrivalId = $arrivalId;
+        if ($this->user->contains($user)) {
+            $this->user->removeElement($user);
+        }
 
         return $this;
     }

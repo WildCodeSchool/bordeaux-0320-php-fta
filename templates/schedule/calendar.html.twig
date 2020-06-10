@@ -6,7 +6,8 @@
             <form id="form_schedule" class="col s12">
                 <h3 class="bck-night white-text center pad border-radius">Ajouter une disponibilité</h3>
                 <div class="row pl pr mb">
-                    <input name='datePicker' type="date" class="datepicker pl pr schedule-date">
+                    <i class="material-icons schedule-calendar pt col s1">date_range</i>
+                    <input name='datePicker' type="text" class="datepicker pl pr schedule-date col s10 offset-s1 l11">
                 </div>
                 <div class="row pl pr mt mb">
                     <div class="col s6">
@@ -61,8 +62,4 @@
             </table>
         </div>
     </div>
-{% endblock %}
-
-{% block javascript %}
-{{ encore_entry_script_tags('app') }}
 {% endblock %}
