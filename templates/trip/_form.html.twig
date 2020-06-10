@@ -1,0 +1,16 @@
+{{ form_start(form) }}
+    {{ form_row(form.date) }}
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">gps_fixed</i>
+        <div class="trip-row col s10 offset-s1">
+            {{ form_row(form.departure) }}
+        </div>
+    </div>
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">location_on</i>
+        <div class="trip-row col s10 offset-s1">
+            {{ form_row(form.arrival) }}
+        </div>
+    </div>
+    <button class="btn waves-effect waves-light ml mt mb" id="button_schedule" type="submit" name="action"><i class="material-icons">add</i></button>
+{{ form_end(form) }}

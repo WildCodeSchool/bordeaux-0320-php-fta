@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Trip{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h3 class="bck-night white-text center pad border-radius">New trip</h3>
+            {{ include('trip/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
