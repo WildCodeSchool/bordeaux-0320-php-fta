@@ -1,8 +1,13 @@
 /* VOLUNTEER */
 
 .schedule-date {
-  font-size: 2em!important;
+  font-size: 1.2em!important;
   margin-top: 0.8em!important;
+}
+
+.schedule-calendar {
+  font-size: 1.5em!important;
+  margin-top: 1em!important;
 }
 
 .schedule-true {
@@ -11,5 +16,15 @@
 
 .schedule-false {
   color: #dd2c00;
+}
+
+.pictos-trip {
+  font-size: 2em!important;
+  margin-top: 0.8em!important;
+}
+
+.trip-row {
+  margin-top: 0.8em!important;
+  padding: 0 !important;
 }
 /* END */
