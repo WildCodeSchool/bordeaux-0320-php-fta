@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use mysql_xdevapi\Exception;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -42,5 +43,28 @@ class ApiService
             'auth_bearer' => $this->session->get('token'),
         ]);
         return $client;
+    }
+
+    public function getUser($form)
+    {
+        $client = $this->baseUri();
+        $response = $client->request('GET', '/users', [
+            'query' => [
+                'email' => $form->getData()['email']
+            ]
+        ]);
+        return json_decode($response->getContent(), true);
+    }
+
+    public function passwordVerify($user, $password)
+    {
+        $passwordUser = $user['hydra:member'][0]['password'];
+        return password_verify($password, $passwordUser);
+    }
+
+    public static function addPhoneDisplay($array)
+    {
+        $array['phoneDisplay'] = 1;
+        return $array;
     }
 }
