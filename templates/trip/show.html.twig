@@ -3,32 +3,47 @@
 {% block title %}Trip{% endblock %}
 
 {% block body %}
-    <h1>Trip</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ trip.id }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ trip.Date ? trip.Date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ trip.createdAt ? trip.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ trip.updatedAt ? trip.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('trip_index') }}">back to list</a>
-
-    <a href="{{ path('trip_edit', {'id': trip.id}) }}">edit</a>
-
-    {{ include('trip/_delete_form.html.twig') }}
+    <div class="container">
+        <div class="row">
+            <h3 class="bck-night white-text center pad border-radius">
+                <i class="material-icons trip-title">directions_car</i>
+                <i class="material-icons trip-title">map</i>
+            </h3>
+            <table class="table table-trip col s10 offset-s1">
+                <tbody>
+                <tr>
+                    <th><i class="material-icons pt-s">date_range</i></th>
+                    <td class="pl">{{ trip.date|date('Y-m-d') }}</td>
+                </tr>
+                <tr>
+                    <th><i class="material-icons pt-s">access_time</i></th>
+                    <td class="pl">{{ trip.date|date('h:i A') }}</td>
+                </tr>
+                <tr>
+                    <th><i class="material-icons pt-s">gps_fixed</i></th>
+                    <td class="pl">{{ trip.departure.name }}</td>
+                </tr>
+                <tr>
+                    <th><i class="material-icons pt-s">location_on</i></th>
+                    <td class="pl">{{ trip.arrival.name }}</td>
+                </tr>
+                <tr>
+                    <th><i class="material-icons pt-s">people</i></th>
+                    <td class="pl"><a href="#">Bénévole</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row pt">
+            <div class="col s4 center-align">
+                <a href="{{ path('trip_index') }}" class="btn"><i class="material-icons">arrow_back</i></a>
+            </div>
+            <div class="col s4 center-align">
+                <a href="{{ path('trip_edit', {'id': trip.id}) }}" class="btn"><i class="material-icons">edit</i></a>
+            </div>
+            <div class="col s4 center-align">
+                {{ include('trip/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
