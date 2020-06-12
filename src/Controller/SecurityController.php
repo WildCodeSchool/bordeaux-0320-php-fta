@@ -73,6 +73,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $api->getToken();
             $user = $api->getUser($form);
+            dump($user);
             $passwordSaved = $user['hydra:member'][0]['password'];
             $password = $form->getData()['password'];
             if (ApiService::passwordVerify($passwordSaved, $password)) {

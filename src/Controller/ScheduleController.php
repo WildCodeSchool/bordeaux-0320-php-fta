@@ -46,7 +46,7 @@ class ScheduleController extends AbstractController
             ->getManager();
         $user = $this->getDoctrine()
             ->getRepository(User::class)
-            ->find($session->get('user')->getMobicoopId()); //TODO: test
+            ->findOneBy(['mobicoopId' => $session->get('user')->getMobicoopId()]); //TODO: test
         $schedule = new ScheduleVolunteer();
         $date = new DateTime($request->request->get('datePicker'));
         $schedule->setDate($date);

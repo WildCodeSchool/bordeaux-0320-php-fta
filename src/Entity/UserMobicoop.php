@@ -52,10 +52,9 @@ class UserMobicoop
     }
 
     /**
-     * @param mixed $mobicoopId
-     * @return int
+     * @param int $mobicoopId
      */
-    public function setMobicoopId($mobicoopId): int
+    public function setMobicoopId(int $mobicoopId)
     {
         $this->mobicoopId = $mobicoopId;
     }
