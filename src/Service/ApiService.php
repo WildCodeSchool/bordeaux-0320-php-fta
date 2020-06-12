@@ -2,25 +2,50 @@
 
 namespace App\Service;
 
-use mysql_xdevapi\Exception;
+use App\Entity\UserMobicoop;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class ApiService
+ * @package App\Service
+ */
 class ApiService
 {
+    /**
+     *
+     */
     const BASE_URL = 'https://api.mobicoop.io';
 
-    private $session;
-    private $container;
+    /**
+     * @var SessionInterface
+     */
+    private SessionInterface $session;
+    /**
+     * @var ContainerInterface
+     */
+    private ContainerInterface $container;
 
+    /**
+     * ApiService constructor.
+     * @param SessionInterface $session
+     * @param ContainerInterface $container
+     */
     public function __construct(SessionInterface $session, ContainerInterface $container)
     {
         $this->session = $session;
         $this->container = $container;
     }
 
-    public function getToken()
+    /**
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function getToken(): void
     {
         $client = HttpClient::create();
         $username = $this->container->getParameter('mobicoop_user');
@@ -28,8 +53,7 @@ class ApiService
         $response = $client->request('POST', self::BASE_URL . '/auth', [
             'json' => ['username' => $username, 'password' => $password]
         ]);
-        $content = $response->getContent();
-        $allToken = json_decode($content);
+        $allToken = ApiService::decodeJson($response->getContent());
         $token = $allToken->{'token'};
         $refreshToken = $allToken->{'refreshToken'};
         $this->session->set('token', $token);
@@ -45,7 +69,15 @@ class ApiService
         return $client;
     }
 
-    public function getUser($form)
+    /**
+     * @param FormInterface $form
+     * @return array
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function getUser(FormInterface $form): array
     {
         $client = $this->baseUri();
         $response = $client->request('GET', '/users', [
@@ -53,18 +85,53 @@ class ApiService
                 'email' => $form->getData()['email']
             ]
         ]);
-        return json_decode($response->getContent(), true);
+        return ApiService::decodeJson($response->getContent());
     }
 
-    public function passwordVerify($user, $password)
+    /**
+     * @param array $array
+     * @return UserMobicoop
+     */
+    public function makeUser(array $array): UserMobicoop
     {
-        $passwordUser = $user['hydra:member'][0]['password'];
-        return password_verify($password, $passwordUser);
+        $user = new UserMobicoop();
+        $user->setMobicoopId($array['hydra:member'][0]['id']);
+        $user->setGivenName($array['hydra:member'][0]['givenName']);
+        $user->setFamilyName($array['hydra:member'][0]['familyName']);
+        $user->setGender($array['hydra:member'][0]['gender']);
+        $user->setPhone($array['hydra:member'][0]['telephone']);
+        $user->setAvatar($array['hydra:member'][0]['avatars'][0]);
+        $user->setRole($array['hydra:member'][0]['roles'][0]);
+        return $user;
     }
 
-    public static function addPhoneDisplay($array)
+    /**
+     * @param string $passwordSaved
+     * @param string $password
+     * @return bool
+     */
+    public static function passwordVerify(string $passwordSaved, string $password): bool
+    {
+
+        return password_verify($password, $passwordSaved);
+    }
+
+    /**
+     * @param array $array
+     * @return array
+     */
+    public static function addPhoneDisplay(array $array): array
     {
         $array['phoneDisplay'] = 1;
         return $array;
+    }
+
+    /**
+     * @param string $string
+     * @return array
+     */
+    public static function decodeJson(string $string): array
+    {
+        return json_decode($string, true);
     }
 }
