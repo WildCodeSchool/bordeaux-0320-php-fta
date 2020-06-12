@@ -18,21 +18,41 @@ class MobicoopForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('givenName', TextType::class, ['label' => 'First name'])
-            ->add('familyName', TextType::class, ['label' => 'Last name'])
-            ->add('email', EmailType::class, ['label' => 'Email'])
-            ->add('password', PasswordType::class, ['label' => 'Password'])
-            ->add('telephone', TelType::class, ['label' => 'Phone Number'])
+            ->add('givenName', TextType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => 'First name']
+            ])
+            ->add('familyName', TextType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => 'Last name']
+            ])
+            ->add('email', EmailType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => 'email@example.com']
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => 'Password']
+            ])
+            ->add('telephone', TelType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => '0123456789']
+            ])
             ->add('gender', ChoiceType::class, [
-                'label' => 'Gender',
+                'label' => false,
                 'choices' => [
                     'Female' => 1,
                     'Male' => 2,
                     'Other' => 3,
-                ]])
+                ],
+                'placeholder' => 'Gender'
+            ])
             ->add('birthDate', TextType::class, [
-                'label' => 'Birthday',
-                'attr' => ['class' => 'datepicker']
+                'label' => false,
+                'attr' => [
+                    'class' => 'datepicker',
+                    'placeholder' => 'Birthday'
+                    ],
             ]);
     }
 }

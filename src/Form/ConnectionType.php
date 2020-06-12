@@ -13,8 +13,14 @@ class ConnectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, ['label' => 'Email'])
-            ->add('password', PasswordType::class, ['label' => 'Password'])
+            ->add('email', EmailType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => 'Email']
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => false,
+                'attr' => ['placeholder' => 'Password']
+                ])
         ;
     }
 

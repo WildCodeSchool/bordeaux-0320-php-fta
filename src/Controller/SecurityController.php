@@ -31,9 +31,9 @@ class SecurityController extends AbstractController
             $client->request('POST', '/users', [
                 'json' => $fullForm,
             ]);
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('login');
         }
-        return $this->render('user/new.html.twig', [
+        return $this->render('security/register.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -56,10 +56,10 @@ class SecurityController extends AbstractController
                 $session->set('moobicoopId', $user['hydra:member'][0]['id']);
                 $session->set('firstName', $user['hydra:member'][0]['givenName']);
                 $session->set('familyName', $user['hydra:member'][0]['familyName']);
-                return $this->redirectToRoute('/'); // TODO change the redirect route
+                return $this->redirectToRoute('trip_index'); // TODO change the redirect route
             }
         }
-        return $this->render('user/new.html.twig', [
+        return $this->render('security/login.html.twig', [
             'form' => $form->createView(),
         ]);
     }
