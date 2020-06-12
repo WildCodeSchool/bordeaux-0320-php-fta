@@ -50,7 +50,7 @@ class SecurityController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('login');
         }
-        return $this->render('user/new.html.twig', [
+        return $this->render('security/register.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -81,7 +81,7 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('calendar_schedule'); // TODO change the redirect route
             }
         }
-        return $this->render('user/new.html.twig', [
+        return $this->render('security/login.html.twig', [
             'form' => $form->createView(),
         ]);
     }

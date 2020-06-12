@@ -1,4 +1,17 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">email</i>
+        <div class="pl pr schedule-date col s10 offset-s1">
+            {{ form_row(form.email) }}
+        </div>
+    </div>
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">lock</i>
+        <div class="pl pr schedule-date col s10 offset-s1">
+            {{ form_row(form.password) }}
+        </div>
+    </div>
+    <div class="center-align">
+        <button class="btn"><i class="material-icons">arrow_forward</i></button>
+    </div>
 {{ form_end(form) }}
