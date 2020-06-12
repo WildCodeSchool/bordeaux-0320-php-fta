@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
 
 class SecurityController extends AbstractController
 {
@@ -44,7 +45,7 @@ class SecurityController extends AbstractController
             $user->setMobicoopId($decodeUser['id'])
                 ->setIsActive(true)
                 ->setStatus('volunteer')
-                ->setCreatedAt(new \DateTime());
+                ->setCreatedAt(new DateTime());
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute('login');
@@ -59,6 +60,10 @@ class SecurityController extends AbstractController
      * @param ApiService $api
      * @param SessionInterface $session
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      * @Route("/login", name="login")
      */
     public function connection(Request $request, ApiService $api, SessionInterface $session)
@@ -68,13 +73,12 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $api->getToken();
             $user = $api->getUser($form);
+            $passwordSaved = $user['hydra:member'][0]['password'];
             $password = $form->getData()['password'];
-            if (ApiService::passwordVerify($user, $password)) {
+            if (ApiService::passwordVerify($passwordSaved, $password)) {
                 $userObject = $api->makeUser($user);
-                dump($userObject);
                 $session->set('user', $userObject);
-                dd();
-                return $this->redirectToRoute('/'); // TODO change the redirect route
+                return $this->redirectToRoute('calendar_schedule'); // TODO change the redirect route
             }
         }
         return $this->render('user/new.html.twig', [

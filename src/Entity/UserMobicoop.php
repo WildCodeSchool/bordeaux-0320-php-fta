@@ -1,43 +1,69 @@
 <?php
 
-namespace App\Service;
+namespace App\Entity;
 
-class MobicoopService
+/**
+ * Class UserMobicoop
+ * @package App\Entity
+ */
+class UserMobicoop
 {
-    private $mobicoopId;
-
-    private $givenName;
-
-    private $familyName;
-
-    private $gender;
-
-    private $phone;
-
-    private $avatar;
-
-    private $role;
+    /**
+     * @var int
+     */
+    private int $mobicoopId;
 
     /**
-     * @return mixed
+     * @var string
      */
-    public function getMobicoopId()
+    private string $givenName;
+
+    /**
+     * @var string
+     */
+    private string $familyName;
+
+    /**
+     * @var int
+     */
+    private int $gender;
+
+    /**
+     * @var string
+     */
+    private string $phone;
+
+    /**
+     * @var string
+     */
+    private string $avatar;
+
+    /**
+     * @var string
+     */
+    private string $role;
+
+    /**
+     * @return int
+     */
+    public function getMobicoopId(): int
     {
         return $this->mobicoopId;
     }
 
     /**
      * @param mixed $mobicoopId
+     * @return int
      */
-    public function setMobicoopId($mobicoopId): void
+    public function setMobicoopId($mobicoopId): int
     {
         $this->mobicoopId = $mobicoopId;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getGivenName()
+    public function getGivenName(): string
     {
         return $this->givenName;
     }
@@ -45,7 +71,7 @@ class MobicoopService
     /**
      * @param mixed $givenName
      */
-    public function setGivenName($givenName): self
+    public function setGivenName($givenName)
     {
         $this->givenName = $givenName;
     }
@@ -61,7 +87,7 @@ class MobicoopService
     /**
      * @param mixed $familyName
      */
-    public function setFamilyName($familyName): self
+    public function setFamilyName($familyName)
     {
         $this->familyName = $familyName;
     }
@@ -77,7 +103,7 @@ class MobicoopService
     /**
      * @param mixed $gender
      */
-    public function setGender($gender): self
+    public function setGender($gender)
     {
         $this->gender = $gender;
     }
@@ -93,7 +119,7 @@ class MobicoopService
     /**
      * @param mixed $phone
      */
-    public function setPhone($phone): self
+    public function setPhone($phone)
     {
         $this->phone = $phone;
     }
@@ -109,7 +135,7 @@ class MobicoopService
     /**
      * @param mixed $avatar
      */
-    public function setAvatar($avatar): void
+    public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
     }
@@ -125,7 +151,7 @@ class MobicoopService
     /**
      * @param mixed $role
      */
-    public function setRole($role): void
+    public function setRole($role)
     {
         $this->role = $role;
     }

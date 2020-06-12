@@ -9,6 +9,7 @@ use App\Service\CalendarService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
 
@@ -39,13 +40,13 @@ class ScheduleController extends AbstractController
      * @return JsonResponse
      * @throws \Exception
      */
-    public function ajaxAddSchedule(Request $request): JsonResponse
+    public function ajaxAddSchedule(Request $request, SessionInterface $session): JsonResponse
     {
         $entityManager = $this->getDoctrine()
             ->getManager();
         $user = $this->getDoctrine()
             ->getRepository(User::class)
-            ->find(1); //TODO: change when log is ready
+            ->find($session->get('user')->getMobicoopId()); //TODO: test
         $schedule = new ScheduleVolunteer();
         $date = new DateTime($request->request->get('datePicker'));
         $schedule->setDate($date);
