@@ -25,7 +25,7 @@ class User
     private $mobicoopId;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=255)
      */
     private $status;
 
@@ -33,11 +33,6 @@ class User
      * @ORM\Column(type="boolean")
      */
     private $isActive;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $role;
 
     /**
      * @ORM\Column(type="datetime")
@@ -50,24 +45,19 @@ class User
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=ScheduleVolunteer::class, mappedBy="userId", orphanRemoval=true)
-     */
-    private $scheduleVolunteers;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Shelter::class, inversedBy="userId")
-     */
-    private $shelter;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Trip::class, mappedBy="userId")
+     * @ORM\ManyToMany(targetEntity=Trip::class, mappedBy="user")
      */
     private $trips;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ScheduleVolunteer::class, mappedBy="user")
+     */
+    private $scheduleVolunteers;
+
     public function __construct()
     {
-        $this->scheduleVolunteers = new ArrayCollection();
         $this->trips = new ArrayCollection();
+        $this->scheduleVolunteers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,18 +101,6 @@ class User
         return $this;
     }
 
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -148,49 +126,6 @@ class User
     }
 
     /**
-     * @return Collection|ScheduleVolunteer[]
-     */
-    public function getScheduleVolunteers(): Collection
-    {
-        return $this->scheduleVolunteers;
-    }
-
-    public function addScheduleVolunteer(ScheduleVolunteer $scheduleVolunteer): self
-    {
-        if (!$this->scheduleVolunteers->contains($scheduleVolunteer)) {
-            $this->scheduleVolunteers[] = $scheduleVolunteer;
-            $scheduleVolunteer->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeScheduleVolunteer(ScheduleVolunteer $scheduleVolunteer): self
-    {
-        if ($this->scheduleVolunteers->contains($scheduleVolunteer)) {
-            $this->scheduleVolunteers->removeElement($scheduleVolunteer);
-            // set the owning side to null (unless already changed)
-            if ($scheduleVolunteer->getUserId() === $this) {
-                $scheduleVolunteer->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getShelter(): ?Shelter
-    {
-        return $this->shelter;
-    }
-
-    public function setShelter(?Shelter $shelter): self
-    {
-        $this->shelter = $shelter;
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Trip[]
      */
     public function getTrips(): Collection
@@ -202,7 +137,7 @@ class User
     {
         if (!$this->trips->contains($trip)) {
             $this->trips[] = $trip;
-            $trip->addUserId($this);
+            $trip->addUser($this);
         }
 
         return $this;
@@ -212,7 +147,38 @@ class User
     {
         if ($this->trips->contains($trip)) {
             $this->trips->removeElement($trip);
-            $trip->removeUserId($this);
+            $trip->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ScheduleVolunteer[]
+     */
+    public function getScheduleVolunteers(): Collection
+    {
+        return $this->scheduleVolunteers;
+    }
+
+    public function addScheduleVolunteer(ScheduleVolunteer $scheduleVolunteer): self
+    {
+        if (!$this->scheduleVolunteers->contains($scheduleVolunteer)) {
+            $this->scheduleVolunteers[] = $scheduleVolunteer;
+            $scheduleVolunteer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScheduleVolunteer(ScheduleVolunteer $scheduleVolunteer): self
+    {
+        if ($this->scheduleVolunteers->contains($scheduleVolunteer)) {
+            $this->scheduleVolunteers->removeElement($scheduleVolunteer);
+            // set the owning side to null (unless already changed)
+            if ($scheduleVolunteer->getUser() === $this) {
+                $scheduleVolunteer->setUser(null);
+            }
         }
 
         return $this;

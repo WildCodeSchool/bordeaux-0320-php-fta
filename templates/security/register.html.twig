@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h3 class="bck-night white-text center pad border-radius">
+                <i class="material-icons trip-title">account_circle</i>
+                <i class="material-icons trip-title">add</i>
+            </h3>
+            {{ include('user/_form_register.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

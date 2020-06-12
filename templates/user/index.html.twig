@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h3 class="bck-night white-text center pad border-radius">
+                <i class="material-icons trip-title">people</i>
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>MobicoopId</th>
+                    <th>Status</th>
+                    <th>IsActive</th>
+                    <th>CreatedAt</th>
+                    <th>UpdatedAt</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.mobicoopId }}</td>
+                        <td>{{ user.status }}</td>
+                        <td>{{ user.isActive ? 'Yes' : 'No' }}</td>
+                        <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
+                            <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ path('user_new') }}">Create new</a>
+        </div>
+    </div>
+{% endblock %}

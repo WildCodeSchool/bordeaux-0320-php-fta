@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h3 class="bck-night white-text center pad border-radius">
+                <i class="material-icons trip-title">account_circle</i>
+            </h3>
+            <div class="mt pt">
+                {{ include('user/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

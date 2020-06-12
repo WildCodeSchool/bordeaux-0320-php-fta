@@ -1,6 +1,7 @@
 import { addSchedule } from '../axios/ajaxSchedule';
 
-function createLine(tableRef, value, i) {
+function createLine(tableRef, value, i)
+{
     const newRow = tableRef.insertRow(tableRef.rows.length);
     let newCell = newRow.insertCell(0);
     let newText = document.createTextNode(value[i].date);

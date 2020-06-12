@@ -6,7 +6,8 @@
             <form id="form_schedule" class="col s12">
                 <h3 class="bck-night white-text center pad border-radius">Ajouter une disponibilité</h3>
                 <div class="row pl pr mb">
-                    <input name='datePicker' type="date" class="datepicker pl pr schedule-date">
+                    <i class="material-icons schedule-calendar pt col s1">date_range</i>
+                    <input name='datePicker' type="text" class="datepicker pl pr schedule-date col s10 offset-s1 l11" value="Set date">
                 </div>
                 <div class="row pl pr mt mb">
                     <div class="col s6">
@@ -38,9 +39,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for calendar in calendars %}
+                {% for calendar in calendars|sort((a, b) => a.date <=> b.date) %}
                     <tr>
-                        <td>{{ calendar.date|date("m/d/Y") }}</td>
+                        <td>{{ calendar.date|date("d/m/Y") }}</td>
                         <td class="center-align">
                             {% if calendar.isMorning == true %}
                                 <i class="material-icons schedule-true">brightness_1</i>
@@ -61,8 +62,4 @@
             </table>
         </div>
     </div>
-{% endblock %}
-
-{% block javascript %}
-{{ encore_entry_script_tags('app') }}
 {% endblock %}

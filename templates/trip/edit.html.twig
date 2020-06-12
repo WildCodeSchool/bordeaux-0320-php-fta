@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Trip{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h3 class="bck-night white-text center pad border-radius">
+                <i class="material-icons trip-title">directions_car</i>
+                <i class="material-icons trip-title">edit</i>
+            </h3>
+            {{ include('trip/_form.html.twig') }}
+            <div class="row pt">
+                <div class="center-align">
+                    <a href="{{ path('trip_index') }}" class="btn"><i class="material-icons">arrow_back</i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
