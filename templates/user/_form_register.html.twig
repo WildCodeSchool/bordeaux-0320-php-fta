@@ -1,0 +1,47 @@
+{{ form_start(form) }}
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">person_pin</i>
+        <div class="pl pr schedule-date col s10 offset-s1">
+            {{ form_row(form.givenName) }}
+        </div>
+    </div>
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">person_pin</i>
+        <div class="pl pr schedule-date col s10 offset-s1">
+            {{ form_row(form.familyName) }}
+        </div>
+    </div>
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">mail</i>
+        <div class="pl pr schedule-date col s10 offset-s1">
+            {{ form_row(form.email) }}
+        </div>
+    </div>
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">lock</i>
+        <div class="pl pr schedule-date col s10 offset-s1">
+            {{ form_row(form.password) }}
+        </div>
+    </div>
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">phone</i>
+        <div class="pl pr schedule-date col s10 offset-s1">
+            {{ form_row(form.telephone) }}
+        </div>
+    </div>
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">person_pin</i>
+        <div class="pl pr schedule-date col s10 offset-s1">
+            {{ form_row(form.gender) }}
+        </div>
+    </div>
+    <div class="row pl pr mb">
+        <i class="material-icons pictos-trip pt col s1">cake</i>
+        <div class="pl pr schedule-date col s10 offset-s1">
+            {{ form_row(form.birthDate) }}
+        </div>
+    </div>
+    <div class="center-align">
+        <button class="btn"><i class="material-icons">arrow_forward</i></button>
+    </div>
+{{ form_end(form) }}
