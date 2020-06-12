@@ -54,8 +54,8 @@ class ApiService
             'json' => ['username' => $username, 'password' => $password]
         ]);
         $allToken = ApiService::decodeJson($response->getContent());
-        $token = $allToken->{'token'};
-        $refreshToken = $allToken->{'refreshToken'};
+        $token = $allToken['token'];
+        $refreshToken = $allToken['refreshToken'];
         $this->session->set('token', $token);
         $this->session->set('refreshToken', $refreshToken);
     }
@@ -94,6 +94,7 @@ class ApiService
      */
     public function makeUser(array $array): UserMobicoop
     {
+        dump($array);
         $user = new UserMobicoop();
         $user->setMobicoopId($array['hydra:member'][0]['id']);
         $user->setGivenName($array['hydra:member'][0]['givenName']);
@@ -112,7 +113,6 @@ class ApiService
      */
     public static function passwordVerify(string $passwordSaved, string $password): bool
     {
-
         return password_verify($password, $passwordSaved);
     }
 
