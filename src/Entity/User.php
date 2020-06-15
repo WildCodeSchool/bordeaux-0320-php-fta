@@ -54,10 +54,16 @@ class User
      */
     private $scheduleVolunteers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Trip::class, mappedBy="volunteer")
+     */
+    private $tripsVolunteer;
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
         $this->scheduleVolunteers = new ArrayCollection();
+        $this->tripsVolunteer = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -178,6 +184,37 @@ class User
             // set the owning side to null (unless already changed)
             if ($scheduleVolunteer->getUser() === $this) {
                 $scheduleVolunteer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trip[]
+     */
+    public function getTripsVolunteer(): Collection
+    {
+        return $this->tripsVolunteer;
+    }
+
+    public function addTripsVolunteer(Trip $tripsVolunteer): self
+    {
+        if (!$this->tripsVolunteer->contains($tripsVolunteer)) {
+            $this->tripsVolunteer[] = $tripsVolunteer;
+            $tripsVolunteer->setVolunteer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripsVolunteer(Trip $tripsVolunteer): self
+    {
+        if ($this->tripsVolunteer->contains($tripsVolunteer)) {
+            $this->tripsVolunteer->removeElement($tripsVolunteer);
+            // set the owning side to null (unless already changed)
+            if ($tripsVolunteer->getVolunteer() === $this) {
+                $tripsVolunteer->setVolunteer(null);
             }
         }
 

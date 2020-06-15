@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Trip;
+use App\Entity\User;
 use App\Form\TripType;
 use App\Repository\TripRepository;
+use App\Service\ApiService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,11 +21,30 @@ class TripController extends AbstractController
 {
     /**
      * @Route("/", name="trip_index", methods={"GET"})
+     * @param TripRepository $tripRepository
+     * @return Response
      */
     public function index(TripRepository $tripRepository): Response
     {
         return $this->render('trip/index.html.twig', [
             'trips' => $tripRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @param SessionInterface $session
+     * @Route("/trip/volunteer", name="trip_volunteer")
+     * @return Response
+     */
+    public function myTrip(SessionInterface $session): Response
+    {
+        $id = $session->get('user')->getId();
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['mobicoopId' => $id]);
+        $trips = $user->getTripsVolunteer();
+        return $this->render('trip/index.html.twig', [
+            'trips' => $trips,
         ]);
     }
 
