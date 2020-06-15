@@ -53,6 +53,11 @@ class Trip
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tripsVolunteer")
+     */
+    private $volunteer;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
@@ -153,6 +158,18 @@ class Trip
         if ($this->user->contains($user)) {
             $this->user->removeElement($user);
         }
+
+        return $this;
+    }
+
+    public function getVolunteer(): ?User
+    {
+        return $this->volunteer;
+    }
+
+    public function setVolunteer(?User $volunteer): self
+    {
+        $this->volunteer = $volunteer;
 
         return $this;
     }
