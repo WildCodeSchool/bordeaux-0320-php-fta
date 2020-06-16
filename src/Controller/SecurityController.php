@@ -73,13 +73,12 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $api->getToken();
             $user = $api->getUser($form);
-            dump($user);
             $passwordSaved = $user['hydra:member'][0]['password'];
             $password = $form->getData()['password'];
             if (ApiService::passwordVerify($passwordSaved, $password)) {
                 $userObject = $api->makeUser($user);
                 $session->set('user', $userObject);
-                return $this->redirectToRoute('calendar_schedule'); // TODO change the redirect route
+                return $this->redirectToRoute('calendar_schedule', ['id' => $user['hydra:member'][0]['id']]); // TODO change the redirect route
             }
         }
         return $this->render('security/login.html.twig', [
