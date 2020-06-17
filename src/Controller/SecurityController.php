@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ConnectionType;
 use App\Form\MobicoopForm;
+use App\Repository\UserRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,7 +79,14 @@ class SecurityController extends AbstractController
             if (ApiService::passwordVerify($passwordSaved, $password)) {
                 $userObject = $api->makeUser($user);
                 $session->set('user', $userObject);
-                return $this->redirectToRoute('calendar_schedule', ['id' => $user['hydra:member'][0]['id']]); // TODO change the redirect route
+                $userDB = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->findOneBy(['mobicoopId' => $user['hydra:member'][0]['id']]);
+                if ($userDB->getStatus() === 'volunteer') {
+                    return $this->redirectToRoute('calendar_schedule', ['id' => $user['hydra:member'][0]['id']]);
+                } else {
+                    return $this->redirectToRoute('trip_byId', ['id' => $user['hydra:member'][0]['id']]);
+                }
             }
         }
         return $this->render('security/login.html.twig', [
