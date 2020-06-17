@@ -6,6 +6,7 @@ use App\Entity\Trip;
 use App\Entity\User;
 use App\Form\TripType;
 use App\Repository\TripRepository;
+use App\Repository\UserRepository;
 use App\Service\ApiService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +29,22 @@ class TripController extends AbstractController
     {
         return $this->render('trip/index.html.twig', [
             'trips' => $tripRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="trip_byId", methods={"GET"})
+     * @param UserRepository $userRepository
+     * @param int $id
+     * @return Response
+     */
+    public function tripByUserId(UserRepository $userRepository, int $id): Response
+    {
+        $user = $userRepository->findOneBy(['id' => $id]);
+        $trips = $user->getTrips();
+
+        return $this->render('trip/index.html.twig', [
+            'trips' => $trips,
         ]);
     }
 
@@ -63,11 +80,9 @@ class TripController extends AbstractController
         $trips = [];
         $i = 0;
         foreach ($user->getScheduleVolunteers() as $scheduleVolunteer) {
-            $trips[$i] = $this->getDoctrine()->getRepository(Trip::class)
-                ->matchingAvailability($scheduleVolunteer->getIsMorning(),
-                    $scheduleVolunteer->getIsAfternoon(),
-                    $scheduleVolunteer->getDate()->format('Y-m-d'));
-
+            $trips[$i] = $this->getDoctrine()
+                ->getRepository(Trip::class)
+                ->matchingAvailability($scheduleVolunteer->getIsMorning(), $scheduleVolunteer->getIsAfternoon(), $scheduleVolunteer->getDate()->format('Y-m-d'));
             $i++;
         }
 
@@ -75,7 +90,6 @@ class TripController extends AbstractController
         return $this->render('_components/_allTrip.html.twig', [
             'trips' => $trips,
         ]);
-
     }
 
     /**
@@ -168,6 +182,4 @@ class TripController extends AbstractController
 
         return $this->redirectToRoute('trip_index');
     }
-
-
 }
