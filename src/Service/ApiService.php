@@ -94,7 +94,6 @@ class ApiService
      */
     public function makeUser(array $array): UserMobicoop
     {
-        dump($array);
         $user = new UserMobicoop();
         $user->setMobicoopId($array['hydra:member'][0]['id']);
         $user->setGivenName($array['hydra:member'][0]['givenName']);

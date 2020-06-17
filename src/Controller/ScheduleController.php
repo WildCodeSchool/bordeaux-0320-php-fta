@@ -20,13 +20,15 @@ use DateTime;
 class ScheduleController extends AbstractController
 {
     /**
-     * @Route("/calendar", name="calendar_schedule")
+     * @Route("/calendar/{id}", name="calendar_schedule")
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show()
+    public function show(int $id)
     {
         $calendar = $this->getDoctrine()
             ->getRepository(ScheduleVolunteer::class)
-            ->findAll();
+            ->findBy(['user' => $id]);
 
         return $this->render('schedule/calendar.html.twig', [
             'calendars' => $calendar
@@ -37,6 +39,7 @@ class ScheduleController extends AbstractController
     /**
      * @Route("/ajax/schedule", name="ajax_schedule")
      * @param Request $request
+     * @param SessionInterface $session
      * @return JsonResponse
      * @throws \Exception
      */
