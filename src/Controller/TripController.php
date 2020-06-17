@@ -49,6 +49,36 @@ class TripController extends AbstractController
     }
 
     /**
+     * @Route("/all", name="trip_all")
+     * @param SessionInterface $session
+     * @return Response
+     */
+    public function allTrip(SessionInterface $session): Response
+    {
+        //$id = $session->get('user')->getId();
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['mobicoopId' => 11]);
+
+        $trips = [];
+        $i = 0;
+        foreach ($user->getScheduleVolunteers() as $scheduleVolunteer) {
+            $trips[$i] = $this->getDoctrine()->getRepository(Trip::class)
+                ->matchingAvailability($scheduleVolunteer->getIsMorning(),
+                    $scheduleVolunteer->getIsAfternoon(),
+                    $scheduleVolunteer->getDate()->format('Y-m-d'));
+
+            $i++;
+        }
+
+
+        return $this->render('_components/_allTrip.html.twig', [
+            'trips' => $trips,
+        ]);
+
+    }
+
+    /**
      * @Route("/new", name="trip_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
@@ -130,7 +160,7 @@ class TripController extends AbstractController
      */
     public function delete(Request $request, Trip $trip): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$trip->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $trip->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trip);
             $entityManager->flush();
@@ -138,4 +168,6 @@ class TripController extends AbstractController
 
         return $this->redirectToRoute('trip_index');
     }
+
+
 }

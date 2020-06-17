@@ -58,6 +58,16 @@ class Trip
      */
     private $volunteer;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isMorning;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isAfternoon;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
@@ -170,6 +180,30 @@ class Trip
     public function setVolunteer(?User $volunteer): self
     {
         $this->volunteer = $volunteer;
+
+        return $this;
+    }
+
+    public function getIsMorning(): ?bool
+    {
+        return $this->isMorning;
+    }
+
+    public function setIsMorning(bool $isMorning): self
+    {
+        $this->isMorning = $isMorning;
+
+        return $this;
+    }
+
+    public function getIsAfternoon(): ?bool
+    {
+        return $this->isAfternoon;
+    }
+
+    public function setIsAfternoon(bool $isAfternoon): self
+    {
+        $this->isAfternoon = $isAfternoon;
 
         return $this;
     }
