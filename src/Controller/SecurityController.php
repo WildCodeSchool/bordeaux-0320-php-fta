@@ -8,6 +8,7 @@ use App\Form\MobicoopForm;
 use App\Repository\UserRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,6 +69,7 @@ class SecurityController extends AbstractController
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws Exception
      * @Route("/login", name="login")
      */
     public function connection(
@@ -80,7 +82,11 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $api->getToken();
-            $mobicoopUser = $api->getUser($form);
+            try {
+                $mobicoopUser = $api->getUser($form);
+            } catch (Exception $e) {
+                throw new Exception('Erorr server' . $e, 500);
+            }
             $passwordSaved = $mobicoopUser['hydra:member'][0]['password'];
             $password = $form->getData()['password'];
             if (ApiService::passwordVerify($passwordSaved, $password)) {
@@ -97,9 +103,9 @@ class SecurityController extends AbstractController
                 $eventDispatcher->dispatch("security.interactive_login", $event);
 
                 if ($user->getStatus() === 'volunteer') {
-                    return $this->redirectToRoute('calendar_schedule', ['id' => $user->getMobicoopId()]);
+                    return $this->redirectToRoute('calendar_schedule');
                 } elseif ($user->getStatus() === 'beneficiary') {
-                    return $this->redirectToRoute('trip_byId', ['id' => $user->getMobicoopId()]);
+                    return $this->redirectToRoute('trip_beneficiary');
                 } else {
                     //TODO return the route to the admin page when created
                 }
