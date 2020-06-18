@@ -49,7 +49,7 @@ class TripController extends AbstractController
     public function allTrip(): Response
     {
         $user = $this->getUser()->getScheduleVolunteers();
-        $trips = [];
+        $trips = null;
         $i = 0;
         foreach ($user as $scheduleVolunteer) {
             $trips[$i] = $this->getDoctrine()->getRepository(Trip::class)
@@ -60,11 +60,12 @@ class TripController extends AbstractController
                 );
             $i++;
         }
+
         if ($trips[0] === null) {
             $trips = 'error';
         }
         return $this->render('trip/index.html.twig', [
-            'trips' => $trips,
+            'trips' => $trips[0],
         ]);
     }
 
@@ -114,7 +115,9 @@ class TripController extends AbstractController
     public function show(ApiService $api, Trip $trip): Response
     {
         $volunteer = null;
-        $user = $trip->getUser()->getValues()[0];
+        $userID = $trip->getUser()->getValues()[0]->getMobicoopId();
+        $api->getToken();
+        $user = $api->getUserById($userID)['hydra:member'][0];
 
         if ($trip->getVolunteer() != null) {
             $api->getToken();
