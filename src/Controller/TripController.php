@@ -30,14 +30,13 @@ class TripController extends AbstractController
     }
 
     /**
-     * @Route("/beneficiary/{id}", name="trip_byId", methods={"GET"})
+     * @Route("/beneficiary/", name="trip_byId", methods={"GET"})
      * @param UserRepository $userRepository
-     * @param int $id
      * @return Response
      */
-    public function tripByUserId(UserRepository $userRepository, int $id): Response
+    public function tripByUserId(UserRepository $userRepository): Response
     {
-        $user  = $userRepository->findOneBy(['id' => $id]);
+        $user  = $userRepository->findOneBy(['id' => $this->getUser()->getId()]);
         $trips = $user->getTrips();
 
         return $this->render('trip/index.html.twig', [
