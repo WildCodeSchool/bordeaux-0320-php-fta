@@ -8,13 +8,23 @@
     </thead>
     <tbody>
     {% for trip in trips %}
-        <tr>
-            <td class="center-align">{{ trip.date|date('Y-m-d') }}</td>
-            <td class="center-align">{{ trip.date|date('h:i A') }}</td>
-            <td class="center-align">
-                <a href="{{ path('trip_show', {'id': trip.id}) }}" class="btn"><i class="material-icons">remove_red_eye</i></a>
-            </td>
-        </tr>
+            {% if trip.volunteer %}
+                <tr class="bck-green">
+                    <td class="center-align">{{ trip.date|date('Y-m-d') }}</td>
+                    <td class="center-align">{{ trip.date|date('h:i A') }}</td>
+                    <td class="center-align">
+                        <a href="{{ path('trip_show', {'id': trip.id}) }}" class="btn"><i class="material-icons">remove_red_eye</i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="center-align">{{ trip.date|date('Y-m-d') }}</td>
+                    <td class="center-align">{{ trip.date|date('h:i A') }}</td>
+                    <td class="center-align">
+                        <a href="{{ path('trip_show', {'id': trip.id}) }}" class="btn"><i class="material-icons">remove_red_eye</i></a>
+                    </td>
+                </tr>
+            {% endif %}
 
     {% else %}
         <tr>
