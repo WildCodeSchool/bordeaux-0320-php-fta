@@ -3,6 +3,22 @@
 {% block title %}Trip{% endblock %}
 
 {% block body %}
+    {% if volunteer %}
+        <div id="modal1" class="modal">
+            <div class="modal-content center-align">
+                <h3><i class="material-icons trip-title">contact_phone</i></h3>
+                <h5>{{ volunteer.givenName }} {{ volunteer.familyName }}</h5>
+                <div class="bck-ice pl pb pr border-radius">
+                    <h5 class="pt" id="phoneNumber">{{ volunteer.telephone }}</h5>
+                    <div><i class="material-icons">arrow_downward</i></div>
+                    <button class="btn" type="button" onclick="copyToClipboard()"><i class="material-icons">content_copy</i></button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
+    {% endif %}
     <div class="container">
         <div class="row">
             <h3 class="bck-night white-text center pad border-radius">
@@ -27,16 +43,18 @@
                     <th><i class="material-icons pt-s">location_on</i></th>
                     <td class="pl">{{ trip.arrival.name }}</td>
                 </tr>
-                <tr>
-                    <th><i class="material-icons pt-s">people</i></th>
-                    <td class="pl"><a href="#">Bénévole</a></td>
-                </tr>
+                {% if trip.volunteer %}
+                    <tr>
+                        <th><i class="material-icons pt-s">people</i></th>
+                        <td class="pl"><a class="waves-effect waves-light modal-trigger" href="#modal1">{{ volunteer.givenName }} {{ volunteer.familyName }}</a></td>
+                    </tr>
+                {% endif %}
                 </tbody>
             </table>
         </div>
         <div class="row pt">
             <div class="col s4 center-align">
-                <a href="{{ path('trip_index') }}" class="btn"><i class="material-icons">arrow_back</i></a>
+                <a href="{{ path('trip_byId', {'id': user.id}) }}" class="btn"><i class="material-icons">arrow_back</i></a>
             </div>
             <div class="col s4 center-align">
                 <a href="{{ path('trip_edit', {'id': trip.id}) }}" class="btn"><i class="material-icons">edit</i></a>

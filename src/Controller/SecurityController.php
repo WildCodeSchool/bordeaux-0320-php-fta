@@ -83,9 +83,11 @@ class SecurityController extends AbstractController
                     ->getRepository(User::class)
                     ->findOneBy(['mobicoopId' => $user['hydra:member'][0]['id']]);
                 if ($userDB->getStatus() === 'volunteer') {
-                    return $this->redirectToRoute('calendar_schedule', ['id' => $user['hydra:member'][0]['id']]);
+                    return $this->redirectToRoute('calendar_schedule', ['id' => $userDB->getId()]);
+                } elseif ($userDB->getStatus() === 'beneficiary') {
+                    return $this->redirectToRoute('trip_byId', ['id' => $userDB->getId()]);
                 } else {
-                    return $this->redirectToRoute('trip_byId', ['id' => $user['hydra:member'][0]['id']]);
+                    //TODO return the route to the admin page when created
                 }
             }
         }
