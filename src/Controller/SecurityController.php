@@ -98,8 +98,10 @@ class SecurityController extends AbstractController
             
                 if ($user->getStatus() === 'volunteer') {
                     return $this->redirectToRoute('calendar_schedule', ['id' => $user->getMobicoopId()]);
-                } else {
+                } elseif ($userDB->getStatus() === 'beneficiary') {
                     return $this->redirectToRoute('trip_byId', ['id' => $user->getMobicoopId()]);
+                } else {
+                    //TODO return the route to the admin page when created
                 }
             }
         }

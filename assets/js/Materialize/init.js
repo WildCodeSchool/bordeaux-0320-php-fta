@@ -6,4 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
         firstDay: 1,
     };
     const instancesOfDatepickers = M.Datepicker.init(datepickers, optionsForDatepickers);
+    const modals = document.querySelectorAll('.modal');
+    const instancesOfModal = M.Modal.init(modals);
 });

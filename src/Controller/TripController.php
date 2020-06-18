@@ -30,14 +30,14 @@ class TripController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="trip_byId", methods={"GET"})
+     * @Route("/beneficiary/{id}", name="trip_byId", methods={"GET"})
      * @param UserRepository $userRepository
      * @param int $id
      * @return Response
      */
     public function tripByUserId(UserRepository $userRepository, int $id): Response
     {
-        $user = $userRepository->findOneBy(['id' => $id]);
+        $user  = $userRepository->findOneBy(['id' => $id]);
         $trips = $user->getTrips();
 
         return $this->render('trip/index.html.twig', [
@@ -124,13 +124,29 @@ class TripController extends AbstractController
 
     /**
      * @Route("/beneficiary/trip/{id}", name="trip_show", methods={"GET"})
+     * @param ApiService $api
      * @param Trip $trip
      * @return Response
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function show(Trip $trip): Response
+    public function show(ApiService $api, Trip $trip): Response
     {
+        $volunteer = null;
+        $user = $trip->getUser()->getValues()[0];
+
+        if ($trip->getVolunteer() != null) {
+            $api->getToken();
+            $volunteerId = $trip->getVolunteer()->getMobicoopId();
+            $volunteer = $api->getUserById($volunteerId)['hydra:member'][0];
+        }
+
         return $this->render('trip/show.html.twig', [
-            'trip' => $trip,
+            'trip'      => $trip,
+            'volunteer' => $volunteer,
+            'user'      => $user
         ]);
     }
 
