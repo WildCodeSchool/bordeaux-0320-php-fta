@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ConnectionType;
 use App\Form\MobicoopForm;
+use App\Repository\UserRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -94,8 +95,12 @@ class SecurityController extends AbstractController
                 $this->get('session')->set('_security_main', serialize($token));
                 $event = new InteractiveLoginEvent($request, $token);
                 $eventDispatcher->dispatch("security.interactive_login", $event);
-
-                return $this->redirectToRoute('trip_index', ['id' => $mobicoopUser['hydra:member'][0]['id']]);
+            
+                if ($user->getStatus() === 'volunteer') {
+                    return $this->redirectToRoute('calendar_schedule', ['id' => $user->getMobicoopId()]);
+                } else {
+                    return $this->redirectToRoute('trip_byId', ['id' => $user->getMobicoopId()]);
+                }
             }
         }
         return $this->render('security/login.html.twig', [

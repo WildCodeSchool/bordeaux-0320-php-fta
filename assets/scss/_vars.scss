@@ -6,6 +6,7 @@
   src: local('Roboto'), local('Roboto Regular'),
   url('../font/Roboto/Roboto-Regular.ttf') format('truetype');
 }
+
 @font-face {
   font-family: 'Roboto Bold';
   font-style: normal;
@@ -13,6 +14,7 @@
   src: local('Roboto'), local('Roboto Bold'),
   url('../font/Roboto/Roboto-Bold.ttf') format('truetype');
 }
+
 @font-face {
   font-family: 'Roboto Italic';
   font-style: normal;
@@ -20,6 +22,7 @@
   src: local('Roboto'), local('Roboto Italic'),
   url('../font/Roboto/Roboto-Italic.ttf') format('truetype');
 }
+
 /* COLORS */
 $blue-ice : rgb(203, 225, 237);
 $blue-night : rgb(20, 74, 138);
