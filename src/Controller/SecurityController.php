@@ -95,10 +95,10 @@ class SecurityController extends AbstractController
                 $this->get('session')->set('_security_main', serialize($token));
                 $event = new InteractiveLoginEvent($request, $token);
                 $eventDispatcher->dispatch("security.interactive_login", $event);
-            
+
                 if ($user->getStatus() === 'volunteer') {
                     return $this->redirectToRoute('calendar_schedule', ['id' => $user->getMobicoopId()]);
-                } elseif ($userDB->getStatus() === 'beneficiary') {
+                } elseif ($user->getStatus() === 'beneficiary') {
                     return $this->redirectToRoute('trip_byId', ['id' => $user->getMobicoopId()]);
                 } else {
                     //TODO return the route to the admin page when created
