@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use DateTime;
 
 class UserFixtures extends Fixture
 {
@@ -25,7 +26,7 @@ class UserFixtures extends Fixture
             $beneficiary->setMobicoopId($beneficiaryID);
             $beneficiary->setIsActive(1);
             $beneficiary->setStatus('beneficiary');
-            $beneficiary->setCreatedAt(new \DateTime('now'));
+            $beneficiary->setRoles(array('ROLE_USER_BENEFICIARY'));
             $manager->persist($beneficiary);
             $this->addReference('beneficiary_' . $key, $beneficiary);
         }
@@ -35,7 +36,7 @@ class UserFixtures extends Fixture
             $volunteer->setMobicoopId($volunteerID);
             $volunteer->setIsActive(1);
             $volunteer->setStatus('volunteer');
-            $volunteer->setCreatedAt(new \DateTime('now'));
+            $volunteer->setRoles(array('ROLE_USER_VOLUNTEER'));
             $manager->persist($volunteer);
             $this->addReference('volunteer_' . $key, $volunteer);
         }

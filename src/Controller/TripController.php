@@ -6,7 +6,6 @@ use App\Entity\Trip;
 use App\Entity\User;
 use App\Form\TripType;
 use App\Repository\TripRepository;
-use App\Service\ApiService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,13 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/trip")
- */
 class TripController extends AbstractController
 {
     /**
-     * @Route("/", name="trip_index", methods={"GET"})
+     * @Route("/beneficiary/trip", name="trip_index", methods={"GET"})
      * @param TripRepository $tripRepository
      * @return Response
      */
@@ -33,12 +29,12 @@ class TripController extends AbstractController
 
     /**
      * @param SessionInterface $session
-     * @Route("/trip/volunteer", name="trip_volunteer")
+     * @Route("/volunteer/trip", name="trip_volunteer")
      * @return Response
      */
     public function myTrip(SessionInterface $session): Response
     {
-        $id = $session->get('user')->getId();
+        $id = $session->get('user')->getMobicoopId();
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(['mobicoopId' => $id]);
@@ -49,7 +45,7 @@ class TripController extends AbstractController
     }
 
     /**
-     * @Route("/all", name="trip_all")
+     * @Route("/volunteer/matching", name="trip_all")
      * @param SessionInterface $session
      * @return Response
      */
@@ -64,22 +60,21 @@ class TripController extends AbstractController
         $i = 0;
         foreach ($user->getScheduleVolunteers() as $scheduleVolunteer) {
             $trips[$i] = $this->getDoctrine()->getRepository(Trip::class)
-                ->matchingAvailability($scheduleVolunteer->getIsMorning(),
+                ->matchingAvailability(
+                    $scheduleVolunteer->getIsMorning(),
                     $scheduleVolunteer->getIsAfternoon(),
-                    $scheduleVolunteer->getDate()->format('Y-m-d'));
-
+                    $scheduleVolunteer->getDate()->format('Y-m-d')
+                );
             $i++;
         }
-
 
         return $this->render('_components/_allTrip.html.twig', [
             'trips' => $trips,
         ]);
-
     }
 
     /**
-     * @Route("/new", name="trip_new", methods={"GET","POST"})
+     * @Route("/beneficiary/trip/new", name="trip_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
      * @throws \Exception
@@ -110,7 +105,7 @@ class TripController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="trip_show", methods={"GET"})
+     * @Route("/beneficiary/trip/{id}", name="trip_show", methods={"GET"})
      * @param Trip $trip
      * @return Response
      */
@@ -122,7 +117,7 @@ class TripController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="trip_edit", methods={"GET","POST"})
+     * @Route("/beneficiary/trip/{id}/edit", name="trip_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Trip $trip
      * @return Response
@@ -153,7 +148,7 @@ class TripController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="trip_delete", methods={"DELETE"})
+     * @Route("/beneficiary/{id}", name="trip_delete", methods={"DELETE"})
      * @param Request $request
      * @param Trip $trip
      * @return Response
@@ -168,6 +163,4 @@ class TripController extends AbstractController
 
         return $this->redirectToRoute('trip_index');
     }
-
-
 }
