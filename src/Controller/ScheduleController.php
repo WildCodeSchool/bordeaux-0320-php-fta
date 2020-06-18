@@ -4,12 +4,10 @@
 namespace App\Controller;
 
 use App\Entity\ScheduleVolunteer;
-use App\Entity\User;
 use App\Service\CalendarService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
 
@@ -20,36 +18,29 @@ use DateTime;
 class ScheduleController extends AbstractController
 {
     /**
-     * @Route("/calendar/{id}", name="calendar_schedule")
-     * @param int $id
+     * Route for see availability for volunteer (only ROLE_USER_VOLUNTEER)
+     * @Route("/volunteer/calendar", name="calendar_schedule")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show(int $id)
+    public function show()
     {
-        $calendar = $this->getDoctrine()
-            ->getRepository(ScheduleVolunteer::class)
-            ->findBy(['user' => $id]);
-
         return $this->render('schedule/calendar.html.twig', [
-            'calendars' => $calendar
-
+            'calendars' => $this->getUser()->getScheduleVolunteers(),
         ]);
     }
 
     /**
+     * Route ajax for add and refresh schedule list
      * @Route("/ajax/schedule", name="ajax_schedule")
      * @param Request $request
-     * @param SessionInterface $session
      * @return JsonResponse
      * @throws \Exception
      */
-    public function ajaxAddSchedule(Request $request, SessionInterface $session): JsonResponse
+    public function ajaxAddSchedule(Request $request): JsonResponse
     {
         $entityManager = $this->getDoctrine()
             ->getManager();
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(['mobicoopId' => $session->get('user')->getMobicoopId()]); //TODO: test
+        $user = $this->getUser();
         $schedule = new ScheduleVolunteer();
         $date = new DateTime($request->request->get('datePicker'));
         $schedule->setDate($date);

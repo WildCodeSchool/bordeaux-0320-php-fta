@@ -18,64 +18,40 @@ use Symfony\Component\Routing\Annotation\Route;
 class TripController extends AbstractController
 {
     /**
-     * @Route("/beneficiary/trip", name="trip_index", methods={"GET"})
-     * @param TripRepository $tripRepository
+     * Route for beneficiary trip (only ROLE_USER_BENEFICIARY)
+     * @Route("/beneficiary/trip", name="trip_beneficiary", methods={"GET"})
      * @return Response
      */
-    public function index(TripRepository $tripRepository): Response
+    public function index(): Response
     {
         return $this->render('trip/index.html.twig', [
-            'trips' => $tripRepository->findAll(),
+            'trips' => $this->getUser()->getTrips(),
         ]);
     }
 
     /**
-     * @Route("/beneficiary/", name="trip_byId", methods={"GET"})
-     * @param UserRepository $userRepository
-     * @return Response
-     */
-    public function tripByUserId(UserRepository $userRepository): Response
-    {
-        $user  = $userRepository->findOneBy(['id' => $this->getUser()->getId()]);
-        $trips = $user->getTrips();
-
-        return $this->render('trip/index.html.twig', [
-            'trips' => $trips,
-        ]);
-    }
-
-    /**
-     * @param SessionInterface $session
+     * Route for volunteer trip (only ROLE_USER_VOLUNTEER)
      * @Route("/volunteer/trip", name="trip_volunteer")
      * @return Response
      */
-    public function myTrip(SessionInterface $session): Response
+    public function myTrip(): Response
     {
-        $id = $session->get('user')->getMobicoopId();
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(['mobicoopId' => $id]);
-        $trips = $user->getTripsVolunteer();
         return $this->render('trip/index.html.twig', [
-            'trips' => $trips,
+            'trips' => $this->getUser()->getTripsVolunteer(),
         ]);
     }
 
     /**
-     * @Route("/volunteer/matching", name="trip_all")
-     * @param SessionInterface $session
+     * Route for see matching trips with availability (only ROLE_USER_VOLUNTEER)
+     * @Route("/volunteer/matching", name="trip_matching")
      * @return Response
      */
-    public function allTrip(SessionInterface $session): Response
+    public function allTrip(): Response
     {
-        //$id = $session->get('user')->getId();
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(['mobicoopId' => 11]);
-
+        $user = $this->getUser()->getScheduleVolunteers();
         $trips = [];
         $i = 0;
-        foreach ($user->getScheduleVolunteers() as $scheduleVolunteer) {
+        foreach ($user as $scheduleVolunteer) {
             $trips[$i] = $this->getDoctrine()->getRepository(Trip::class)
                 ->matchingAvailability(
                     $scheduleVolunteer->getIsMorning(),
@@ -84,13 +60,16 @@ class TripController extends AbstractController
                 );
             $i++;
         }
-
-        return $this->render('_components/_allTrip.html.twig', [
+        if ($trips[0] === null) {
+            $trips = 'error';
+        }
+        return $this->render('trip/index.html.twig', [
             'trips' => $trips,
         ]);
     }
 
     /**
+     * Create new trip (only ROLE_USER_BENEFICIARY)
      * @Route("/beneficiary/trip/new", name="trip_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
@@ -112,7 +91,7 @@ class TripController extends AbstractController
             $entityManager->persist($trip);
             $entityManager->flush();
 
-            return $this->redirectToRoute('trip_index');
+            return $this->redirectToRoute('trip_beneficiary');
         }
 
         return $this->render('trip/new.html.twig', [
@@ -122,7 +101,8 @@ class TripController extends AbstractController
     }
 
     /**
-     * @Route("/beneficiary/trip/{id}", name="trip_show", methods={"GET"})
+     * Route for show more of one trip (ROLE_USER_VOLUNTEER && ROLE_USER_BENEFICIARY)
+     * @Route("/common/trip/{id}", name="trip_show", methods={"GET"})
      * @param ApiService $api
      * @param Trip $trip
      * @return Response
@@ -150,6 +130,7 @@ class TripController extends AbstractController
     }
 
     /**
+     * Route for edit a trip (only ROLE_USER_BENEFICIARY)
      * @Route("/beneficiary/trip/{id}/edit", name="trip_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Trip $trip
@@ -171,7 +152,7 @@ class TripController extends AbstractController
             $trip->setUpdatedAt(new DateTime('now'));
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('trip_index');
+            return $this->redirectToRoute('trip_beneficiary');
         }
 
         return $this->render('trip/edit.html.twig', [
@@ -181,6 +162,7 @@ class TripController extends AbstractController
     }
 
     /**
+     * Route for delete one trip (only ROLE_USER_BENEFICIARY)
      * @Route("/beneficiary/{id}", name="trip_delete", methods={"DELETE"})
      * @param Request $request
      * @param Trip $trip
@@ -194,6 +176,6 @@ class TripController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('trip_index');
+        return $this->redirectToRoute('trip_beneficiary');
     }
 }

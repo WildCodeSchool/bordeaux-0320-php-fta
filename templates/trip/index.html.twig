@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trip index{% endblock %}
+{% block title %}{{ volunteer is defined ? 'Matching trip' : 'Trip index' }}{% endblock %}
 
 {% block body %}
     <div class="container">
