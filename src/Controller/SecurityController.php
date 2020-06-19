@@ -5,13 +5,18 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ConnectionType;
 use App\Form\MobicoopForm;
+use App\Repository\UserRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use DateTime;
 
 class SecurityController extends AbstractController
@@ -44,8 +49,7 @@ class SecurityController extends AbstractController
             $user = new User();
             $user->setMobicoopId($decodeUser['id'])
                 ->setIsActive(true)
-                ->setStatus('volunteer')
-                ->setCreatedAt(new DateTime());
+                ->setStatus('volunteer');
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute('login');
@@ -59,31 +63,67 @@ class SecurityController extends AbstractController
      * @param Request $request
      * @param ApiService $api
      * @param SessionInterface $session
+     * @param EventDispatcherInterface $eventDispatcher
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws Exception
      * @Route("/login", name="login")
      */
-    public function connection(Request $request, ApiService $api, SessionInterface $session)
-    {
+    public function connection(
+        Request $request,
+        ApiService $api,
+        SessionInterface $session,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $form = $this->createForm(ConnectionType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $api->getToken();
-            $user = $api->getUser($form);
-            dump($user);
-            $passwordSaved = $user['hydra:member'][0]['password'];
+            try {
+                $mobicoopUser = $api->getUser($form);
+            } catch (Exception $e) {
+                throw new Exception('Erorr server' . $e, 500);
+            }
+            $passwordSaved = $mobicoopUser['hydra:member'][0]['password'];
             $password = $form->getData()['password'];
             if (ApiService::passwordVerify($passwordSaved, $password)) {
-                $userObject = $api->makeUser($user);
+                $userObject = $api->makeUser($mobicoopUser);
                 $session->set('user', $userObject);
-                return $this->redirectToRoute('calendar_schedule'); // TODO change the redirect route
+                $user = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->findOneBy(['mobicoopId' => $userObject->getMobicoopId()]);
+
+                $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+                $this->get('security.token_storage')->setToken($token);
+                $this->get('session')->set('_security_main', serialize($token));
+                $event = new InteractiveLoginEvent($request, $token);
+                $eventDispatcher->dispatch("security.interactive_login", $event);
+
+                if ($user->getStatus() === 'volunteer') {
+                    return $this->redirectToRoute('trip_matching');
+                } elseif ($user->getStatus() === 'beneficiary') {
+                    return $this->redirectToRoute('trip_beneficiary');
+                } else {
+                    //TODO return the route to the admin page when created
+                }
             }
         }
         return $this->render('security/login.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/logout", name="logout", methods={"GET"})
+     */
+    public function logout(): void
+    {
+        $this->addFlash(
+            'succes',
+            'Your are logout !'
+        );
     }
 }

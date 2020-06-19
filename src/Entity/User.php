@@ -6,12 +6,16 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use DateTime;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
-class User
+class User implements UserInterface
 {
+    const ARRAY_ROLES = ['ROLE_USER_BENEFICIARY', 'ROLE_ADMIN', 'ROLE_USER_VOLUNTEER'];
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -54,10 +58,21 @@ class User
      */
     private $scheduleVolunteers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Trip::class, mappedBy="volunteer")
+     */
+    private $tripsVolunteer;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
         $this->scheduleVolunteers = new ArrayCollection();
+        $this->tripsVolunteer = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -106,9 +121,13 @@ class User
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     * @return $this
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTime();
 
         return $this;
     }
@@ -118,9 +137,13 @@ class User
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    /**
+     * @ORM\PreUpdate()
+     * @return $this
+     */
+    public function setUpdatedAt(): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new DateTime();
 
         return $this;
     }
@@ -182,5 +205,70 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Trip[]
+     */
+    public function getTripsVolunteer(): Collection
+    {
+        return $this->tripsVolunteer;
+    }
+
+    public function addTripsVolunteer(Trip $tripsVolunteer): self
+    {
+        if (!$this->tripsVolunteer->contains($tripsVolunteer)) {
+            $this->tripsVolunteer[] = $tripsVolunteer;
+            $tripsVolunteer->setVolunteer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripsVolunteer(Trip $tripsVolunteer): self
+    {
+        if ($this->tripsVolunteer->contains($tripsVolunteer)) {
+            $this->tripsVolunteer->removeElement($tripsVolunteer);
+            // set the owning side to null (unless already changed)
+            if ($tripsVolunteer->getVolunteer() === $this) {
+                $tripsVolunteer->setVolunteer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRoles()
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER_VOLUNTEER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+    }
+
+    public function getPassword()
+    {
+        // TODO: Implement getPassword() method.
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function getUsername()
+    {
+        return $this->mobicoopId;
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }

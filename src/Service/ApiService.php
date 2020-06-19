@@ -89,12 +89,28 @@ class ApiService
     }
 
     /**
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function getUserById(int $mobicoopId): array
+    {
+        $client = $this->baseUri();
+        $response = $client->request('GET', '/users', [
+            'query' => [
+                'id' => $mobicoopId
+            ]
+        ]);
+        return ApiService::decodeJson($response->getContent());
+    }
+
+    /**
      * @param array $array
      * @return UserMobicoop
      */
     public function makeUser(array $array): UserMobicoop
     {
-        dump($array);
         $user = new UserMobicoop();
         $user->setMobicoopId($array['hydra:member'][0]['id']);
         $user->setGivenName($array['hydra:member'][0]['givenName']);

@@ -19,6 +19,20 @@ class TripRepository extends ServiceEntityRepository
         parent::__construct($registry, Trip::class);
     }
 
+    public function matchingAvailability($isMorning, $isAfternoon, $date)
+    {
+        return $this->createQueryBuilder('t')
+            ->orWhere('t.isMorning = :isMorning')
+            ->orWhere('t.isAfternoon = :isAfternoon')
+            ->andWhere('t.date LIKE :date')
+            ->andWhere('t.volunteer is NULL')
+            ->setParameter('isMorning', $isMorning)
+            ->setParameter('isAfternoon', $isAfternoon)
+            ->setParameter('date', '%' . $date . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Trip[] Returns an array of Trip objects
     //  */
