@@ -103,7 +103,7 @@ class SecurityController extends AbstractController
                 $eventDispatcher->dispatch("security.interactive_login", $event);
 
                 if ($user->getStatus() === 'volunteer') {
-                    return $this->redirectToRoute('calendar_schedule');
+                    return $this->redirectToRoute('trip_matching');
                 } elseif ($user->getStatus() === 'beneficiary') {
                     return $this->redirectToRoute('trip_beneficiary');
                 } else {

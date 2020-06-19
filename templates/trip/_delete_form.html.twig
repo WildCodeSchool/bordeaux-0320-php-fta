@@ -1,5 +1,5 @@
 <form method="post" action="{{ path('trip_delete', {'id': trip.id}) }}" onsubmit="return confirm('Are you sure you want to delete this trip?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trip.id) }}">
-    <button class="btn"><i class="material-icons trip-title">delete</i></button>
+    <button class="btn"><i class="material-icons">delete</i></button>
 </form>

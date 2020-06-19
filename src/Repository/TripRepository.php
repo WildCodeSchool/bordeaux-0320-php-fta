@@ -30,7 +30,7 @@ class TripRepository extends ServiceEntityRepository
             ->setParameter('isAfternoon', $isAfternoon)
             ->setParameter('date', '%' . $date . '%')
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
     // /**
