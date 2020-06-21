@@ -11,7 +11,11 @@
 }
 
 .bck-green {
-  background-color: #00C853;
+  background-color: $green;
+}
+
+.row {
+  margin-bottom: 0;
 }
 
 .pad {
@@ -101,14 +105,10 @@
   background-color: $blue-duck;
 }
 
-.row {
-  margin-bottom: 0;
-}
-
 /* END */
 body {
   background-color: $blue-ice;
-  font-family: $font!important;
+  font-family: $font;
 }
 
 button, input, select, textarea, table {
@@ -116,14 +116,14 @@ button, input, select, textarea, table {
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: $black !important;
-  opacity: 1 !important; /* Firefox */
+  color: $black;
+  opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: $black !important;
+  color: $black;
 }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-  color: $black !important;
+  color: $black;
 }
