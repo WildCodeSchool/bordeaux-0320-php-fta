@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Trip{% endblock %}
+{% block title %}Edit your trip{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -10,11 +10,6 @@
                 <i class="material-icons trip-title">edit</i>
             </h3>
             {{ include('trip/_form.html.twig') }}
-            <div class="row pt">
-                <div class="center-align">
-                    <a href="{{ path('trip_beneficiary') }}" class="btn"><i class="material-icons">arrow_back</i></a>
-                </div>
-            </div>
         </div>
     </div>
 {% endblock %}

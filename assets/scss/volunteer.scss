@@ -1,38 +1,37 @@
 /* VOLUNTEER */
 
-.schedule-date {
-  font-size: 1.2em!important;
-  margin-top: 0.8em!important;
+input[type=text]:not(.browser-default) {
+  font-size: 1.2em;
+  margin-top: 0.8em;
 }
 
 .schedule-calendar {
-  font-size: 1.5em!important;
-  margin-top: 1em!important;
+  font-size: 1.5em;
+  margin-top: 1em;
 }
 
 .schedule-true {
-  color: #00C853;
+  color: $green;
 }
 
 .schedule-false {
-  color: #dd2c00;
+  color: $red;
 }
 
 .pictos-trip {
-  font-size: 2em!important;
-  margin-top: 0.8em!important;
+  font-size: 2em;
+  margin-top: 0.4em;
 }
 
-.trip-row {
-  margin-top: 0.8em!important;
-  padding: 0 !important;
+.row .trip-row {
+  padding: 0;
 }
 
 .trip-title {
-  font-size: 2em !important;
+  font-size: 2em;
 }
 
 .table-trip {
-  font-size: 1.5em !important;
+  font-size: 1.5em;
 }
 /* END */
