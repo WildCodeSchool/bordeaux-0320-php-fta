@@ -3,7 +3,7 @@
 {% block title %}Trip{% endblock %}
 
 {% block body %}
-    <div id="modal1" class="modal">
+    <div id="userInfo" class="modal">
         <div class="modal-content center-align">
             <h3><i class="material-icons trip-title">contact_phone</i></h3>
             <h5>{{ volunteer ? volunteer.givenName ~ ' ' ~ volunteer.familyName : user.givenName ~ ' ' ~ user.familyName }}</h5>
@@ -17,45 +17,45 @@
         </div>
     </div>
     <div class="container">
-        <div class="row">
-            <h3 class="bck-night white-text center pad border-radius">
+        <div class="row z-depth-2">
+            <h3 class="bck-night-gr white-text center pad border-radius-top mb-s">
                 <i class="material-icons trip-title">directions_car</i>
                 <i class="material-icons trip-title">map</i>
             </h3>
             <table class="table table-trip col s10 offset-s1">
                 <tbody>
                 <tr>
-                    <th><i class="material-icons pt-s">date_range</i></th>
-                    <td class="center-align">{{ trip.date|date('Y-m-d') }}</td>
+                    <th><i class="material-icons small pt-s pl">date_range</i></th>
+                    <td class="right-align pr">{{ trip.date|date('Y-m-d') }}</td>
                 </tr>
                 <tr>
-                    <th><i class="material-icons pt-s">access_time</i></th>
-                    <td class="center-align">{{ trip.date|date('h:i A') }}</td>
+                    <th><i class="material-icons small pt-s pl">access_time</i></th>
+                    <td class="right-align pr">{{ trip.date|date('h:i A') }}</td>
                 </tr>
                 <tr>
-                    <th><i class="material-icons pt-s">gps_fixed</i></th>
-                    <td class="center-align">{{ trip.departure.name }}</td>
+                    <th><i class="material-icons small pt-s pl">gps_fixed</i></th>
+                    <td class="right-align pr">{{ trip.departure.name }}</td>
                 </tr>
                 <tr>
-                    <th><i class="material-icons pt-s">location_on</i></th>
-                    <td class="center-align">{{ trip.arrival.name }}</td>
+                    <th><i class="material-icons small pt-s pl">location_on</i></th>
+                    <td class="right-align pr">{{ trip.arrival.name }}</td>
                 </tr>
                 {% if trip.volunteer %}
                     <tr>
-                        <th><i class="material-icons pt-s">people</i></th>
-                        <td class="center-align"><a class="waves-effect waves-light modal-trigger" href="#modal1">{{ volunteer.givenName }} {{ volunteer.familyName }}</a></td>
+                        <th><i class="material-icons small pt-s pl">people</i></th>
+                        <td class="right-align pr"><a class="waves-effect waves-light modal-trigger" href="#userInfo">{{ volunteer.givenName }} {{ volunteer.familyName }}</a></td>
                     </tr>
                 {% endif %}
                 {% if app.user.status == 'volunteer' %}
                     <tr>
-                        <th><i class="material-icons pt-s">people</i></th>
-                        <td class="center-align"><a class="waves-effect waves-light modal-trigger" href="#modal1">{{ user.givenName }} {{ user.familyName }}</a></td>
+                        <th><i class="material-icons small pt-s pl">people</i></th>
+                        <td class="right-align pr"><a class="waves-effect waves-light modal-trigger" href="#userInfo">{{ user.givenName }} {{ user.familyName }}</a></td>
                     </tr>
                 {% endif %}
                 </tbody>
             </table>
         </div>
-        <div class="pt trip-show-tools">
+        <div class="pt trip-show-tools bck-ice z-depth-2 border-radius-bottom pt pb">
             {% if app.user.status == 'beneficiary' %}
                 {% if not trip.volunteer %}
                     <div class="center-align">

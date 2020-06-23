@@ -4,12 +4,14 @@
 
 {% block body %}
     <div class="container">
-        <div class="row">
-            <h3 class="bck-night white-text center pad border-radius">
+        <div class="row z-depth-2 border-radius-bottom">
+            <h3 class="bck-night-gr white-text center pad border-radius-top mb-s">
                 <i class="material-icons trip-title">account_circle</i>
                 <i class="material-icons trip-title">add</i>
             </h3>
             {{ include('user/_form_register.html.twig') }}
         </div>
     </div>
+{% endblock %}
+{% block navigation %}
 {% endblock %}
