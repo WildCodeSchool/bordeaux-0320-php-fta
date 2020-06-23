@@ -49,7 +49,8 @@ class SecurityController extends AbstractController
             $user = new User();
             $user->setMobicoopId($decodeUser['id'])
                 ->setIsActive(true)
-                ->setStatus('volunteer');
+                ->setStatus('volunteer')
+                ->setRoles(['ROLE_USER_UNVALIDATE']);
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute('login');

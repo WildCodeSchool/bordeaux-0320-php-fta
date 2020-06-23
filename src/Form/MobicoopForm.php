@@ -23,6 +23,14 @@ class MobicoopForm extends AbstractType
                 'label' => false,
                 'attr' => ['placeholder' => 'Last name']
             ])
+            ->add('status', ChoiceType::class, [
+                'label' => false,
+                'choices' => [
+                    'Beneficiary' => 1,
+                    'Volunteer' => 2,
+                ],
+                'placeholder' => 'Status'
+            ])
             ->add('email', EmailType::class, [
                 'label' => false,
                 'attr' => ['placeholder' => 'email@example.com']
