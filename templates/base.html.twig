@@ -6,6 +6,7 @@
         <title>{% block title %}FTA{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+            <link rel="icon" type="image/png" href="{{ asset('build/Favicon.png') }}">
         {% endblock %}
     </head>
     <body>

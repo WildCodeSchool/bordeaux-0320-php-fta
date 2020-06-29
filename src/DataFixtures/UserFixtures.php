@@ -5,18 +5,17 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use DateTime;
 
 class UserFixtures extends Fixture
 {
-    const VOLUNTEERS = [
-        '21',
-        '22',
+    const BENEFICIARIES = [
+        0 => '23',
+        1 => '24'
     ];
 
-    const BENEFICIARIES = [
-        '23',
-        '24'
+    const VOLUNTEERS = [
+        0 => '21',
+        1 => '22',
     ];
 
     public function load(ObjectManager $manager)
