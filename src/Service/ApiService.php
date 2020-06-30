@@ -105,6 +105,14 @@ class ApiService
         return ApiService::decodeJson($response->getContent());
     }
 
+    public function getFullNameForAdmin(int $mobicoopId): string
+    {
+        $this->getToken();
+        $user = $this->getUserById($mobicoopId);
+        $fullName = $user['hydra:member'][0]['givenName'] . ' ' . $user['hydra:member'][0]['familyName'];
+        return $fullName;
+    }
+
     /**
      * @param array $array
      * @return UserMobicoop
