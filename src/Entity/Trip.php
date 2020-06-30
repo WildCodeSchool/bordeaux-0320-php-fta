@@ -49,11 +49,6 @@ class Trip
     private $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="trips")
-     */
-    private $user;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tripsVolunteer")
      */
     private $volunteer;
@@ -68,10 +63,11 @@ class Trip
      */
     private $isAfternoon;
 
-    public function __construct()
-    {
-        $this->user = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="trips")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $beneficiary;
 
     public function getId(): ?int
     {
@@ -146,32 +142,6 @@ class Trip
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUser(): Collection
-    {
-        return $this->user;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->user->contains($user)) {
-            $this->user->removeElement($user);
-        }
-
-        return $this;
-    }
-
     public function getVolunteer(): ?User
     {
         return $this->volunteer;
@@ -204,6 +174,18 @@ class Trip
     public function setIsAfternoon(bool $isAfternoon): self
     {
         $this->isAfternoon = $isAfternoon;
+
+        return $this;
+    }
+
+    public function getBeneficiary(): ?User
+    {
+        return $this->beneficiary;
+    }
+
+    public function setBeneficiary(?User $beneficiary): self
+    {
+        $this->beneficiary = $beneficiary;
 
         return $this;
     }

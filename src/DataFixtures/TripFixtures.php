@@ -57,6 +57,7 @@ class TripFixtures extends Fixture implements DependentFixtureInterface
             $tripEmpty->setDeparture($this->getReference(array_rand(array_flip(self::DEPARTURES))));
             $tripEmpty->setArrival($this->getReference(array_rand(array_flip(self::ARRIVALS))));
             $tripEmpty->setVolunteer(null);
+            $tripEmpty->setBeneficiary($this->getReference(self::BENEFICIARIES[$key]));
             $tripEmpty->setIsMorning(0);
             $tripEmpty->setIsAfternoon(1);
             $tripEmpty->addUser($this->getReference($beneficiary));
@@ -69,6 +70,7 @@ class TripFixtures extends Fixture implements DependentFixtureInterface
             $tripFull->setDeparture($this->getReference(array_rand(array_flip(self::DEPARTURES))));
             $tripFull->setArrival($this->getReference(array_rand(array_flip(self::ARRIVALS))));
             $tripFull->setVolunteer($this->getReference(self::VOLUNTEERS[$key]));
+            $tripFull->setBeneficiary($this->getReference(self::BENEFICIARIES[$key]));
             $tripFull->setIsMorning(1);
             $tripFull->setIsAfternoon(0);
             $tripFull->addUser($this->getReference($beneficiary));
