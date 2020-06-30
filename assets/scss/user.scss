@@ -2,7 +2,6 @@
 
 input[type=text]:not(.browser-default) {
   font-size: 1.2em;
-  margin-top: 0.8em;
 }
 
 .schedule-calendar {
@@ -28,10 +27,16 @@ input[type=text]:not(.browser-default) {
 }
 
 .trip-title {
-  font-size: 2em;
+  font-size: 1.7em;
 }
 
 .table-trip {
   font-size: 1.5em;
 }
+
+.trip-show-tools {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 /* END */

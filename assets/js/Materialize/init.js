@@ -8,4 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const instancesOfDatepickers = M.Datepicker.init(datepickers, optionsForDatepickers);
     const modals = document.querySelectorAll('.modal');
     const instancesOfModal = M.Modal.init(modals);
+    const fixedMenu = document.querySelectorAll('.fixed-action-btn');
+    const instancesOfFixedMenu = M.FloatingActionButton.init(fixedMenu, {
+        direction: 'left',
+        hoverEnabled: false,
+    });
 });

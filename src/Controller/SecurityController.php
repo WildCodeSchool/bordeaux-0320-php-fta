@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ConnectionType;
 use App\Form\MobicoopForm;
-use App\Repository\UserRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -17,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use DateTime;
 
 class SecurityController extends AbstractController
 {
@@ -129,7 +127,7 @@ class SecurityController extends AbstractController
     {
         $this->addFlash(
             'succes',
-            'Your are logout !'
+            'Your are disconnected !'
         );
     }
 }

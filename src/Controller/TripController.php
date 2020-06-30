@@ -3,16 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Trip;
-use App\Entity\User;
 use App\Form\TripType;
-use App\Repository\TripRepository;
-use App\Repository\UserRepository;
 use App\Service\ApiService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TripController extends AbstractController
@@ -89,9 +85,16 @@ class TripController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $date = $request->request->get('datePicker');
             $time = $request->request->get('timePicker');
+            if (substr($time, -2) === 'AM') {
+                $trip->setIsMorning(true);
+                $trip->setIsAfternoon(false);
+            } else {
+                $trip->setIsMorning(false);
+                $trip->setIsAfternoon(true);
+            }
             $dateTime = $date . $time;
-            $entityManager = $this->getDoctrine()->getManager();
             $trip->setDate(new DateTime($dateTime));
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($trip);
             $entityManager->flush();
 
