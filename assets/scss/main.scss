@@ -25,6 +25,24 @@
   }
 }
 
+.color {
+  &-red {
+    color: $red;
+  }
+  &-green {
+    color: $green;
+  }
+  &-blue-ice {
+    color: $blue-ice;
+  }
+  &-blue-duck {
+    color: $blue-duck;
+  }
+  &-blue-night {
+    color: $blue-night;
+  }
+}
+
 .pad {
   padding: 1rem;
   &-s {
@@ -169,8 +187,16 @@
   }
 }
 
+.border-bottom-0 {
+  border-bottom: 0;
+}
+
 .btn {
   background-color: $blue-duck;
+}
+
+.txt-shadow {
+  text-shadow: 1px 1px 2px $grey;
 }
 /* END */
 
