@@ -1,47 +1,52 @@
 {{ form_start(form) }}
-    <div class="row pl pr mb">
-        <i class="material-icons pictos-trip pt col s1">person_pin</i>
-        <div class="pl pr schedule-date col s10 offset-s1">
+    <div class="row pl pr mt">
+        <i class="material-icons pictos-trip col s1 pt">person_pin</i>
+        <div class="col s10 offset-s1 pl pr mb">
             {{ form_row(form.givenName) }}
         </div>
     </div>
-    <div class="row pl pr mb">
-        <i class="material-icons pictos-trip pt col s1">person_pin</i>
-        <div class="pl pr schedule-date col s10 offset-s1">
+    <div class="row pl pr mb-l">
+        <i class="material-icons pictos-trip col s1 pt">person_pin</i>
+        <div class="col s10 offset-s1 pl pr mb">
             {{ form_row(form.familyName) }}
         </div>
     </div>
-    <div class="row pl pr mb">
-        <i class="material-icons pictos-trip pt col s1">mail</i>
-        <div class="pl pr schedule-date col s10 offset-s1">
+    <div class="row pl pr mb-l">
+        <i class="material-icons pictos-trip col s1 pt">mail</i>
+        <div class="col s10 offset-s1 pl pr mb">
             {{ form_row(form.email) }}
         </div>
-    </div>
-    <div class="row pl pr mb">
-        <i class="material-icons pictos-trip pt col s1">lock</i>
+    <div class="row pl pr mb-l">
+        <i class="material-icons pictos-trip pt col s1">person_pin</i>
         <div class="pl pr schedule-date col s10 offset-s1">
+        {{ form_row(form.status) }}
+        </div>
+    </div>
+    <div class="row pl pr mb-l">
+        <i class="material-icons pictos-trip col s1 pt">lock</i>
+        <div class="col s10 offset-s1 pl pr mb">
             {{ form_row(form.password) }}
         </div>
     </div>
-    <div class="row pl pr mb">
-        <i class="material-icons pictos-trip pt col s1">phone</i>
-        <div class="pl pr schedule-date col s10 offset-s1">
+    <div class="row pl pr mb-l">
+        <i class="material-icons pictos-trip col s1 pt">phone</i>
+        <div class="col s10 offset-s1 pl pr mb">
             {{ form_row(form.telephone) }}
         </div>
     </div>
-    <div class="row pl pr mb">
-        <i class="material-icons pictos-trip pt col s1">person_pin</i>
-        <div class="pl pr schedule-date col s10 offset-s1">
+    <div class="row pl pr mb-l">
+        <i class="material-icons pictos-trip col s1 pt">person_pin</i>
+        <div class="col s10 offset-s1 pl pr mb">
             {{ form_row(form.gender) }}
         </div>
     </div>
-    <div class="row pl pr mb">
-        <i class="material-icons pictos-trip pt col s1">cake</i>
-        <div class="pl pr schedule-date col s10 offset-s1">
+    <div class="row pl pr mb-l">
+        <i class="material-icons pictos-trip col s1 pt">cake</i>
+        <div class="col s10 offset-s1 pl pr mb">
             {{ form_row(form.birthDate) }}
         </div>
     </div>
-    <div class="center-align">
+    <div class="center-align mb">
         <button class="btn"><i class="material-icons">arrow_forward</i></button>
     </div>
 {{ form_end(form) }}

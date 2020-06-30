@@ -1,111 +1,205 @@
-.bck-ice {
-  background-color: $blue-ice;
+.bck {
+  &-ice {
+    background-color: $blue-ice;
+  }
+  &-ice-gr {
+    background: linear-gradient(to bottom right, darken($blue-ice, 30), $blue-ice, darken($blue-ice, 30));
+  }
+  &-night {
+    background-color: $blue-night;
+  }
+  &-night-gr {
+    background: linear-gradient(to bottom right, darken($blue-night, 20), $blue-night, darken($blue-night, 20));
+  }
+  &-duck {
+    background-color: $blue-duck;
+  }
+  &-duck-gr {
+    background: linear-gradient(to bottom right, darken($blue-duck, 30), $blue-duck, darken($blue-duck, 30));
+  }
+  &-green {
+    background-color: $green;
+  }
+  &-red {
+    background-color: $red;
+  }
 }
 
-.bck-night {
-  background-color: $blue-night;
+.color {
+  &-red {
+    color: $red;
+  }
+  &-green {
+    color: $green;
+  }
+  &-blue-ice {
+    color: $blue-ice;
+  }
+  &-blue-duck {
+    color: $blue-duck;
+  }
+  &-blue-night {
+    color: $blue-night;
+  }
 }
 
-.bck-duck {
-  background-color: $blue-duck;
+.pad {
+  padding: 1rem;
+  &-s {
+    padding: 0.5rem;
+  }
+  &-l {
+    padding: 1.5rem;
+  }
+  &-0 {
+    padding: 0;
+  }
 }
 
-.bck-green {
-  background-color: $green;
+.pl {
+  padding-left: 1rem;
+  &-s {
+    padding-left: 0.5rem;
+  }
+  &-l {
+    padding-left: 1.5rem;
+  }
+  &-0 {
+    padding-left: 0;
+  }
+}
+
+.pr {
+  padding-right: 1rem;
+  &-s {
+    padding-right: 0.5rem;
+  }
+  &-l {
+    padding-right: 1.5rem;
+  }
+  &-0 {
+    padding-right: 0;
+  }
+}
+
+.pt {
+  padding-top: 1rem;
+  &-s {
+    padding-top: 0.5rem;
+  }
+  &-l {
+    padding-top: 1.5rem;
+  }
+  &-0 {
+    padding-top: 0;
+  }
+}
+
+.pb {
+  padding-bottom: 1rem;
+  &-s {
+    padding-bottom: 0.5rem;
+  }
+  &-l {
+    padding-bottom: 1.5rem;
+  }
+  &-0 {
+    padding-bottom: 0;
+  }
+}
+
+.margin {
+  margin: 1rem;
+  &-s {
+    margin: 0.5rem;
+  }
+  &-l {
+    margin: 1.5rem;
+  }
+  &-0 {
+    margin: 0;
+  }
+}
+
+.ml {
+  margin-left: 1rem;
+  &-s {
+    margin-left: 0.5rem;
+  }
+  &-l {
+    margin-left: 1.5rem;
+  }
+  &-0 {
+    margin-left: 0;
+  }
+}
+
+.mr {
+  margin-right: 1rem;
+  &-s {
+    margin-right: 0.5rem;
+  }
+  &-l {
+    margin-right: 1.5rem;
+  }
+  &-0 {
+    margin-right: 0;
+  }
+}
+
+.mt {
+  margin-top: 1rem;
+  &-s {
+    margin-top: 0.5rem;
+  }
+  &-l {
+    margin-top: 1.5rem;
+  }
+  &-0 {
+    margin-top: 0;
+  }
+}
+
+.mb {
+  margin-bottom: 1rem;
+  &-s {
+    margin-bottom: 0.5rem;
+  }
+  &-l {
+    margin-bottom: 1.5rem;
+  }
+  &-0 {
+    margin-bottom: 0;
+  }
 }
 
 .row {
   margin-bottom: 0;
 }
 
-.pad {
-  padding: 1rem;
-}
-
-.pad-s {
-  padding: 0.5rem;
-}
-
-.pl {
-  padding-left: 1rem;
-}
-
-.pl-s {
-  padding-left: 0.5rem;
-}
-
-.pr {
-  padding-right: 1rem;
-}
-
-.pr-s {
-  padding-right: 0.5rem;
-}
-
-.pt {
-  padding-top: 1rem;
-}
-
-.pt-s {
-  padding-top: 0.5rem;
-}
-
-.pb {
-  padding-bottom: 1rem;
-}
-
-.pb-s {
-  padding-bottom: 0.5rem;
-}
-
-.margin {
-  margin: 1rem;
-}
-.margin-s {
-  margin: 0.5rem;
-}
-
-.ml {
-  margin-left: 1rem;
-}
-
-.ml-s {
-  margin-left: 0.5rem;
-}
-
-.mr {
-  margin-right: 1rem;
-}
-
-.mr-s {
-  margin-right: 0.5rem;
-}
-
-.mt {
-  margin-top: 1rem;
-}
-
-.mt-s {
-  margin-top: 0.5rem;
-}
-
-.mb {
-  margin-bottom: 1rem;
-}
-
-.mb-s {
-  margin-bottom: 0.5rem;
-}
-
 .border-radius {
   border-radius: 5px;
+  &-top {
+    border-radius: 5px 5px 0 0;
+  }
+  &-bottom {
+    border-radius: 0 0 5px 5px;
+  }
+}
+
+.border-bottom-0 {
+  border-bottom: 0;
 }
 
 .btn {
   background-color: $blue-duck;
 }
 
+.txt-shadow {
+  text-shadow: 1px 1px 2px $grey;
+}
 /* END */
+
 body {
   background-color: $blue-ice;
   font-family: $font;
@@ -126,4 +220,8 @@ button, input, select, textarea, table {
 
 ::-ms-input-placeholder { /* Microsoft Edge */
   color: $black;
+}
+
+.img-home {
+  width: 80%;
 }

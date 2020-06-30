@@ -1,11 +1,12 @@
+
 {{ form_start(form) }}
-    <div class="row pl pr mb">
+    <div class="row pl pr pb-l">
         <i class="material-icons pictos-trip pt col s1">email</i>
         <div class="pl pr schedule-date col s10 offset-s1">
             {{ form_row(form.email) }}
         </div>
     </div>
-    <div class="row pl pr mb">
+    <div class="row pl pr pb-l">
         <i class="material-icons pictos-trip pt col s1">lock</i>
         <div class="pl pr schedule-date col s10 offset-s1">
             {{ form_row(form.password) }}
@@ -15,3 +16,6 @@
         <button class="btn"><i class="material-icons">arrow_forward</i></button>
     </div>
 {{ form_end(form) }}
+
+
+
