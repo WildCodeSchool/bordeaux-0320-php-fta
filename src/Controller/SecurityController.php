@@ -47,9 +47,13 @@ class SecurityController extends AbstractController
             $user = new User();
             $user->setMobicoopId($decodeUser['id'])
                 ->setIsActive(true)
-                ->setStatus('volunteer');
+                ->setStatus('volunteer')
+                ->setRoles(['ROLE_USER_UNVALIDATE']);
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $this->addFlash('success', 'You are now connected');
+
             return $this->redirectToRoute('login');
         }
         return $this->render('security/register.html.twig', [
@@ -109,6 +113,8 @@ class SecurityController extends AbstractController
                 }
             }
         }
+        $this->addFlash('success', 'You are now connected');
+
         return $this->render('security/login.html.twig', [
             'form' => $form->createView(),
         ]);

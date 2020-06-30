@@ -3,6 +3,15 @@
 {% block title %}{{ volunteer is defined ? 'Matching trip' : 'Trip index' }}{% endblock %}
 
 {% block body %}
+
+    {% for label, messages in app.flashes(['success']) %}
+        {% for message in messages %}
+            <div class="green lighten-2 flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     <div class="container">
         <div class="row">
             <h3 class="bck-night-gr white-text center pad border-radius mb-s">

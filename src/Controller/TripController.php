@@ -60,6 +60,9 @@ class TripController extends AbstractController
         if ($trips[0] === null) {
             $trips = 'error';
         }
+
+
+
         return $this->render('trip/index.html.twig', [
             'trips' => $trips[0],
         ]);
@@ -94,6 +97,8 @@ class TripController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($trip);
             $entityManager->flush();
+
+            $this->addFlash('success', 'New trip added ');
 
             return $this->redirectToRoute('trip_beneficiary');
         }
