@@ -223,5 +223,7 @@ button, input, select, textarea, table {
 }
 
 .img-home {
+  margin : 16vh 0 4rem 0;
   width: 80%;
+  filter: drop-shadow(0 0 0.3rem $blue-night);
 }

@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Trip;
+use App\Entity\User;
 use App\Form\TripType;
 use App\Service\ApiService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TripController extends AbstractController
@@ -46,22 +48,18 @@ class TripController extends AbstractController
     {
         $user = $this->getUser()->getScheduleVolunteers();
         $trips = null;
-        $i = 0;
-        foreach ($user as $scheduleVolunteer) {
-            $trips[$i] = $this->getDoctrine()->getRepository(Trip::class)
+        foreach ($user as $key => $scheduleVolunteer) {
+            $trips[$key] = $this->getDoctrine()->getRepository(Trip::class)
                 ->matchingAvailability(
                     $scheduleVolunteer->getIsMorning(),
                     $scheduleVolunteer->getIsAfternoon(),
                     $scheduleVolunteer->getDate()->format('Y-m-d')
                 );
-            $i++;
         }
 
         if ($trips[0] === null) {
             $trips = 'error';
         }
-
-
 
         return $this->render('trip/index.html.twig', [
             'trips' => $trips[0],
@@ -72,17 +70,25 @@ class TripController extends AbstractController
      * Create new trip (only ROLE_USER_BENEFICIARY)
      * @Route("/beneficiary/trip/new", name="trip_new", methods={"GET","POST"})
      * @param Request $request
+     * @param SessionInterface $session
      * @return Response
      * @throws \Exception
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SessionInterface $session): Response
     {
-        $trip = new Trip();
+        $beneficiary = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['mobicoopId' => $session->get('user')->getMobicoopId()]);
+
+        $trip = $this->getDoctrine()
+            ->getRepository(Trip::class)
+            ->findOneBy(['beneficiary' => $beneficiary]);
+
         $form = $this->createForm(TripType::class, $trip);
-        $trip->getUser();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $trip->setBeneficiary($beneficiary);
             $date = $request->request->get('datePicker');
             $time = $request->request->get('timePicker');
             if (substr($time, -2) === 'AM') {
@@ -123,7 +129,7 @@ class TripController extends AbstractController
     public function show(ApiService $api, Trip $trip): Response
     {
         $volunteer = null;
-        $userID = $trip->getUser()->getValues()[0]->getMobicoopId();
+        $userID = $trip->getBeneficiary()->getMobicoopId();
         $api->getToken();
         $user = $api->getUserById($userID)['hydra:member'][0];
 
