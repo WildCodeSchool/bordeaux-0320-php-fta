@@ -80,9 +80,7 @@ class TripController extends AbstractController
             ->getRepository(User::class)
             ->findOneBy(['mobicoopId' => $session->get('user')->getMobicoopId()]);
 
-        $trip = $this->getDoctrine()
-            ->getRepository(Trip::class)
-            ->findOneBy(['beneficiary' => $beneficiary]);
+        $trip = new Trip();
 
         $form = $this->createForm(TripType::class, $trip);
         $form->handleRequest($request);
@@ -110,7 +108,6 @@ class TripController extends AbstractController
         }
 
         return $this->render('trip/new.html.twig', [
-            'trip' => $trip,
             'form' => $form->createView(),
         ]);
     }
