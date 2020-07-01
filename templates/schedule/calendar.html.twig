@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Add an availability{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row">
             <form id="form_schedule" class="col s12">
-                <h3 class="bck-night white-text center pad border-radius">Add an availability</h3>
+                <h3 class="bck-night-gr white-text center pad border-radius mb-s">
+                    <i class="material-icons trip-title">date_range</i>
+                    <i class="material-icons trip-title">add</i>
+                </h3>
                 <div class="row pl pr mb">
                     <i class="material-icons schedule-calendar pt col s1">date_range</i>
                     <input name='datePicker' type="text" class="schedule-date pl pr datepicker col s10 offset-s1 l11" value="Set date">
