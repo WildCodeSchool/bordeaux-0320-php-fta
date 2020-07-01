@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}FTA{% endblock %}</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('appAdmin') }}
+        <link rel="icon" type="image/png" href="{{ asset('build/Favicon.png') }}">
+    {% endblock %}
+</head>
+<body>
+{{ include('admin/_components/_navbar.html.twig') }}
+{% block body %}{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('appAdmin') }}
+{% endblock %}
+</body>
+</html>

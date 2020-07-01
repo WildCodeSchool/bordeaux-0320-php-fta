@@ -89,6 +89,8 @@ class ApiService
     }
 
     /**
+     * @param int $mobicoopId
+     * @return array
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
@@ -105,12 +107,24 @@ class ApiService
         return ApiService::decodeJson($response->getContent());
     }
 
-    public function getFullNameForAdmin(int $mobicoopId): string
+    public function getAllUsers(): array
     {
-        $this->getToken();
-        $user = $this->getUserById($mobicoopId);
-        $fullName = $user['hydra:member'][0]['givenName'] . ' ' . $user['hydra:member'][0]['familyName'];
-        return $fullName;
+        $client = $this->baseUri();
+        $response = $client->request('GET', '/users');
+        return ApiService::decodeJson($response->getContent());
+    }
+
+    public function setFullName(array $usersMobicoop, array $users): array
+    {
+        foreach ($usersMobicoop['hydra:member'] as $userMobicoop) {
+            foreach ($users as $user) {
+                if ($userMobicoop['id'] === $user->getMobicoopId()) {
+                    $user->setGivenName($userMobicoop['givenName']);
+                    $user->setFamilyName($userMobicoop['familyName']);
+                }
+            }
+        }
+        return $users;
     }
 
     /**

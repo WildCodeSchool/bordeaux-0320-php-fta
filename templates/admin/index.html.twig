@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Administration - Acceuil{% endblock %}
 
@@ -9,11 +9,75 @@
         </div>
         <div class="row">
             <div class="col s6 center-align">
-                {% include 'admin/_components/_table.html.twig' %}
-                <button class="waves-effect waves-light btn">En voir plus</button>
+                <h4>Volontaires</h4>
+                <table class="striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Crée le</th>
+                            <th>Actif</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in usersVolunteer %}
+                                {% include 'admin/_components/_tableUsers.html.twig' %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{{ path('admin_common', {'status': 'volunteer'}) }}">
+                    <button class="waves-effect waves-light btn">En voir plus</button>
+                </a>
             </div>
             <div class="col s6 center-align">
-                {% include 'admin/_components/_table.html.twig' %}
+                <h4>Bénéficiaires</h4>
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                        <th>Crée le</th>
+                        <th>Actif</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in usersBeneficiary %}
+                            {% include 'admin/_components/_tableUsers.html.twig' %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{{ path('admin_common', {'status': 'beneficiary'}) }}">
+                    <button class="waves-effect waves-light btn">En voir plus</button>
+                </a>
+            </div>
+        </div>
+        <div class="row margin">
+            <div class="col s12 center-align">
+                <h4>Trajet</h4>
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Départ</th>
+                        <th>Arrivé</th>
+                        <th>Bénéficiaire</th>
+                        <th>Volontaire</th>
+                        <th>Crée le</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for trip in trips %}
+                            {% include 'admin/_components/_tableTrips.html.twig' %}
+                    {% endfor %}
+                    </tbody>
+                </table>
                 <button class="waves-effect waves-light btn">En voir plus</button>
             </div>
         </div>

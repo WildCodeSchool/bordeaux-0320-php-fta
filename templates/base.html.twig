@@ -10,7 +10,6 @@
         {% endblock %}
     </head>
     <body>
-
         {% block body %}{% endblock %}
         {% block navigation %}
             <div class="fixed-action-btn">
@@ -18,8 +17,10 @@
                     <i class="large material-icons">dehaze</i>
                 </a>
                 <ul>
+                    {#
                     <li><a href="{{ path('logout') }}" class="btn-floating bck-red"><i class="material-icons">cancel</i></a></li>
                     <li><a href="{{ path('user_show', {'id': app.user.id}) }}" class="btn-floating bck-duck"><i class="material-icons">account_circle</i></a></li>
+                    #}
                 </ul>
             </div>
         {% endblock %}
