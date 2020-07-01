@@ -16,6 +16,8 @@ use DateTime;
 class User implements UserInterface
 {
     const ARRAY_ROLES = ['ROLE_USER_BENEFICIARY', 'ROLE_ADMIN', 'ROLE_USER_VOLUNTEER'];
+    const STATUS_VOLUNTEER = 'volunteer';
+    const SATUS_BENEFICIARY = 'beneficiary';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -67,6 +69,10 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Trip::class, mappedBy="beneficiary", orphanRemoval=true)
      */
     private $trips;
+
+    private $givenName;
+
+    private $familyName;
 
     public function __construct()
     {
@@ -271,6 +277,30 @@ class User implements UserInterface
                 $trip->setBeneficiary(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGivenName()
+    {
+        return $this->givenName;
+    }
+
+    public function setGivenName($givenName)
+    {
+        $this->givenName = $givenName;
+
+        return $this;
+    }
+
+    public function getFamilyName()
+    {
+        return $this->familyName;
+    }
+
+    public function setFamilyName($familyName)
+    {
+        $this->familyName = $familyName;
 
         return $this;
     }

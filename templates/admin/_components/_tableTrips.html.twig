@@ -1,0 +1,16 @@
+<tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ trip.departure.name }}</td>
+    <td>{{ trip.arrival.name }}</td>
+    <td>{{ trip.beneficiary.givenName }} {{ trip.beneficiary.familyName }}</td>
+    {% if trip.volunteer %}
+    <td>{{ trip.volunteer.givenName }} {{ trip.volunteer.familyName }}</td>
+    {% else %}
+    <td>Pas de volontaire</td>
+    {% endif %}
+    <td>{{ trip.createdAt|date("d-m-Y") }}</td>
+    <td>
+        <i class="material-icons">edit</i> /
+        <i class="material-icons">delete</i>
+    </td>
+</tr>
