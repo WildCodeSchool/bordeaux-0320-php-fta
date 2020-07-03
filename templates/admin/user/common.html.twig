@@ -4,17 +4,16 @@
     <div class="container">
         <div class="row">
             <div class="col s6">
-                <h4>{{ status == 'volunteer' ? 'Volontaire' : 'Bénéficiaire' }}</h4>
+                <h4>{{ status == 'volunteer' ? 'Bénévoles' : 'Bénéficiaires' }}</h4>
                 <table class="striped">
                     <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Prénom</th>
-                        <th>Nom</th>
-                        <th>Crée le</th>
-                        <th>Actif</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th class="center-align">#</th>
+                        <th class="center-align">Prénom</th>
+                        <th class="center-align">Nom</th>
+                        <th class="center-align">Créé le</th>
+                        <th class="center-align">Actif</th>
+                        <th class="center-align">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -25,7 +24,7 @@
                 </table>
             </div>
             <div class="col s6">
-                <h4>Ajoutée un {{ status == 'volunteer' ? 'volontaire' : 'bénéficiaire' }}</h4>
+                <h4>Ajouter un {{ status == 'volunteer' ? 'bénévole' : 'bénéficiaire' }}</h4>
                 {{ include('user/_form_register.html.twig') }}
             </div>
         </div>
