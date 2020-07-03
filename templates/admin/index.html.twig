@@ -1,20 +1,82 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block title %}Administration - Acceuil{% endblock %}
+{% block title %}Administration - Accueil{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container-wide">
         <div class="row">
             <h1 class="center-align">Espace administrateur</h1>
         </div>
-        <div class="row">
-            <div class="col s6 center-align">
-                {% include 'admin/_components/_table.html.twig' %}
-                <button class="waves-effect waves-light btn">En voir plus</button>
+        <div class="row admin-margin">
+            <div class="col s5 center-align z-depth-2 border-radius mb-l">
+                <h4>Bénévoles</h4>
+                <table class="striped">
+                    <thead>
+                        <tr>
+                            <th class="center-align">#</th>
+                            <th class="center-align">Prénom</th>
+                            <th class="center-align">Nom</th>
+                            <th class="center-align">Créé le</th>
+                            <th class="center-align">Actif</th>
+                            <th class="center-align">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in usersVolunteer %}
+                                {% include 'admin/_components/_tableUsers.html.twig' %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{{ path('admin_common', {'status': 'volunteer'}) }}">
+                    <button class="waves-effect waves-light btn mb-l mt-l">En voir plus</button>
+                </a>
             </div>
-            <div class="col s6 center-align">
-                {% include 'admin/_components/_table.html.twig' %}
-                <button class="waves-effect waves-light btn">En voir plus</button>
+            <div class="col s5 offset-s1 center-align z-depth-2 border-radius mb-l">
+                <h4>Bénéficiaires</h4>
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th class="center-align">#</th>
+                        <th class="center-align">Prénom</th>
+                        <th class="center-align">Nom</th>
+                        <th class="center-align">Créé le</th>
+                        <th class="center-align">Actif</th>
+                        <th class="center-align">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in usersBeneficiary %}
+                            {% include 'admin/_components/_tableUsers.html.twig' %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{{ path('admin_common', {'status': 'beneficiary'}) }}">
+                    <button class="waves-effect waves-light btn mb-l mt-l">En voir plus</button>
+                </a>
+            </div>
+        </div>
+        <div class="row mt-l mb-s admin-margin">
+            <div class="col s11 center-align z-depth-2 border-radius mb-s">
+                <h4>Trajets</h4>
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th class="center-align">#</th>
+                        <th class="center-align">Départ</th>
+                        <th class="center-align">Arrivée</th>
+                        <th class="center-align">Bénéficiaire</th>
+                        <th class="center-align">Bénévole</th>
+                        <th class="center-align">Crée le</th>
+                        <th class="center-align">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for trip in trips %}
+                            {% include 'admin/_components/_tableTrips.html.twig' %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <button class="waves-effect waves-light btn mb-l mt-l">En voir plus</button>
             </div>
         </div>
     </div>

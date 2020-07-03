@@ -16,6 +16,8 @@ use DateTime;
 class User implements UserInterface
 {
     const ARRAY_ROLES = ['ROLE_USER_BENEFICIARY', 'ROLE_ADMIN', 'ROLE_USER_VOLUNTEER'];
+    const STATUS_VOLUNTEER = 'volunteer';
+    const SATUS_BENEFICIARY = 'beneficiary';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -49,11 +51,6 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Trip::class, mappedBy="user")
-     */
-    private $trips;
-
-    /**
      * @ORM\OneToMany(targetEntity=ScheduleVolunteer::class, mappedBy="user")
      */
     private $scheduleVolunteers;
@@ -67,6 +64,15 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity=Trip::class, mappedBy="beneficiary", orphanRemoval=true)
+     */
+    private $trips;
+
+    private $givenName;
+
+    private $familyName;
 
     public function __construct()
     {
@@ -144,34 +150,6 @@ class User implements UserInterface
     public function setUpdatedAt(): self
     {
         $this->updatedAt = new DateTime();
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Trip[]
-     */
-    public function getTrips(): Collection
-    {
-        return $this->trips;
-    }
-
-    public function addTrip(Trip $trip): self
-    {
-        if (!$this->trips->contains($trip)) {
-            $this->trips[] = $trip;
-            $trip->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTrip(Trip $trip): self
-    {
-        if ($this->trips->contains($trip)) {
-            $this->trips->removeElement($trip);
-            $trip->removeUser($this);
-        }
 
         return $this;
     }
@@ -270,5 +248,60 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection|Trip[]
+     */
+    public function getTrips(): Collection
+    {
+        return $this->trips;
+    }
+
+    public function addTrip(Trip $trip): self
+    {
+        if (!$this->trips->contains($trip)) {
+            $this->trips[] = $trip;
+            $trip->setBeneficiary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrip(Trip $trip): self
+    {
+        if ($this->trips->contains($trip)) {
+            $this->trips->removeElement($trip);
+            // set the owning side to null (unless already changed)
+            if ($trip->getBeneficiary() === $this) {
+                $trip->setBeneficiary(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getGivenName()
+    {
+        return $this->givenName;
+    }
+
+    public function setGivenName($givenName)
+    {
+        $this->givenName = $givenName;
+
+        return $this;
+    }
+
+    public function getFamilyName()
+    {
+        return $this->familyName;
+    }
+
+    public function setFamilyName($familyName)
+    {
+        $this->familyName = $familyName;
+
+        return $this;
     }
 }

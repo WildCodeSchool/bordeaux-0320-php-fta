@@ -1,7 +1,6 @@
-@import "vars";
-@import "main";
-@import "volunteer";
-@import "beneficiary";
-
 /* Materialize import CSS */
 @import "~materialize-css/sass/materialize";
+
+@import "vars";
+@import "main";
+@import "user";

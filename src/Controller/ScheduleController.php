@@ -5,9 +5,11 @@ namespace App\Controller;
 
 use App\Entity\ScheduleVolunteer;
 use App\Service\CalendarService;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
 
@@ -20,7 +22,7 @@ class ScheduleController extends AbstractController
     /**
      * Route for see availability for volunteer (only ROLE_USER_VOLUNTEER)
      * @Route("/volunteer/calendar", name="calendar_schedule")
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function show()
     {
@@ -34,7 +36,7 @@ class ScheduleController extends AbstractController
      * @Route("/ajax/schedule", name="ajax_schedule")
      * @param Request $request
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function ajaxAddSchedule(Request $request): JsonResponse
     {

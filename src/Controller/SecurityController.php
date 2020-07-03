@@ -5,11 +5,11 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ConnectionType;
 use App\Form\MobicoopForm;
-use App\Repository\UserRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -17,7 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use DateTime;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class SecurityController extends AbstractController
 {
@@ -27,10 +30,10 @@ class SecurityController extends AbstractController
      * @param ApiService $api
      * @param EntityManagerInterface $entityManager
      * @return Response
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function new(Request $request, ApiService $api, EntityManagerInterface $entityManager): Response
     {
@@ -49,9 +52,13 @@ class SecurityController extends AbstractController
             $user = new User();
             $user->setMobicoopId($decodeUser['id'])
                 ->setIsActive(true)
-                ->setStatus('volunteer');
+                ->setStatus('volunteer')
+                ->setRoles(['ROLE_USER_UNVALIDATE']);
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $this->addFlash('success', 'You are now connected');
+
             return $this->redirectToRoute('login');
         }
         return $this->render('security/register.html.twig', [
@@ -64,11 +71,11 @@ class SecurityController extends AbstractController
      * @param ApiService $api
      * @param SessionInterface $session
      * @param EventDispatcherInterface $eventDispatcher
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @return RedirectResponse|Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @throws Exception
      * @Route("/login", name="login")
      */
@@ -111,6 +118,8 @@ class SecurityController extends AbstractController
                 }
             }
         }
+        $this->addFlash('success', 'You are now connected');
+
         return $this->render('security/login.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -123,7 +132,7 @@ class SecurityController extends AbstractController
     {
         $this->addFlash(
             'succes',
-            'Your are logout !'
+            'Your are disconnected !'
         );
     }
 }

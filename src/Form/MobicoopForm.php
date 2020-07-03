@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MobicoopForm extends AbstractType
 {
@@ -22,6 +23,15 @@ class MobicoopForm extends AbstractType
             ->add('familyName', TextType::class, [
                 'label' => false,
                 'attr' => ['placeholder' => 'Last name']
+            ])
+            ->add('status', ChoiceType::class, [
+                'label' => false,
+                'choices' => [
+                    'Beneficiary' => 1,
+                    'Volunteer' => 2,
+                ],
+                'data' => $options['status'] ?? $options['status'],
+                'placeholder' => 'Status'
             ])
             ->add('email', EmailType::class, [
                 'label' => false,
@@ -42,7 +52,8 @@ class MobicoopForm extends AbstractType
                     'Male' => 2,
                     'Other' => 3,
                 ],
-                'placeholder' => 'Gender'
+                'data' => $options['gender'] ?? $options['gender'],
+                'placeholder' => 'Gender',
             ])
             ->add('birthDate', TextType::class, [
                 'label' => false,
@@ -51,5 +62,13 @@ class MobicoopForm extends AbstractType
                     'placeholder' => 'Birthday'
                     ],
             ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'gender' => null,
+            'status' => null
+        ]);
     }
 }

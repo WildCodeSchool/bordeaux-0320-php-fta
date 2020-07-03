@@ -1,0 +1,16 @@
+<div class="navbar-fixed">
+    <nav class="bck-night">
+        <div class="nav-wrapper">
+            <img src="{{ asset('build/Logo_FTA.png') }}" alt="FTA logo" class="brand-logo navbar-logo mt-s ml-s">
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="{{ path('admin_index') }}">Accueil</a></li>
+                <li><a href="">Accompagnement</a></li>
+                <li><a href="{{ path('admin_common', {'status': 'volunteer'}) }}">Bénévoles</a></li>
+                <li><a href="{{ path('admin_common', {'status': 'beneficiary'}) }}">Bénéficiaires</a></li>
+                <li><a href="">Départs</a></li>
+                <li><a href="">Arrivées</a></li>
+                <li><a href="{{ path('logout') }}" class=""><i class="material-icons color-red">cancel</i></a></li>
+            </ul>
+        </div>
+    </nav>
+</div>

@@ -1,0 +1,42 @@
+/* VOLUNTEER */
+
+input[type=text]:not(.browser-default) {
+  font-size: 1.2em;
+}
+
+.schedule-calendar {
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+
+.schedule-true {
+  color: $green;
+}
+
+.schedule-false {
+  color: $red;
+}
+
+.pictos-trip {
+  font-size: 2em;
+  margin-top: 0.4em;
+}
+
+.row .trip-row {
+  padding: 0;
+}
+
+.trip-title {
+  font-size: 1.7em;
+}
+
+.table-trip {
+  font-size: 1.5em;
+}
+
+.trip-show-tools {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* END */

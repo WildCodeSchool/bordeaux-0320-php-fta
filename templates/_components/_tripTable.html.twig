@@ -1,13 +1,13 @@
 <table class="table">
     <thead>
     <tr>
-        <th class="center-align"><i class="material-icons trip-title">date_range</i></th>
-        <th class="center-align"><i class="material-icons trip-title">access_time</i></th>
+        <th class="center-align"><i class="material-icons small">date_range</i></th>
+        <th class="center-align"><i class="material-icons small">access_time</i></th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-    {% for trip in trips %}
+    {% for trip in trips|sort((a, b) => a.date <=> b.date) %}
         <tr class="{{ trip.volunteer ? 'bck-green' : '' }}">
             <td class="center-align">{{ trip.date|date('Y-m-d') }}</td>
             <td class="center-align">{{ trip.date|date('h:i A') }}</td>

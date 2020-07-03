@@ -6,10 +6,22 @@
         <title>{% block title %}FTA{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+            <link rel="icon" type="image/png" href="{{ asset('build/Favicon.png') }}">
         {% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}
+        {% block navigation %}
+            <div class="fixed-action-btn">
+                <a class="btn-floating btn-large">
+                    <i class="large material-icons">dehaze</i>
+                </a>
+                <ul>
+                    <li><a href="{{ path('logout') }}" class="btn-floating bck-red"><i class="material-icons">cancel</i></a></li>
+                    <li><a href="{{ path('user_show', {'id': app.user.id}) }}" class="btn-floating bck-duck"><i class="material-icons">account_circle</i></a></li>
+                </ul>
+            </div>
+        {% endblock %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
