@@ -1,16 +1,16 @@
 <tr>
-    <td>{{ loop.index }}</td>
-    <td>{{ trip.departure.name }}</td>
-    <td>{{ trip.arrival.name }}</td>
-    <td>{{ trip.beneficiary.givenName }} {{ trip.beneficiary.familyName }}</td>
+    <td class="center-align">{{ loop.index }}</td>
+    <td class="center-align">{{ trip.departure.name }}</td>
+    <td class="center-align">{{ trip.arrival.name }}</td>
+    <td class="center-align">{{ trip.beneficiary.givenName }} {{ trip.beneficiary.familyName }}</td>
     {% if trip.volunteer %}
-    <td>{{ trip.volunteer.givenName }} {{ trip.volunteer.familyName }}</td>
+        <td class="center-align">{{ trip.volunteer.givenName }} {{ trip.volunteer.familyName }}</td>
     {% else %}
-    <td>Pas de volontaire</td>
+        <td class="center-align">Aucun</td>
     {% endif %}
-    <td>{{ trip.createdAt|date("d-m-Y") }}</td>
-    <td>
-        <i class="material-icons">edit</i> /
+    <td class="center-align">{{ trip.createdAt|date("d-m-Y") }}</td>
+    <td class="center-align">
+        <i class="material-icons">edit</i>
         <i class="material-icons">delete</i>
     </td>
 </tr>

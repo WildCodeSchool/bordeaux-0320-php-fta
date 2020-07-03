@@ -30,6 +30,7 @@ class MobicoopForm extends AbstractType
                     'Beneficiary' => 1,
                     'Volunteer' => 2,
                 ],
+                'data' => $options['status'] ?? $options['status'],
                 'placeholder' => 'Status'
             ])
             ->add('email', EmailType::class, [
@@ -66,7 +67,8 @@ class MobicoopForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'gender' => null
+            'gender' => null,
+            'status' => null
         ]);
     }
 }

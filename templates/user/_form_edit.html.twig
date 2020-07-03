@@ -36,6 +36,12 @@
     </div>
 </div>
 <div class="row pl pr mb-l" hidden>
+    <i class="material-icons pictos-trip col s1 pt">person_pin</i>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_widget(form.status) }}
+    </div>
+</div>
+<div class="row pl pr mb-l" hidden>
     <i class="material-icons pictos-trip col s1 pt">cake</i>
     <div class="col s10 offset-s1 pl pr mb">
         {{ form_row(form.birthDate, {'attr': {'value': user.birthDate }}) }}

@@ -130,7 +130,10 @@ class AdminController extends AbstractController
         $apiService->getToken();
         $user = $apiService->getUserById($id)['hydra:member'][0];
 
-        $form = $this->createForm(MobicoopForm::class, null, ['gender' => $user['gender']]);
+        $form = $this->createForm(MobicoopForm::class, null, [
+            'gender' => $user['gender'],
+            'status' => $user['status']
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $apiService->baseUri();

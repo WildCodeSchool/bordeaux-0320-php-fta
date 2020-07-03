@@ -11,6 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class UserController extends AbstractController
 {
@@ -32,10 +36,10 @@ class UserController extends AbstractController
      * @param ApiService $api
      * @param int $id
      * @return Response
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function show(ApiService $api, int $id): Response
     {
@@ -52,10 +56,10 @@ class UserController extends AbstractController
      * @param ApiService $api
      * @param int $id
      * @return Response
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function edit(Request $request, ApiService $api, int $id): Response
     {
@@ -64,7 +68,10 @@ class UserController extends AbstractController
                             ->getRepository(User::class)
                             ->findOneBy(['mobicoopId' => $id])
                             ->getId();
-        $form = $this->createForm(MobicoopForm::class, null, ['gender' => $user['gender']]);
+        $form = $this->createForm(MobicoopForm::class, null, [
+            'gender' => $user['gender'],
+            'status' => $user['status']
+        ]);
         $form->handleRequest($request);
         $api->getToken();
 

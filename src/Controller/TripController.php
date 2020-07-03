@@ -6,12 +6,17 @@ use App\Entity\Trip;
 use App\Entity\User;
 use App\Form\TripType;
 use App\Service\ApiService;
+use App\Service\TripService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TripController extends AbstractController
 {
@@ -42,9 +47,10 @@ class TripController extends AbstractController
     /**
      * Route for see matching trips with availability (only ROLE_USER_VOLUNTEER)
      * @Route("/volunteer/matching", name="trip_matching")
+     * @param TripService $tripService
      * @return Response
      */
-    public function allTrip(): Response
+    public function allTrip(TripService $tripService): Response
     {
         $user = $this->getUser()->getScheduleVolunteers();
         $trips = null;
@@ -57,12 +63,10 @@ class TripController extends AbstractController
                 );
         }
 
-        if ($trips[0] === null) {
-            $trips = 'error';
-        }
+        $tripsMatching = $tripService->getMatchingTrips($trips);
 
         return $this->render('trip/index.html.twig', [
-            'trips' => $trips[0],
+            'trips' => $tripsMatching,
         ]);
     }
 
@@ -118,10 +122,10 @@ class TripController extends AbstractController
      * @param ApiService $api
      * @param Trip $trip
      * @return Response
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function show(ApiService $api, Trip $trip): Response
     {
