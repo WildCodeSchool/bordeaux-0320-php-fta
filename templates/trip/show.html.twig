@@ -67,6 +67,11 @@
                         {{ include('trip/_delete_form.html.twig') }}
                     </div>
                 {% endif %}
+                {% if app.user.status == 'volunteer' and not trip.volunteer %}
+                    <div class="center-align">
+                        <a href="{{ path('trip_accept', {'tripId': trip.id}) }}" class="btn">Accept</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
