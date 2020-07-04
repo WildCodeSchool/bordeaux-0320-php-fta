@@ -29,6 +29,11 @@ class Departure
      */
     private $trips;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $category;
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
@@ -78,6 +83,18 @@ class Departure
                 $trip->setDeparture(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

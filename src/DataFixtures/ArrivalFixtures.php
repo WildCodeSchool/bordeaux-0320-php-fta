@@ -9,21 +9,25 @@ use Doctrine\Persistence\ObjectManager;
 class ArrivalFixtures extends Fixture
 {
     const LOCATIONS = [
-        0 => 'CADA',
-        1 => 'Préfecture',
-        2 => 'Hôpital',
-        3 => 'CAF',
-        4 => 'Médecin',
-        5 => 'Mairie'
+        'CADA' => '<i class="material-icons">location_city</i>',
+        'Préfecture' => '<i class="material-icons">location_city</i>',
+        'CAF' => '<i class="material-icons">location_city</i>',
+        'Mairie' => '<i class="material-icons">location_city</i>',
+        'Hôpital' => '<i class="material-icons">local_hospital</i>',
+        'Médecin' => '<i class="material-icons">local_hospital</i>',
+        'Clinique' => '<i class="material-icons">local_hospital</i>',
     ];
 
     public function load(ObjectManager $manager)
     {
-        foreach (self::LOCATIONS as $key => $location) {
+        $i = 0;
+        foreach (self::LOCATIONS as $location => $category) {
             $arrival = new Arrival();
             $arrival->setName($location);
+            $arrival->setCategory($category);
             $manager->persist($arrival);
-            $this->addReference('arrival_' . $key, $arrival);
+            $this->addReference('arrival_' . $i, $arrival);
+            $i++;
         }
 
         $manager->flush();
