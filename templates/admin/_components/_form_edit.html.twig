@@ -1,0 +1,45 @@
+{{ form_start(form) }}
+<div class="row pl pr mt">
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.givenName, {'attr': {'value': user.givenName }}) }}
+    </div>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.familyName, {'attr': {'value': user.familyName }}) }}
+    </div>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.email, {'attr': {'value': user.email }}) }}
+    </div>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.telephone, {'attr': {'value': user.telephone }}) }}
+    </div>
+</div>
+<div class="row pl pr mb-l" hidden>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.password, {'attr': {'value': user.password }}) }}
+    </div>
+</div>
+<div class="row pl pr mb-l" hidden>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_widget(form.gender) }}
+    </div>
+</div>
+<div class="row pl pr mb-l" hidden>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_widget(form.status) }}
+    </div>
+</div>
+<div class="row pl pr mb-l" hidden>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.birthDate, {'attr': {'value': user.birthDate }}) }}
+    </div>
+</div>
+<div class="center-align mb">
+    <button class="btn"><i class="material-icons">arrow_forward</i></button>
+</div>
+{{ form_end(form) }}

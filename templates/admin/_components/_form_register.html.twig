@@ -1,0 +1,40 @@
+{{ form_start(form) }}
+<div class="row pl pr mt">
+    <div class="col s5 offset-s1">
+        {{ form_row(form.givenName) }}
+    </div>
+    <div class="col s5">
+        {{ form_row(form.familyName) }}
+    </div>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s5 offset-s1">
+        {{ form_row(form.gender) }}
+    </div>
+    <div class="col s4 offset-s1">
+        {{ form_row(form.birthDate) }}
+    </div>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 offset-s1">
+        {{ form_row(form.email) }}
+    </div>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s5 offset-s1">
+        {{ form_row(form.telephone) }}
+    </div>
+    <div class="col s4 offset-s1">
+        {{ form_row(form.status) }}
+    </div>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.password) }}
+        <p class="left-align mdp">* N'oubliez pas de communiquer le mot de à l'utilisateur.</p>
+    </div>
+</div>
+<div class="center-align mb">
+    <button class="btn"><i class="material-icons">arrow_forward</i></button>
+</div>
+{{ form_end(form) }}
