@@ -15,9 +15,8 @@ use DateTime;
  */
 class User implements UserInterface
 {
-    const ARRAY_ROLES = ['ROLE_USER_BENEFICIARY', 'ROLE_ADMIN', 'ROLE_USER_VOLUNTEER'];
     const STATUS_VOLUNTEER = 'volunteer';
-    const SATUS_BENEFICIARY = 'beneficiary';
+    const STATUS_BENEFICIARY = 'beneficiary';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

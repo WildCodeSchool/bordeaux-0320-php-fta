@@ -3,19 +3,7 @@
 {% block title %}Trip{% endblock %}
 
 {% block body %}
-    <div id="userInfo" class="modal">
-        <div class="modal-content center-align">
-            <h3><i class="material-icons trip-title">contact_phone</i></h3>
-            <h5>{{ volunteer ? volunteer.givenName ~ ' ' ~ volunteer.familyName : user.givenName ~ ' ' ~ user.familyName }}</h5>
-            <h5 class="pt bck-ice pl pb pr border-radius" id="phoneNumber">
-                <i class="material-icons pr-s">phone</i>
-                <a href="{{ 'tel:' ~ (volunteer ? volunteer.telephone : user.telephone) }}">{{ volunteer ? volunteer.telephone : user.telephone }}</a>
-            </h5>
-        </div>
-        <div class="modal-footer">
-            <a class="modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-    </div>
+    {{ include('_components/_modalTrip.html.twig') }}
     <div class="container">
         <div class="z-depth-2 border-radius-bottom">
             <div class="row">
@@ -26,31 +14,59 @@
                 <table class="table table-trip col s10 offset-s1">
                     <tbody>
                     <tr>
-                        <th><i class="material-icons small pt-s pl">date_range</i></th>
-                        <td class="right-align pr">{{ trip.date|date('Y-m-d') }}</td>
+                        <th>
+                            <i class="material-icons small pt-s pl">date_range</i>
+                        </th>
+                        <td class="right-align pr">
+                            {{ trip.date|date('Y-m-d') }}
+                        </td>
                     </tr>
                     <tr>
-                        <th><i class="material-icons small pt-s pl">access_time</i></th>
-                        <td class="right-align pr">{{ trip.date|date('h:i A') }}</td>
+                        <th>
+                            <i class="material-icons small pt-s pl">access_time</i>
+                        </th>
+                        <td class="right-align pr">
+                            {{ trip.date|date('h:i A') }}
+                        </td>
                     </tr>
                     <tr>
-                        <th><i class="material-icons small pt-s pl">gps_fixed</i></th>
-                        <td class="right-align pr">{{ trip.departure.name }}</td>
+                        <th>
+                            <i class="material-icons small pt-s pl">gps_fixed</i>
+                        </th>
+                        <td class="right-align pr">
+                            {{ trip.departure.name }}
+                        </td>
                     </tr>
                     <tr>
-                        <th><i class="material-icons small pt-s pl">location_on</i></th>
-                        <td class="right-align pr">{{ trip.arrival.name }}</td>
+                        <th>
+                            <i class="material-icons small pt-s pl">location_on</i>
+                        </th>
+                        <td class="right-align pr">
+                            {{ trip.arrival.name }}
+                        </td>
                     </tr>
-                    {% if trip.volunteer %}
+                    {% if trip.volunteer and app.user.status == 'beneficiary' %}
                         <tr>
-                            <th><i class="material-icons small pt-s pl">people</i></th>
-                            <td class="right-align pr"><a class="waves-effect waves-light modal-trigger" href="#userInfo">{{ volunteer.givenName }} {{ volunteer.familyName }}</a></td>
+                            <th>
+                                <i class="material-icons small pt-s pl">people</i>
+                            </th>
+                            <td class="right-align pr">
+                                <a class="waves-effect waves-light modal-trigger" href="#userInfo">
+                                    {{ volunteer.givenName }} {{ volunteer.familyName }}
+                                </a>
+                            </td>
                         </tr>
                     {% endif %}
                     {% if app.user.status == 'volunteer' %}
                         <tr>
-                            <th><i class="material-icons small pt-s pl">people</i></th>
-                            <td class="right-align pr"><a class="waves-effect waves-light modal-trigger" href="#userInfo">{{ user.givenName }} {{ user.familyName }}</a></td>
+                            <th>
+                                <i class="material-icons small pt-s pl">people</i>
+                            </th>
+                            <td class="right-align pr">
+                                <a class="waves-effect waves-light modal-trigger" href="#userInfo">
+                                    {{ beneficiary.givenName }} {{ beneficiary.familyName }}
+                                </a>
+                            </td>
                         </tr>
                     {% endif %}
                     </tbody>
@@ -60,7 +76,9 @@
                 {% if app.user.status == 'beneficiary' %}
                     {% if not trip.volunteer %}
                         <div class="center-align">
-                            <a href="{{ path('trip_edit', {'id': trip.id}) }}" class="btn"><i class="material-icons">edit</i></a>
+                            <a href="{{ path('trip_edit', {'id': trip.id}) }}" class="btn">
+                                <i class="material-icons">edit</i>
+                            </a>
                         </div>
                     {% endif %}
                     <div class="center-align">
@@ -69,7 +87,9 @@
                 {% endif %}
                 {% if app.user.status == 'volunteer' and not trip.volunteer %}
                     <div class="center-align">
-                        <a href="{{ path('trip_accept', {'tripId': trip.id}) }}" class="btn">Accept</a>
+                        <a href="{{ path('trip_accept', {'tripId': trip.id}) }}" class="btn">
+                            Accept
+                        </a>
                     </div>
                 {% endif %}
             </div>
