@@ -8,6 +8,7 @@ use App\Form\TripType;
 use App\Service\ApiService;
 use App\Service\TripService;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,7 @@ class TripController extends AbstractController
     {
         return $this->render('trip/index.html.twig', [
             'trips' => $this->getUser()->getTrips(),
+            'user'  => $this->getUser()
         ]);
     }
 
@@ -41,6 +43,7 @@ class TripController extends AbstractController
     {
         return $this->render('trip/index.html.twig', [
             'trips' => $this->getUser()->getTripsVolunteer(),
+            'user'  => $this->getUser()
         ]);
     }
 
@@ -67,6 +70,7 @@ class TripController extends AbstractController
 
         return $this->render('trip/index.html.twig', [
             'trips' => $tripsMatching,
+            'user'  => $this->getUser()
         ]);
     }
 
@@ -148,7 +152,25 @@ class TripController extends AbstractController
     }
 
     /**
-     * Route for edit a trip (only ROLE_USER_BENEFICIARY)
+     * Route to accept a trip created by a beneficiary (only ROLE_USER_VOLUNTEER)
+     * @Route("/volunteer/accept/{tripId}", name="trip_accept", methods={"GET","POST"})
+     * @param int $tripId
+     * @param EntityManagerInterface $entityManagerm
+     */
+    public function addVolunteerToTrip(int $tripId, EntityManagerInterface $entityManagerm)
+    {
+        $trip = $this->getDoctrine()
+            ->getRepository(Trip::class)
+            ->findOneById($tripId);
+        $trip->setVolunteer($this->getUser());
+        $entityManagerm->persist($trip);
+        $entityManagerm->flush();
+
+        return $this->redirectToRoute('trip_volunteer');
+    }
+
+    /**
+     * Route to edit a trip (only ROLE_USER_BENEFICIARY)
      * @Route("/beneficiary/trip/{id}/edit", name="trip_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Trip $trip
@@ -159,8 +181,6 @@ class TripController extends AbstractController
     {
         $form = $this->createForm(TripType::class, $trip);
         $form->handleRequest($request);
-        //$oldDate = $trip->getDate()->format('Y-m-d');
-        //$oldTime = $trip->getDate()->format('h:i');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $date = $request->request->get('datePicker');

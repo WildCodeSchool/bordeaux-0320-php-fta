@@ -8,7 +8,7 @@
     </thead>
     <tbody>
     {% for trip in trips|sort((a, b) => a.date <=> b.date) %}
-        <tr class="{{ trip.volunteer ? 'bck-green' : '' }}">
+        <tr class="{{ trip.volunteer and user.status == 'beneficiary' ? 'bck-green' : '' }}">
             <td class="center-align">{{ trip.date|date('Y-m-d') }}</td>
             <td class="center-align">{{ trip.date|date('h:i A') }}</td>
             <td class="center-align">
