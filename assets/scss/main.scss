@@ -200,18 +200,10 @@
   justify-content: center;
 }
 
-.admin-margin {
-  margin-left: 8.33%;
-}
-
 .txt-shadow {
   text-shadow: 1px 1px 2px $grey;
 }
 
-.container-wide {
-  width: 90%;
-  margin-left: 5%;
-}
 /* END */
 
 body {
@@ -240,8 +232,4 @@ button, input, select, textarea, table {
   margin : 16vh 0 4rem 0;
   width: 80%;
   filter: drop-shadow(0 0 0.3rem $blue-night);
-}
-
-.navbar-logo {
-  height: 80%;
 }

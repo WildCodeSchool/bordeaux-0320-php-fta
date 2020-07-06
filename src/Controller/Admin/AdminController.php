@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Form\MobicoopForm;
+use App\Form\MobicoopAdminForm;
 use App\Repository\TripRepository;
 use App\Repository\UserRepository;
 use App\Service\ApiService;
@@ -81,7 +81,7 @@ class AdminController extends AbstractController
      * @throws TransportExceptionInterface
      * @Route("/common/{status}", name="common", requirements={"status"="beneficiary|volunteer"})
      */
-    public function usersVolunteer(
+    public function usersAccordingToStatus(
         string $status,
         UserRepository $userRepository,
         ApiService $apiService,
@@ -90,7 +90,7 @@ class AdminController extends AbstractController
     ): Response {
         $users = $userRepository->findBy(['status' => $status]);
         $apiService->getToken();
-        $form = $this->createForm(MobicoopForm::class);
+        $form = $this->createForm(MobicoopAdminForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -145,7 +145,7 @@ class AdminController extends AbstractController
         $apiService->getToken();
         $user = $apiService->getUserById($id)['hydra:member'][0];
 
-        $form = $this->createForm(MobicoopForm::class, null, [
+        $form = $this->createForm(MobicoopAdminForm::class, null, [
             'gender' => $user['gender'],
             'status' => $user['status']
         ]);
@@ -162,8 +162,8 @@ class AdminController extends AbstractController
             ]);
         }
         return $this->render('admin/user/edit.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user,
+            'form'   => $form->createView(),
+            'user'   => $user,
             'status' => $status,
         ]);
     }
