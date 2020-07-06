@@ -21,15 +21,16 @@ class TripType extends AbstractType
                 'class' => Departure::class,
                 'choice_label' => 'name',
                 'label' => false,
-                'placeholder' => 'Starting point'
+                'placeholder' => 'Starting point',
+                'group_by' => 'category'
             ])
             ->add('arrival', EntityType::class, [
                 'class' => Arrival::class,
                 'choice_label' => 'name',
                 'label' => false,
-                'placeholder' => 'Destination'
-            ])
-        ;
+                'placeholder' => 'Destination',
+                'group_by' => 'category'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

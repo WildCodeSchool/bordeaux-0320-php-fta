@@ -12,6 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * Class AdminController
@@ -20,6 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+    const LIMIT = 5;
+
     /**
      * Home for admin
      * @Route("/", name="index")
@@ -27,18 +33,26 @@ class AdminController extends AbstractController
      * @param TripRepository $tripRepository
      * @param ApiService $apiService
      * @return Response
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function index(
         UserRepository $userRepository,
         TripRepository $tripRepository,
         ApiService $apiService
     ): Response {
-        $usersVolunteer = $userRepository->findBy(['status' => User::STATUS_VOLUNTEER], ['id' => 'DESC'], 5);
-        $usersBeneficiary = $userRepository->findBy(['status' => User::SATUS_BENEFICIARY], ['id' => 'DESC'], 5);
+        $usersVolunteer = $userRepository->findBy(
+            ['status' => User::STATUS_VOLUNTEER],
+            ['id' => 'DESC'],
+            self::LIMIT
+        );
+        $usersBeneficiary = $userRepository->findBy(
+            ['status' => User::SATUS_BENEFICIARY],
+            ['id' => 'DESC'],
+            self::LIMIT
+        );
 
         $apiService->getToken();
         $usersMobicoop = $apiService->getAllUsers();
@@ -49,7 +63,7 @@ class AdminController extends AbstractController
         return $this->render('admin/index.html.twig', [
             'usersVolunteer' => $usersVolunteer,
             'usersBeneficiary' => $usersBeneficiary,
-            'trips' => $tripRepository->findBy([], ['id' => 'DESC'], 5),
+            'trips' => $tripRepository->findBy([], ['id' => 'DESC'], self::LIMIT),
         ]);
     }
 
@@ -61,10 +75,10 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @return Response
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @Route("/common/{status}", name="common", requirements={"status"="beneficiary|volunteer"})
      */
     public function usersVolunteer(
@@ -111,13 +125,14 @@ class AdminController extends AbstractController
 
     /**
      * @param int $id
+     * @param string $status
      * @param Request $request
      * @param ApiService $apiService
      * @return Response
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @Route("/common/edit/{id}/{status}",
      *     name="edit_user",
      *     requirements=
