@@ -47,7 +47,8 @@ class UserController extends AbstractController
     public function show(ApiService $api, int $id): Response
     {
         $userLocal = $this->getDoctrine()->getRepository(User::class)->findOneById($id);
-        $user = $api->getUserById($userLocal->getMobicoopId())['hydra:member'][0];
+        $user = $api->getUserById($userLocal->getMobicoopId());
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -66,7 +67,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, ApiService $api, int $id): Response
     {
-        $user = $api->getUserById($id)['hydra:member'][0];
+        $user = $api->getUserById($id);
         $userLocalId = $this->getDoctrine()
                             ->getRepository(User::class)
                             ->findOneBy(['mobicoopId' => $id])
