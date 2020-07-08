@@ -64,7 +64,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, ApiService $api, int $id): Response
     {
-        $user = $api->getUserById($id)['hydra:member'][0];
+        $user = $api->getUserById($id);
         $userLocalId = $this->getDoctrine()
                             ->getRepository(User::class)
                             ->findOneBy(['mobicoopId' => $id])
