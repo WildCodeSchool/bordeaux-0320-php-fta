@@ -1,0 +1,13 @@
+<div id="userInfo" class="modal">
+    <div class="modal-content center-align">
+        <h3><i class="material-icons trip-title">contact_phone</i></h3>
+        <h5>{{ app.user.status == 'beneficiary' ? volunteer.givenName ~ ' ' ~ volunteer.familyName : beneficiary.givenName ~ ' ' ~ beneficiary.familyName }}</h5>
+        <h5 class="pt bck-ice pl pb pr border-radius" id="phoneNumber">
+            <i class="material-icons pr-s">phone</i>
+            <a href="{{ 'tel:' ~ (app.user.status == 'beneficiary' ? volunteer.telephone : beneficiary.telephone) }}">{{ app.user.status == 'beneficiary' ? volunteer.telephone : beneficiary.telephone }}</a>
+        </h5>
+    </div>
+    <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>

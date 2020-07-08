@@ -48,7 +48,7 @@ class TripController extends AbstractController
         return $this->render('trip/show.html.twig', [
             'trip' => $trip,
             'volunteer' => $volunteer,
-            'user' => $user
+            'beneficiary' => $user
         ]);
     }
 

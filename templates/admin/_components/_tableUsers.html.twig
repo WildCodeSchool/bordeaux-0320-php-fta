@@ -7,7 +7,7 @@
         <div class="switch">
             <label>
                 <input type="checkbox" {{ user.isActive == '1' ? 'checked' : '' }}>
-                <span class="lever"></span>
+                <span class="lever switchActiveUser" data-id="{{ user.id }}"></span>
             </label>
         </div>
     </td>
