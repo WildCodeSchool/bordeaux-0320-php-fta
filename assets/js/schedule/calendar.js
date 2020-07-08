@@ -1,7 +1,6 @@
 import { addSchedule } from '../axios/ajaxSchedule';
 
-function createLine(tableRef, value, i)
-{
+const createLine = (tableRef, value, i) => {
     const newRow = tableRef.insertRow(tableRef.rows.length);
     let newCell = newRow.insertCell(0);
     let newText = document.createTextNode(value[i].date);
@@ -23,7 +22,7 @@ function createLine(tableRef, value, i)
     newText = document.createTextNode('brightness_1');
     icon.appendChild(newText);
     newCell.appendChild(icon);
-}
+};
 
 const buttonSchedule = document.getElementById('button_schedule');
 

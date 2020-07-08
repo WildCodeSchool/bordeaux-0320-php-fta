@@ -3,12 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Form\MobicoopAdminForm;
+use App\Form\Type\MobicoopAdminForm;
 use App\Repository\TripRepository;
 use App\Repository\UserRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -166,5 +167,35 @@ class AdminController extends AbstractController
             'user'   => $user,
             'status' => $status,
         ]);
+    }
+
+    /**
+     * Route ajax for search with givenName
+     * @Route("/ajax/search/users", name="ajax_search_users")
+     * @param UserRepository $userRepository
+     * @param ApiService $apiService
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function ajaxSearchUsers(
+        UserRepository $userRepository,
+        ApiService $apiService,
+        Request $request
+    ): JsonResponse {
+        $apiService->getToken();
+        $type = $request->query->get('type');
+        $name = $request->query->get('name');
+
+        $usersMobicoop = $apiService->getUserByGivenName($name);
+        $usersBeneficiary = $userRepository->findBy(
+            ['status' => $type],
+        );
+
+        $usersMobicoop = $apiService::createAjaxUserArray($usersMobicoop, $usersBeneficiary);
+        return new JsonResponse($usersMobicoop);
     }
 }
