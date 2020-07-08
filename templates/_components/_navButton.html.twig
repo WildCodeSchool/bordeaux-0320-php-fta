@@ -1,0 +1,40 @@
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large">
+        <i class="large material-icons">dehaze</i>
+    </a>
+    <ul>
+        {#<li>
+            <a href="{{ path('logout') }}" class="btn-floating bck-red">
+                <i class="material-icons">cancel</i>
+            </a>
+        </li>#}
+        <li>
+            <a href="{{ path('user_show', {'id': app.user.id}) }}" class="btn-floating bck-duck">
+                <i class="material-icons">account_circle</i>
+            </a>
+        </li>
+        {% if app.user.status == 'beneficiary' %}
+            <li>
+                <a href="{{ path('trip_beneficiary') }}" class="btn-floating bck-duck">
+                    <i class="material-icons">directions_car</i>
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ path('calendar_schedule') }}" class="btn-floating bck-duck">
+                    <i class="material-icons">date_range</i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('trip_volunteer') }}" class="btn-floating bck-duck">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('trip_matching') }}" class="btn-floating bck-duck">
+                    <i class="material-icons">help_outline</i>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</div>

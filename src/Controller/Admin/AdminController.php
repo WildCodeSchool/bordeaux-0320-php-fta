@@ -49,7 +49,7 @@ class AdminController extends AbstractController
             self::LIMIT
         );
         $usersBeneficiary = $userRepository->findBy(
-            ['status' => User::SATUS_BENEFICIARY],
+            ['status' => User::STATUS_BENEFICIARY],
             ['id' => 'DESC'],
             self::LIMIT
         );
