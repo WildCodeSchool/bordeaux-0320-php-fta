@@ -144,7 +144,7 @@ class AdminController extends AbstractController
     public function editUser(int $id, string $status, Request $request, ApiService $apiService)
     {
         $apiService->getToken();
-        $user = $apiService->getUserById($id)['hydra:member'][0];
+        $user = $apiService->getUserById($id);
 
         $form = $this->createForm(MobicoopAdminForm::class, null, [
             'gender' => $user['gender'],
