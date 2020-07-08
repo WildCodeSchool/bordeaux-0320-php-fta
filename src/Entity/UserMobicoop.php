@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+
 /**
  * Class UserMobicoop
  * @package App\Entity
  */
+
 class UserMobicoop
 {
     /**
@@ -43,9 +45,11 @@ class UserMobicoop
      */
     private string $role;
 
+
     /**
      * @return int
      */
+
     public function getMobicoopId(): int
     {
         return $this->mobicoopId;
@@ -154,4 +158,5 @@ class UserMobicoop
     {
         $this->role = $role;
     }
+
 }
