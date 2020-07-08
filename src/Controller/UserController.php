@@ -8,9 +8,12 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Service\ApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -88,6 +91,27 @@ class UserController extends AbstractController
             'form' => $form->createView(),
             'user' => $user
         ]);
+    }
+
+    /**
+     * route ajax to activate or deactivate users
+     * @Route("/ajax/activate/{id}")
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function activateUser(int $id)
+    {
+        $entityManager   = $this->getDoctrine()->getManager();
+        $user            = $this->getDoctrine()
+                                ->getRepository(User::class)
+                                ->findOneById($id);
+
+        $user->setIsActive(!$user->getIsActive());
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return new JsonResponse('Votre modification a bien été prise en compte');
     }
 
     /**
