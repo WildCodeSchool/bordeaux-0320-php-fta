@@ -7,18 +7,18 @@
                 <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">
                     {{ status == 'volunteer' ? 'Accompagnants' : 'Bénéficiaires' }}
                 </h4>
-                <div id="searchRow" class="row">
-                    <div class="col s6">
+                <div id="searchRow" class="row mt-l">
+                    <div class="col s6 offset-s1">
                         <input type="text" data-type="{{ status }}" name="search" id="searchUser">
                     </div>
-                    <div class="col s6">
+                    <div class="col s4 mr-s">
                         <a class="waves-effect waves-light btn" id="searchButton">Rechercher</a>
                     </div>
                 </div>
                 <div id="loading" class="progress display-loading">
                     <div class="indeterminate"></div>
                 </div>
-                <table class="striped" id="users-table">
+                <table class="striped mt-l" id="users-table">
                     <thead>
                     <tr>
                         <th class="center-align">#</th>

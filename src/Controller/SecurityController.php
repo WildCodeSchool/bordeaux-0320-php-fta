@@ -92,7 +92,7 @@ class SecurityController extends AbstractController
             try {
                 $mobicoopUser = $api->getUser($form);
             } catch (Exception $e) {
-                throw new Exception('Erorr server' . $e, 500);
+                throw new Exception('Error server' . $e, 500);
             }
             $passwordSaved = $mobicoopUser['hydra:member'][0]['password'];
             $password = $form->getData()['password'];

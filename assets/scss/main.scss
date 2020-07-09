@@ -32,6 +32,9 @@
   &-green {
     color: $green;
   }
+  &-black {
+    color: $black;
+  }
   &-blue-ice {
     color: $blue-ice;
   }
@@ -201,7 +204,15 @@
 }
 
 .txt-shadow {
-  text-shadow: 1px 1px 2px $grey;
+  &-grey {
+    text-shadow: 1px 1px 2px $grey;
+  }
+  &-white {
+    text-shadow: 1px 1px 2px $white;
+  }
+  &-black {
+    text-shadow: 1px 1px 2px $black;
+  }
 }
 
 /* END */
