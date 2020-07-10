@@ -8,10 +8,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use DateTime;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+
+
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @Vich\Uploadable
  */
 class User implements UserInterface
 {
@@ -72,6 +79,24 @@ class User implements UserInterface
     private $givenName;
 
     private $familyName;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true, unique=true)
+     */
+    private  $picture;
+
+    /**
+     * @Vich\UploadableField(mapping="picture_file", fileNameProperty="picture")
+     * @var File
+     */
+    private  $pictureFile;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private  $updateAt;
+
+
 
     public function __construct()
     {
@@ -303,4 +328,43 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function setPictureFile(File $picture = null)
+    {
+        $this->pictureFile = $picture;
+        if ($picture) {
+            $this->updatedAt = new DateTime('now');
+        }
+    }
+
+    public function getPictureFile(): ?File
+    {
+        return $this->pictureFile;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): self
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getUpdateAt(): ?\DateTimeInterface
+    {
+        return $this->updateAt;
+    }
+
+    public function setUpdateAt(\DateTimeInterface $updateAt): self
+    {
+        $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+
 }

@@ -7,6 +7,7 @@ parameters:
     locale: 'en'
     mobicoop_user: '%env(MOBICOOP_USER)%'
     mobicoop_password: '%env(MOBICOOP_PASSWORD)%'
+    upload_directory: '%kernel.project_dir%/public/uploads/'
 
 services:
     # default configuration for services in *this* file
@@ -28,4 +29,3 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
