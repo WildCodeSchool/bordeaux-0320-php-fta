@@ -32,7 +32,7 @@ class ScheduleController extends AbstractController
     }
 
     /**
-     * Route ajax for add and refresh schedule list
+     * Route ajax to add and refresh schedule list
      * @Route("/ajax/schedule", name="ajax_schedule")
      * @param Request $request
      * @return JsonResponse

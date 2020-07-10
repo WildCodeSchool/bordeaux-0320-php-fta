@@ -4,8 +4,21 @@
     <div class="container-wide">
         <div class="row admin-margin">
             <div class="col s5 center-align users-list z-depth-2 border-radius mb-l mt-l pad-0">
-                <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">{{ status == 'volunteer' ? 'Accompagnants' : 'Bénéficiaires' }}</h4>
-                <table class="striped">
+                <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">
+                    {{ status == 'volunteer' ? 'Accompagnants' : 'Bénéficiaires' }}
+                </h4>
+                <div id="searchRow" class="row mt-l">
+                    <div class="col s6 offset-s1">
+                        <input type="text" data-type="{{ status }}" name="search" id="searchUser">
+                    </div>
+                    <div class="col s4 mr-s">
+                        <a class="waves-effect waves-light btn" id="searchButton">Rechercher</a>
+                    </div>
+                </div>
+                <div id="loading" class="progress display-loading">
+                    <div class="indeterminate"></div>
+                </div>
+                <table class="striped mt-l" id="users-table">
                     <thead>
                     <tr>
                         <th class="center-align">#</th>
@@ -29,4 +42,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('searchUser') }}
 {% endblock %}
