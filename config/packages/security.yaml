@@ -8,7 +8,7 @@ security:
                 property: mobicoopId
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|user|js)/
             security: false
         main:
             anonymous: ~
