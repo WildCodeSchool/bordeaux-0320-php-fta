@@ -6,6 +6,7 @@ use App\Entity\Trip;
 use App\Entity\User;
 use App\Form\TripType;
 use App\Service\ApiService;
+use App\Service\EmailService;
 use App\Service\TripService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -205,7 +206,7 @@ class TripController extends AbstractController
      * @param int $tripId
      * @param EntityManagerInterface $entityManagerm
      */
-    public function addVolunteerToTrip(int $tripId, EntityManagerInterface $entityManagerm)
+    public function addVolunteerToTrip(int $tripId, EntityManagerInterface $entityManagerm, EmailService $emailService)
     {
         $trip = $this->getDoctrine()
             ->getRepository(Trip::class)
@@ -213,7 +214,7 @@ class TripController extends AbstractController
         $trip->setVolunteer($this->getUser());
         $entityManagerm->persist($trip);
         $entityManagerm->flush();
-
+        $emailService->sendEmail($trip);
         return $this->redirectToRoute('trip_volunteer');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Trip;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\MailerInterface;
@@ -14,23 +15,28 @@ class EmailService
      * @var MailerInterface
      */
     private MailerInterface $mailer;
-    private $sender;
     private $templating;
+    private ContainerInterface $container;
 
 
     /**
      * EmailService constructor.
      * @param MailerInterface $mailer
-     * @param $sender
      * @param Environment $twig
      * @param ApiService $api
+     * @param ContainerInterface $container
      */
-    public function __construct(MailerInterface $mailer, $sender, Environment $twig, ApiService $api)
-    {
+    public function __construct(
+        MailerInterface $mailer,
+        Environment $twig,
+        ApiService $api,
+        ContainerInterface $container
+    ) {
         $this->mailer = $mailer;
-        $this->sender = $sender;
         $this->templating = $twig;
         $this->api = $api;
+        $this->container = $container;
+
     }
 
     /**
@@ -48,7 +54,7 @@ class EmailService
         $volunteer = $this->api->getUserById($volunteerId);
 
         $email = (new Email())
-            ->from($this->sender)
+            ->from($this->container->getParameter('mailer_from'))
             ->to('projet.franceterredasile@gmail.com')
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
