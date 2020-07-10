@@ -16,12 +16,20 @@
         <div class="row">
             <h3 class="bck-night-gr white-text center pad border-radius mb-s">
                 <i class="material-icons trip-title">directions_car</i>
-                <i class="material-icons trip-title">access_time</i>
+                {% if app.user.status == 'beneficiary' %}
+                    <i class="material-icons trip-title">access_time</i>
+                {% elseif app.request.attributes.get('_route') == 'trip_matching' %}
+                    <i class="material-icons trip-title">help_outline</i>
+                {% else %}
+                    <i class="material-icons trip-title">save</i>
+                {% endif %}
             </h3>
             {% include '_components/_tripTable.html.twig' %}
             {% if app.user.status == 'beneficiary' %}
                 <div class="center-align mt">
-                    <a href="{{ path('trip_new') }}" class="btn"><i class="material-icons">add</i></a>
+                    <a href="{{ path('trip_new') }}" class="btn">
+                        <i class="material-icons">add</i>
+                    </a>
                 </div>
             {% endif %}
         </div>

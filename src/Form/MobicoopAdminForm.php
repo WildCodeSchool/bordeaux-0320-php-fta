@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -10,85 +10,65 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vich\UploaderBundle\Form\Type\VichFileType;
 
-
-class MobicoopForm extends AbstractType
+class MobicoopAdminForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('givenName', TextType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'First name']
+                'attr' => ['placeholder' => 'Prénom']
             ])
             ->add('familyName', TextType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'Last name']
+                'attr' => ['placeholder' => 'Nom']
             ])
             ->add('status', ChoiceType::class, [
                 'label' => false,
                 'choices' => [
-                    'Beneficiary' => 1,
-                    'Volunteer' => 2,
+                    'Bénéficiaire' => 1,
+                    'Accompagnant' => 2,
                 ],
                 'data' => $options['status'] ?? $options['status'],
-                'placeholder' => 'Status',
+                'placeholder' => 'Statut'
             ])
             ->add('email', EmailType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'email@example.com'],
-                'mapped' => !$options['edit'],
+                'attr' => ['placeholder' => 'Adresse email']
             ])
             ->add('password', PasswordType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'Password'],
-                'mapped' => !$options['edit'],
+                'attr' => ['placeholder' => 'Mot de passe *']
             ])
             ->add('telephone', TelType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => '0123456789'],
-                'mapped' => !$options['edit'],
+                'attr' => ['placeholder' => 'Téléphone']
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => false,
                 'choices' => [
-                    'Female' => 1,
-                    'Male' => 2,
-                    'Other' => 3,
+                    'Femme' => 1,
+                    'Homme' => 2,
+                    'Autre' => 3,
                 ],
                 'data' => $options['gender'] ?? $options['gender'],
-                'placeholder' => 'Gender',
-                'mapped' => !$options['edit'],
+                'placeholder' => 'Genre',
             ])
-            
             ->add('birthDate', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'datepicker',
-                    'placeholder' => 'Birthday'
-
-                    ],
-                'mapped' => !$options['edit'],
+                    'placeholder' => 'Anniversaire'
+                ],
             ]);
-        if ($options['edit']) {
-            $builder->add('pictureFile', VichFileType::class, [
-                'label' => 'Picture',
-                'required' => false,
-                'allow_delete' => true, // not mandatory, default is true
-                'download_uri' => true, // not mandatory, default is true
-
-            ]);
-        }
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'gender' => null,
-            'status' => null,
-            'edit'   => false,
+            'status' => null
         ]);
     }
 }

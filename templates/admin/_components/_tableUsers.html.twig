@@ -3,7 +3,14 @@
     <td class="center-align">{{ user.givenName }}</td>
     <td class="center-align">{{ user.familyName }}</td>
     <td class="center-align">{{ user.createdAt|date("d-m-Y") }}</td>
-    <td class="center-align">{{ user.isActive == '1' ? 'oui' : 'non' }}</td>
+    <td class="center-align">
+        <div class="switch">
+            <label>
+                <input type="checkbox" {{ user.isActive == '1' ? 'checked' : '' }}>
+                <span class="lever switchActiveUser" data-id="{{ user.id }}"></span>
+            </label>
+        </div>
+    </td>
     <td class="center-align">
         <a href="{{ path('admin_edit_user', {'id': user.mobicoopId, 'status': user.status}) }}">
             <i class="material-icons">edit</i>

@@ -99,9 +99,16 @@ class ApiService
     public function getUserById(int $mobicoopId): array
     {
         $client = $this->baseUri();
+        $response = $client->request('GET', '/users/' . $mobicoopId);
+        return ApiService::decodeJson($response->getContent());
+    }
+
+    public function getUserByGivenName(string $name): array
+    {
+        $client = $this->baseUri();
         $response = $client->request('GET', '/users', [
             'query' => [
-                'id' => $mobicoopId
+                'givenName' => $name
             ]
         ]);
         return ApiService::decodeJson($response->getContent());
@@ -114,17 +121,19 @@ class ApiService
         return ApiService::decodeJson($response->getContent());
     }
 
-    public function setFullName(array $usersMobicoop, array $users): array
+    public function setFullName(array $usersMobicoop, array $users): ?array
     {
+        $result = null;
         foreach ($usersMobicoop['hydra:member'] as $userMobicoop) {
             foreach ($users as $user) {
                 if ($userMobicoop['id'] === $user->getMobicoopId()) {
                     $user->setGivenName($userMobicoop['givenName']);
                     $user->setFamilyName($userMobicoop['familyName']);
+                    $result = $users;
                 }
             }
         }
-        return $users;
+        return $result;
     }
 
     /**
@@ -171,5 +180,25 @@ class ApiService
     public static function decodeJson(string $string): array
     {
         return json_decode($string, true);
+    }
+
+    public static function createAjaxUserArray(array $usersMobicoop, $usersCommon): array
+    {
+        $newArray = [];
+        $i = 0;
+        foreach ($usersMobicoop['hydra:member'] as $user) {
+            foreach ($usersCommon as $data) {
+                if ($user['id'] === $data->getMobicoopId()) {
+                    $newArray[$i]['id'] = $data->getId();
+                    $newArray[$i]['mobicoopId'] = $data->getMobicoopId();
+                    $newArray[$i]['givenName'] = $user['givenName'];
+                    $newArray[$i]['familyName'] = $user['familyName'];
+                    $newArray[$i]['status'] = $data->getStatus();
+                    $newArray[$i]['isActive'] = $data->getIsActive();
+                }
+            }
+            $i++;
+        }
+        return $newArray;
     }
 }

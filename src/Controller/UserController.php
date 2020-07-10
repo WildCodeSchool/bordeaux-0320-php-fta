@@ -4,20 +4,30 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\MobicoopForm;
-use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Service\ApiService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
+
+
+
+
 
 class UserController extends AbstractController
 {
+
     /**
      * @Route("/user", name="user_index", methods={"GET"})
      * @param UserRepository $userRepository
@@ -44,10 +54,13 @@ class UserController extends AbstractController
     public function show(ApiService $api, int $id): Response
     {
         $userLocal = $this->getDoctrine()->getRepository(User::class)->findOneById($id);
-        $user = $api->getUserById($userLocal->getMobicoopId())['hydra:member'][0];
+        $user = $api->getUserById($userLocal->getMobicoopId());
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
+
         ]);
+
     }
 
     /**
@@ -55,39 +68,61 @@ class UserController extends AbstractController
      * @param Request $request
      * @param ApiService $api
      * @param int $id
+     * @param EntityManagerInterface $entityManager
      * @return Response
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function edit(Request $request, ApiService $api, int $id): Response
+    public function edit(Request $request, ApiService $api, int $id, EntityManagerInterface $entityManager): Response
     {
-        $user = $api->getUserById($id)['hydra:member'][0];
-        $userLocalId = $this->getDoctrine()
+        $user = $api->getUserById($id);
+        $userLocal = $this->getDoctrine()
                             ->getRepository(User::class)
-                            ->findOneBy(['mobicoopId' => $id])
-                            ->getId();
-        $form = $this->createForm(MobicoopForm::class, null, [
+                            ->findOneBy(['mobicoopId' => $id]);
+
+        $userLocalId = $userLocal->getId();
+
+        $form = $this->createForm(MobicoopForm::class, $userLocal, [
             'gender' => $user['gender'],
-            'status' => $user['status']
+            'status' => $user['status'],
+            'edit' => true,
         ]);
         $form->handleRequest($request);
         $api->getToken();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $client = $api->baseUri();
-            $fullForm = $api::addPhoneDisplay($form->getData());
-            $response = $client->request('PUT', '/users/' . $id, [
-                'json' => $fullForm,
-            ]);
-            $response->getContent();
+            $entityManager->persist($userLocal);
+            $entityManager->flush();
+
             return $this->redirectToRoute('user_show', ['id' => $userLocalId]);
         }
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
-            'user' => $user
+            'user' => $user,
         ]);
+    }
+
+    /**
+     * route ajax to activate or deactivate users
+     * @Route("/ajax/activate/{id}")
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function activateUser(int $id)
+    {
+        $entityManager   = $this->getDoctrine()->getManager();
+        $user            = $this->getDoctrine()
+                                ->getRepository(User::class)
+                                ->findOneById($id);
+
+        $user->setIsActive(!$user->getIsActive());
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return new JsonResponse('Votre modification a bien été prise en compte');
     }
 
     /**

@@ -32,7 +32,7 @@ class ScheduleController extends AbstractController
     }
 
     /**
-     * Route ajax for add and refresh schedule list
+     * Route ajax to add and refresh schedule list
      * @Route("/ajax/schedule", name="ajax_schedule")
      * @param Request $request
      * @return JsonResponse
@@ -47,8 +47,8 @@ class ScheduleController extends AbstractController
         $date = new DateTime($request->request->get('datePicker'));
         $schedule->setDate($date);
         $schedule->setUser($user);
-        $schedule->setIsAfternoon($request->request->has('afternoon') ? true : false);
-        $schedule->setIsMorning($request->request->has('morning') ? true : false);
+        $schedule->setIsAfternoon($request->request->has('afternoon'));
+        $schedule->setIsMorning($request->request->has('morning'));
         $entityManager->persist($schedule);
         $entityManager->flush();
         $availabilityUsers = $user->getScheduleVolunteers();

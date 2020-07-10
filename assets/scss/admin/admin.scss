@@ -1,0 +1,61 @@
+.navbar-logo {
+  height: 80%;
+}
+
+.navbar-title {
+  margin-left: 8rem;
+}
+
+nav .brand-logo {
+  font-size: 1.5rem;
+  text-shadow: 2px 2px 2px $blue-duck;
+}
+
+.row .col, .pad-0 {
+  padding: 0;
+}
+
+.admin-title-card {
+  color: $white;
+  margin: 0;
+}
+
+.container-wide {
+  width: 90%;
+  margin-left: 5%;
+}
+
+.container-small {
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 3rem;
+}
+
+.admin-margin {
+  margin-left: 8.33%;
+}
+
+.mdp {
+  font-size: 0.8rem;
+}
+
+.users-list {
+  height: 31.6rem;
+}
+#searchRow {
+  .col {
+    input#searchUser {
+      margin: 0 auto;
+      width: 80%;
+    }
+    button#searchButton {
+      margin: 15px auto;
+    }
+  }
+}
+div#searchRow.display-loading {
+  display: none;
+}
+div#loading.display-loading {
+  display: none;
+}

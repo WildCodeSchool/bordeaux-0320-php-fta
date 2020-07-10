@@ -1,7 +1,7 @@
 {% extends 'admin/base.html.twig' %}
 {% block body %}
-    <div class="container">
-        <h4>Edition d'un {{ status == 'volunteer' ? 'bénévole' : 'bénéficiaire' }}</h4>
-        {% include 'user/_form_edit.html.twig' %}
+    <div class="container-small z-depth-2 border-radius center-align pb-l mt-l">
+        <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Edition d'un {{ status == 'volunteer' ? 'accompagnant' : 'bénéficiaire' }}</h4>
+        {% include 'admin/_components/_form_edit.html.twig' %}
     </div>
 {% endblock %}
