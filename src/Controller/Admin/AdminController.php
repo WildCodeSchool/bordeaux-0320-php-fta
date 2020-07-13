@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Form\Type\MobicoopAdminForm;
+use App\Form\MobicoopAdminForm;
 use App\Repository\TripRepository;
 use App\Repository\UserRepository;
 use App\Service\ApiService;

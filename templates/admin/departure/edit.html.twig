@@ -1,0 +1,14 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Édition d'un départ{% endblock %}
+
+{% block body %}
+    <div class="container-small z-depth-2 border-radius center-align pb-l mt-l">
+        <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Edition d'un départ</h4>
+        {% include 'admin/departure/_form.html.twig' %}
+    </div>
+    <div class="container-small center-align">
+        {% include 'admin/departure/_delete_form.html.twig' %}
+    </div>
+{% endblock %}
+
