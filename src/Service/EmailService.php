@@ -36,17 +36,17 @@ class EmailService
         $this->templating = $twig;
         $this->api = $api;
         $this->container = $container;
-
     }
 
     /**
+     * Send email to Beneficiary and Volunteer for matched confirmation
      * @param Trip $trip
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function sendEmail(Trip $trip)
+    public function accepted(Trip $trip)
     {
         $beneficiaryId = $trip->getBeneficiary()->getMobicoopId();
         $beneficiary = $this->api->getUserById($beneficiaryId);
@@ -76,7 +76,41 @@ class EmailService
         // ...
     }
 
-    private function getParameter(string $string)
+    /**
+     * Send email to Beneficiary and Volunteer for trip canceled
+     * @param Trip $trip
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function canceled(Trip $trip)
     {
+        $beneficiaryId = $trip->getBeneficiary()->getMobicoopId();
+        $beneficiary = $this->api->getUserById($beneficiaryId);
+        $volunteerId = $trip->getVolunteer()->getMobicoopId();
+        $volunteer = $this->api->getUserById($volunteerId);
+
+        $email = (new Email())
+            ->from($this->container->getParameter('mailer_from'))
+            ->to('projet.franceterredasile@gmail.com')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Trip accepted!')
+            //->text('Sending emails is fun again!')
+            ->html($this->templating->render('emails/canceled.html.twig', [
+                'username' => $beneficiary['givenName'],
+                'departure' => $trip->getDeparture()->getName(),
+                'arrival' => $trip->getArrival()->getName(),
+                'volunteer' => $volunteer['givenName'],
+
+
+            ]));
+
+        $this->mailer->send($email);
+
+        // ...
     }
 }

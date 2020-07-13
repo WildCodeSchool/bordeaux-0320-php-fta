@@ -147,14 +147,20 @@ class TripController extends AbstractController
      * @Route("/beneficiary/{id}", name="trip_delete", methods={"DELETE"})
      * @param Request $request
      * @param Trip $trip
+     * @param EmailService $emailService
      * @return Response
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function delete(Request $request, Trip $trip): Response
+    public function delete(Request $request, Trip $trip, EmailService $emailService): Response
     {
         if ($this->isCsrfTokenValid('delete' . $trip->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trip);
             $entityManager->flush();
+            $emailService->canceled($trip);
         }
 
         return $this->redirectToRoute('trip_beneficiary');
@@ -205,6 +211,12 @@ class TripController extends AbstractController
      * @Route("/volunteer/accept/{tripId}", name="trip_accept", methods={"GET","POST"})
      * @param int $tripId
      * @param EntityManagerInterface $entityManagerm
+     * @param EmailService $emailService
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function addVolunteerToTrip(int $tripId, EntityManagerInterface $entityManagerm, EmailService $emailService)
     {
@@ -214,7 +226,7 @@ class TripController extends AbstractController
         $trip->setVolunteer($this->getUser());
         $entityManagerm->persist($trip);
         $entityManagerm->flush();
-        $emailService->sendEmail($trip);
+        $emailService->accepted($trip);
         return $this->redirectToRoute('trip_volunteer');
     }
 }
