@@ -69,6 +69,34 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/trips", name = "trips")
+     * @param ApiService $apiService
+     * @param TripRepository $tripRepository
+     * @param UserRepository $userRepository
+     * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function seeAllTrips(
+        ApiService $apiService,
+        TripRepository $tripRepository,
+        UserRepository $userRepository
+    ): Response {
+        $usersLocal = $userRepository->findAll();
+        $apiService->getToken();
+        $usersMobicoop = $apiService->getAllUsers();
+
+        $users = $apiService->setFullName($usersMobicoop, $usersLocal);
+
+        return $this->render('admin/trips/trips.html.twig', [
+            'users' => $users,
+            'trips' => $tripRepository->findAll(),
+        ]);
+    }
+
+    /**
      * Show volunteer and can add new volunteer
      * @param string $status
      * @param UserRepository $userRepository

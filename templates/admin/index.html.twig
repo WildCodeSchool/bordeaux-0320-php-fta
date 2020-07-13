@@ -69,11 +69,16 @@
                     <tbody>
                     {% for trip in trips %}
                             {% include 'admin/_components/_tableTrips.html.twig' %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Aucun accompagnement trouvé</td>
+                        </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-                <button class="waves-effect waves-light btn mb-l mt-l">En voir plus</button>
-            </div>
+                <a href="{{ path('admin_trips') }}">
+                    <button class="waves-effect waves-light btn mb-l mt-l">En voir plus</button>
+                </a>
         </div>
     </div>
 {% endblock %}
