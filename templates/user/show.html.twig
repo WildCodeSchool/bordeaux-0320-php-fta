@@ -23,7 +23,11 @@
                     <td class="right-align pr">{{ user.telephone }}</td>
                 </tr>
 
+                <tr class="border-bottom-0">
+                    <th><i class="material-icons small pt-s pl color-blue-night">photo</i></th>
+                    <td><img src="{{  vich_uploader_asset(picture)  }}" alt="picture of {{ user.givenName }}" class="small_img"></td>
 
+                </tr>
                 </tbody>
             </table>
         </div>

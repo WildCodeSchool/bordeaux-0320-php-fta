@@ -11,7 +11,9 @@
 </head>
 <body>
 {{ include('admin/_components/_navbar.html.twig') }}
-{% block body %}{% endblock %}
+{% block body %}
+
+{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('appAdmin') }}
 {% endblock %}
