@@ -90,16 +90,19 @@ class EmailService
     {
         $beneficiaryId = $trip->getBeneficiary()->getMobicoopId();
         $beneficiary = $this->api->getUserById($beneficiaryId);
-        $volunteerId = $trip->getVolunteer()->getMobicoopId();
-        $volunteer = $this->api->getUserById($volunteerId);
+
+        if ($trip->getVolunteer()) {
+            $volunteerId = $trip->getVolunteer()->getMobicoopId();
+            $volunteer = $this->api->getUserById($volunteerId);
+        } else {
+            $volunteer = null;
+        }
+
 
         $email = (new Email())
             ->from($this->container->getParameter('mailer_from'))
             ->to('projet.franceterredasile@gmail.com')
             //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
             ->subject('Trip canceled!')
             //->text('Sending emails is fun again!')
             ->html($this->templating->render('emails/canceled.html.twig', [
@@ -108,7 +111,7 @@ class EmailService
                 'arrival' => $trip->getArrival()->getName(),
                 'date' => $trip->getDate()->format('Y-m-d'),
                 'time' => $trip->getDate()->format('H:i'),
-                'volunteer' => $volunteer['givenName'],
+                'volunteer' => ($volunteer ? $volunteer['givenName'] : null),
 
 
             ]));

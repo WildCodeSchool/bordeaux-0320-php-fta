@@ -34,7 +34,9 @@
       <p>We are sending you this message because your reservation has been canceled</p>
       <p><strong> {{ departure }} -> {{ arrival }}, {{ date }} at {{ time}} </strong></p>
       <p>reserved by : {{ username }}</p>
-      <p>volunteer : {{ volunteer }}</p>
+      {% if volunteer %}
+        <p>volunteer : {{ volunteer }}</p>
+      {% endif %}
     </td>
     <td>&nbsp;</td>
   </tr>
