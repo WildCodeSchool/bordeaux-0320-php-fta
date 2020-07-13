@@ -43,6 +43,14 @@ nav .brand-logo {
   color: $blue-night;
 }
 
+.admin-delete-btn {
+  background-color: $red;
+}
+
+.admin-delete-btn:hover {
+  background-color: darken($red, 20%);
+}
+
 .mdp {
   font-size: 0.8rem;
 }
