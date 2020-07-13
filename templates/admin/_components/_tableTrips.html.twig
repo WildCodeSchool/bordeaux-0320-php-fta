@@ -3,6 +3,9 @@
     <td class="center-align">{{ trip.departure.name }}</td>
     <td class="center-align">{{ trip.arrival.name }}</td>
     <td class="center-align">{{ trip.date|date("d-m-Y") }}</td>
+    {% if app.request.attributes.get('_route') == 'admin_trips' %}
+        <td class="center-align">{{ trip.date|date("H:i") }}</td>
+    {% endif %}
     <td class="center-align">{{ trip.beneficiary.givenName }} {{ trip.beneficiary.familyName }}</td>
     {% if trip.volunteer %}
         <td class="center-align">{{ trip.volunteer.givenName }} {{ trip.volunteer.familyName }}</td>
