@@ -44,7 +44,7 @@ class UserFixtures extends Fixture
 
         $admin = new User();
         $admin->setMobicoopId(self::ADMIN);
-        $admin->getIsActive(1);
+        $admin->setIsActive(1);
         $admin->setStatus('admin');
         $admin->setRoles(array('ROLE_ADMIN'));
         $manager->persist($admin);
