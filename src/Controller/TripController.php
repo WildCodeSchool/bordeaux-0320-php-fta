@@ -10,6 +10,7 @@ use App\Service\TripService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -203,16 +204,36 @@ class TripController extends AbstractController
      * Route to accept a trip created by a beneficiary (only ROLE_USER_VOLUNTEER)
      * @Route("/volunteer/accept/{tripId}", name="trip_accept", methods={"GET","POST"})
      * @param int $tripId
-     * @param EntityManagerInterface $entityManagerm
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
      */
-    public function addVolunteerToTrip(int $tripId, EntityManagerInterface $entityManagerm)
+    public function addVolunteerToTrip(int $tripId, EntityManagerInterface $entityManager)
     {
         $trip = $this->getDoctrine()
             ->getRepository(Trip::class)
             ->findOneById($tripId);
         $trip->setVolunteer($this->getUser());
-        $entityManagerm->persist($trip);
-        $entityManagerm->flush();
+        $entityManager->persist($trip);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('trip_volunteer');
+    }
+
+    /**
+     * Route to remove acceptance to a trip created by a beneficiary (only ROLE_USER_VOLUNTEER)
+     * @Route("/volunteer/disengage/{tripId}", name="trip_revert_accept", methods={"GET","POST"})
+     * @param int $tripId
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
+    public function removeVolunteerToTrip(int $tripId, EntityManagerInterface $entityManager)
+    {
+        $trip = $this->getDoctrine()
+            ->getRepository(Trip::class)
+            ->findOneById($tripId);
+        $trip->setVolunteer(null);
+        $entityManager->persist($trip);
+        $entityManager->flush();
 
         return $this->redirectToRoute('trip_volunteer');
     }
