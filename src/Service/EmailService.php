@@ -66,6 +66,8 @@ class EmailService
                 'username' => $beneficiary['givenName'],
                 'departure' => $trip->getDeparture()->getName(),
                 'arrival' => $trip->getArrival()->getName(),
+                'date' => $trip->getDate()->format('Y-m-d'),
+                'time' => $trip->getDate()->format('H:i'),
                 'volunteer' => $volunteer['givenName'],
 
 
@@ -98,12 +100,14 @@ class EmailService
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
-            ->subject('Trip accepted!')
+            ->subject('Trip canceled!')
             //->text('Sending emails is fun again!')
             ->html($this->templating->render('emails/canceled.html.twig', [
                 'username' => $beneficiary['givenName'],
                 'departure' => $trip->getDeparture()->getName(),
                 'arrival' => $trip->getArrival()->getName(),
+                'date' => $trip->getDate()->format('Y-m-d'),
+                'time' => $trip->getDate()->format('H:i'),
                 'volunteer' => $volunteer['givenName'],
 
 
