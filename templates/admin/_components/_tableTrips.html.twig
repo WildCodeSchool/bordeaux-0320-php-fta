@@ -1,15 +1,15 @@
 <tr>
-    <td class="center-align {{ trip.volunteer ? 'bck-green' : 'bck-red' }}">{{ loop.index }}</td>
-    <td class="center-align">{{ trip.departure.name }}</td>
-    <td class="center-align">{{ trip.arrival.name }}</td>
-    <td class="center-align">{{ trip.date|date("d-m-Y") }}</td>
+    <td class="{{ trip.volunteer ? 'bck-green' : 'bck-red' }}">{{ loop.index }}</td>
+    <td>{{ trip.departure.name }}</td>
+    <td>{{ trip.arrival.name }}</td>
+    <td>{{ trip.date|date("d-m-Y") }}</td>
     {% if app.request.attributes.get('_route') == 'admin_trips' %}
-        <td class="center-align">{{ trip.date|date("H:i") }}</td>
+        <td>{{ trip.date|date("H:i") }}</td>
     {% endif %}
-    <td class="center-align">{{ trip.beneficiary.givenName }} {{ trip.beneficiary.familyName }}</td>
+    <td>{{ trip.beneficiary.givenName }} {{ trip.beneficiary.familyName }}</td>
     {% if trip.volunteer %}
-        <td class="center-align">{{ trip.volunteer.givenName }} {{ trip.volunteer.familyName }}</td>
+        <td>{{ trip.volunteer.givenName }} {{ trip.volunteer.familyName }}</td>
     {% else %}
-        <td class="center-align">Aucun</td>
+        <td>Aucun</td>
     {% endif %}
 </tr>
