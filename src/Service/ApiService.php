@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\UserMobicoop;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -36,11 +37,16 @@ class ApiService
      * ApiService constructor.
      * @param SessionInterface $session
      * @param ContainerInterface $container
+     * @param UserRepository $userRepository
      */
-    public function __construct(SessionInterface $session, ContainerInterface $container)
-    {
+    public function __construct(
+        SessionInterface $session,
+        ContainerInterface $container,
+        UserRepository $userRepository
+    ) {
         $this->session = $session;
         $this->container = $container;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -120,19 +126,25 @@ class ApiService
 
     public function getAllUsers(): array
     {
+        $result = [];
+        $users = $this->userRepository->findAll();
         $client = $this->baseUri();
-        $response = $client->request('GET', '/users');
-        return ApiService::decodeJson($response->getContent());
+        foreach ($users as $user) {
+            $response = $client->request('GET', '/users/' . $user->getMobicoopId());
+            $result[] = json_decode($response->getContent());
+        }
+
+        return $result;
     }
 
     public function setFullName(array $usersMobicoop, array $users): ?array
     {
         $result = null;
-        foreach ($usersMobicoop['hydra:member'] as $userMobicoop) {
+        foreach ($usersMobicoop as $userMobicoop) {
             foreach ($users as $user) {
-                if ($userMobicoop['id'] === $user->getMobicoopId()) {
-                    $user->setGivenName($userMobicoop['givenName']);
-                    $user->setFamilyName($userMobicoop['familyName']);
+                if ($userMobicoop->id === $user->getMobicoopId()) {
+                    $user->setGivenName($userMobicoop->givenName);
+                    $user->setFamilyName($userMobicoop->familyName);
                     $result = $users;
                 }
             }
@@ -190,13 +202,13 @@ class ApiService
     {
         $newArray = [];
         $inc = 0;
-        foreach ($usersMobicoop['hydra:member'] as $user) {
+        foreach ($usersMobicoop as $user) {
             foreach ($usersCommon as $data) {
-                if ($user['id'] === $data->getMobicoopId()) {
+                if ($user->id === $data->getMobicoopId()) {
                     $newArray[$inc]['id'] = $data->getId();
                     $newArray[$inc]['mobicoopId'] = $data->getMobicoopId();
-                    $newArray[$inc]['givenName'] = $user['givenName'];
-                    $newArray[$inc]['familyName'] = $user['familyName'];
+                    $newArray[$inc]['givenName'] = $user->givenName;
+                    $newArray[$inc]['familyName'] = $user->familyName;
                     $newArray[$inc]['status'] = $data->getStatus();
                     $newArray[$inc]['isActive'] = $data->getIsActive();
                     $inc++;

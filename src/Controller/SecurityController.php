@@ -51,7 +51,7 @@ class SecurityController extends AbstractController
             $decodeUser = ApiService::decodeJson($response->getContent());
             $user = new User();
             $user->setMobicoopId($decodeUser['id'])
-                ->setIsActive(true)
+                ->setIsActive(false)
                 ->setStatus('volunteer')
                 ->setRoles(['ROLE_USER_UNVALIDATE']);
             $entityManager->persist($user);

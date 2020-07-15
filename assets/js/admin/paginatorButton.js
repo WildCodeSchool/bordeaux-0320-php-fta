@@ -31,4 +31,4 @@ export function calculateLimit(paginatorType, lenghtValue) {
             buttonPrevious.classList.toggle('display-button');
         }
     }
-};
+}
