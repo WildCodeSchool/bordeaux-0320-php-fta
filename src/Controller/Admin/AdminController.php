@@ -229,6 +229,8 @@ class AdminController extends AbstractController
         $usersMobicoop = $apiService->getUserByGivenName($name);
         $usersBeneficiary = $userRepository->findBy(
             ['status' => $type],
+            ['id' => 'ASC'],
+            self::LIMIT
         );
 
         $usersMobicoop = $apiService::createAjaxUserArray($usersMobicoop, $usersBeneficiary);

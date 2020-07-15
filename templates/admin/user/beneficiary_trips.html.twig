@@ -28,6 +28,10 @@
                             <td>{{ trip.date.format('H:i') }}</td>
                             <td>{{ trip.volunteer ? trip.volunteer.givenName ~ ' ' ~ trip.volunteer.familyName : 'Aucun' }}</td>
                         </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Ce bénéficiaire n'a pas encore fait de demande d'accompagnement.</td>
+                        </tr>
                     {% endfor %}
                     </tbody>
                 </table>

@@ -56,7 +56,14 @@ nav .brand-logo {
 }
 
 .users-list {
-  height: 31.6rem;
+  height: 37.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.add-user-card {
+  height: 37.6rem;
 }
 
 .schedule-true {
