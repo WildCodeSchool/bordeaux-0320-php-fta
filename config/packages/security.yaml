@@ -16,7 +16,7 @@ security:
                 path: logout
                 target: login
     access_control:
-         #- { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/beneficiary, roles: ROLE_USER_BENEFICIARY }
          - { path: ^/volunteer, roles: ROLE_USER_VOLUNTEER }
          - { path: ^/common, roles: [ROLE_USER_VOLUNTEER, ROLE_USER_BENEFICIARY] }

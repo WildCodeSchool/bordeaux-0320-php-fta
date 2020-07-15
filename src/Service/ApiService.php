@@ -7,6 +7,10 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * Class ApiService
@@ -40,10 +44,10 @@ class ApiService
     }
 
     /**
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function getToken(): void
     {
@@ -72,10 +76,10 @@ class ApiService
     /**
      * @param FormInterface $form
      * @return array
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function getUser(FormInterface $form): array
     {
@@ -91,10 +95,10 @@ class ApiService
     /**
      * @param int $mobicoopId
      * @return array
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function getUserById(int $mobicoopId): array
     {
@@ -185,19 +189,19 @@ class ApiService
     public static function createAjaxUserArray(array $usersMobicoop, $usersCommon): array
     {
         $newArray = [];
-        $i = 0;
+        $inc = 0;
         foreach ($usersMobicoop['hydra:member'] as $user) {
             foreach ($usersCommon as $data) {
                 if ($user['id'] === $data->getMobicoopId()) {
-                    $newArray[$i]['id'] = $data->getId();
-                    $newArray[$i]['mobicoopId'] = $data->getMobicoopId();
-                    $newArray[$i]['givenName'] = $user['givenName'];
-                    $newArray[$i]['familyName'] = $user['familyName'];
-                    $newArray[$i]['status'] = $data->getStatus();
-                    $newArray[$i]['isActive'] = $data->getIsActive();
+                    $newArray[$inc]['id'] = $data->getId();
+                    $newArray[$inc]['mobicoopId'] = $data->getMobicoopId();
+                    $newArray[$inc]['givenName'] = $user['givenName'];
+                    $newArray[$inc]['familyName'] = $user['familyName'];
+                    $newArray[$inc]['status'] = $data->getStatus();
+                    $newArray[$inc]['isActive'] = $data->getIsActive();
+                    $inc++;
                 }
             }
-            $i++;
         }
         return $newArray;
     }

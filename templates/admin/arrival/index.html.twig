@@ -1,0 +1,55 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Arrivées{% endblock %}
+
+{% block body %}
+    <div class="container-wide">
+        <div class="row admin-margin">
+            <div class="col s5 center-align users-list z-depth-2 border-radius mb-l mt-l pad-0">
+                <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">
+                    Arrivées
+                </h4>
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th class="center-align">#</th>
+                        <th class="center-align">NOM</th>
+                        <th class="center-align">CATÉGORIE</th>
+                        <th class="center-align">ACTION</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for arrival in arrivals %}
+                        <tr>
+                            <td class="center-align">{{ arrival.id }}</td>
+                            <td class="center-align">{{ arrival.name }}</td>
+                            {% if arrival.category == '<i class="material-icons">location_city</i>' %}
+                                <td class="center-align">Administration</td>
+                            {% elseif arrival.category == '<i class="material-icons">local_hospital</i>' %}
+                                <td class="center-align">Santé</td>
+                            {% elseif arrival.category == '<i class="material-icons">directions_transit</i>' %}
+                                <td class="center-align">Transport</td>
+                            {% else %}
+                                <td class="center-align">Logement</td>
+                            {% endif %}
+                            <td class="center-align">
+                                <a href="{{ path('arrival_edit', {'id': arrival.id}) }}" class="admin-link">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="center-align">Aucun lieu d'arrivée trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col s5 offset-s1 center-align z-depth-2 border-radius mb-l mt-l">
+                <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Ajouter une arrivée</h4>
+                {{ include('admin/arrival/_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -114,7 +114,7 @@ class SecurityController extends AbstractController
                 } elseif ($user->getStatus() === 'beneficiary') {
                     return $this->redirectToRoute('trip_beneficiary');
                 } else {
-                    //TODO return the route to the admin page when created
+                    return $this->redirectToRoute('admin_index');
                 }
             }
         }

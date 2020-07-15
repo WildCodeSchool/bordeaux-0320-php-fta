@@ -1,0 +1,33 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Accompagnement{% endblock %}
+
+{% block body %}
+    <div class="container-wide">
+        <div class="row">
+            <div class="center-align z-depth-2 border-radius mb-l mt-l pad-0">
+                <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">
+                    Accompagnement
+                </h4>
+                <table class="striped centered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>DÉPART</th>
+                        <th>ARRIVÉE</th>
+                        <th>DATE</th>
+                        <th>HEURE</th>
+                        <th>BÉNÉFICIAIRE</th>
+                        <th>ACCOMPAGNANT</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for trip in trips %}
+                        {% include 'admin/_components/_tableTrips.html.twig' %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

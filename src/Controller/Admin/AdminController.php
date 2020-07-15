@@ -3,7 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Form\Type\MobicoopAdminForm;
+use App\Form\MobicoopAdminForm;
+use App\Repository\ScheduleVolunteerRepository;
 use App\Repository\TripRepository;
 use App\Repository\UserRepository;
 use App\Service\ApiService;
@@ -69,6 +70,34 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/trips", name = "trips")
+     * @param ApiService $apiService
+     * @param TripRepository $tripRepository
+     * @param UserRepository $userRepository
+     * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function seeAllTrips(
+        ApiService $apiService,
+        TripRepository $tripRepository,
+        UserRepository $userRepository
+    ): Response {
+        $usersLocal = $userRepository->findAll();
+        $apiService->getToken();
+        $usersMobicoop = $apiService->getAllUsers();
+
+        $users = $apiService->setFullName($usersMobicoop, $usersLocal);
+
+        return $this->render('admin/trips/trips.html.twig', [
+            'users' => $users,
+            'trips' => $tripRepository->findAll(),
+        ]);
+    }
+
+    /**
      * Show volunteer and can add new volunteer
      * @param string $status
      * @param UserRepository $userRepository
@@ -89,7 +118,7 @@ class AdminController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        $users = $userRepository->findBy(['status' => $status]);
+        $users = $userRepository->findBy(['status' => $status], ['id' => 'ASC'], self::LIMIT);
         $apiService->getToken();
         $form = $this->createForm(MobicoopAdminForm::class);
         $form->handleRequest($request);
@@ -129,6 +158,7 @@ class AdminController extends AbstractController
      * @param string $status
      * @param Request $request
      * @param ApiService $apiService
+     * @param UserRepository $userRepository
      * @return Response
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -141,22 +171,28 @@ class AdminController extends AbstractController
      *     "status"="beneficiary|volunteer"}
      *     )
      */
-    public function editUser(int $id, string $status, Request $request, ApiService $apiService)
-    {
+    public function editUser(
+        int $id,
+        string $status,
+        Request $request,
+        ApiService $apiService,
+        UserRepository $userRepository
+    ): Response {
+        $mobicoopId = $userRepository->findOneById($id)->getMobicoopId();
         $apiService->getToken();
-        $user = $apiService->getUserById($id);
+        $user = $apiService->getUserById($mobicoopId);
 
         $form = $this->createForm(MobicoopAdminForm::class, null, [
             'gender' => $user['gender'],
             'status' => $user['status']
         ]);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $apiService->baseUri();
-            $response = $client->request('PUT', '/users/' . $id, [
+            $client->request('PUT', '/users/' . $mobicoopId, [
                 'json' => $form->getData(),
             ]);
-            dump($response->getContent());
 
             return $this->redirectToRoute('admin_common', [
                 'status' => $status,
@@ -196,6 +232,96 @@ class AdminController extends AbstractController
         );
 
         $usersMobicoop = $apiService::createAjaxUserArray($usersMobicoop, $usersBeneficiary);
+
         return new JsonResponse($usersMobicoop);
+    }
+
+    /**
+     * @Route("/volunteer/schedule/{id}", name="volunteer_schedule")
+     * @param int $id
+     * @param ScheduleVolunteerRepository $scheduleRepository
+     * @param ApiService $apiService
+     * @param UserRepository $userRepository
+     * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function volunteerAvailabilities(
+        int $id,
+        ScheduleVolunteerRepository $scheduleRepository,
+        ApiService $apiService,
+        UserRepository $userRepository
+    ): Response {
+        $userLocal = $userRepository->findOneById($id);
+        $apiService->getToken();
+        $user = $apiService->getUserById($userLocal->getMobicoopId());
+
+        $schedules = $scheduleRepository->findBy(['user' => $id]);
+
+        return $this->render('admin/user/volunteer_schedules.html.twig', [
+            'user' => $user,
+            'schedules' => $schedules
+        ]);
+    }
+
+   /**
+     * @Route("/ajax/page/users")
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param ApiService $apiService
+     * @return JsonResponse
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function ajaxPageUsers(
+        Request $request,
+        UserRepository $userRepository,
+        ApiService $apiService
+    ): JsonResponse {
+        $apiService->getToken();
+        $limit = $request->query->get('limit');
+        $type = $request->query->get('type');
+
+        $usersMobicoop = $apiService->getAllUsers();
+        $users = $userRepository->findBy(['status' => $type], ['id' => 'ASC'], 5, $limit);
+
+        return new JsonResponse($apiService::createAjaxUserArray($usersMobicoop, $users));
+    }
+
+   /**
+     * @Route("/beneficiary/trips/{id}", name="beneficiary_trips")
+     * @param int $id
+     * @param TripRepository $tripRepository
+     * @param ApiService $apiService
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    public function beneficiaryTrips(
+        int $id,
+        TripRepository $tripRepository,
+        ApiService $apiService,
+        UserRepository $userRepository
+    ): Response {
+        $userLocal = $userRepository->findOneById($id);
+        $apiService->getToken();
+        $user = $apiService->getUserById($userLocal->getMobicoopId());
+
+        $usersLocal = $userRepository->findAll();
+        $apiService->getToken();
+        $usersMobicoop = $apiService->getAllUsers();
+
+        $users = $apiService->setFullName($usersMobicoop, $usersLocal);
+
+        $trips = $tripRepository->findBy(['beneficiary' => $id]);
+
+        return $this->render('admin/user/beneficiary_trips.html.twig', [
+            'user'  => $user,
+            'users' => $users,
+            'trips' => $trips
+        ]);
     }
 }
