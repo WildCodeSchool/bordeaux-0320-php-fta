@@ -1,9 +1,11 @@
 {{ form_start(form) }}
 <div class="row pl pr mt">
-    <div class="col s5 offset-s1">
+    <div class="col s10 offset-s1">
         {{ form_row(form.givenName) }}
     </div>
-    <div class="col s5">
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 offset-s1">
         {{ form_row(form.familyName) }}
     </div>
 </div>
@@ -32,6 +34,7 @@
     <div class="col s10 offset-s1 pl pr mb">
         {{ form_row(form.password) }}
         <p class="left-align mdp">* N'oubliez pas de communiquer le mot de passe à l'utilisateur.</p>
+        <p class="left-align mdp">N. B. : l'utilisateur pourra ajouter sa photo depuis sa page de profil.</p>
     </div>
 </div>
 <div class="center-align mb">
