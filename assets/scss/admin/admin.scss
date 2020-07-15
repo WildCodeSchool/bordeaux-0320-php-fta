@@ -62,6 +62,15 @@ nav .brand-logo {
   justify-content: space-between;
 }
 
+.places-list {
+  height: 37.6rem;
+}
+
+.scrollable-places {
+  height: 32rem;
+  overflow-x: scroll;
+}
+
 .add-user-card {
   height: 37.6rem;
 }
