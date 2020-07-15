@@ -12,12 +12,20 @@ class TripFixtures extends Fixture implements DependentFixtureInterface
 {
     const VOLUNTEERS = [
         0 => 'volunteer_0',
-        1 => 'volunteer_1'
+        1 => 'volunteer_1',
+        2 => 'volunteer_2',
+        3 => 'volunteer_3',
+        4 => 'volunteer_4',
+        5 => 'volunteer_5'
     ];
 
     const BENEFICIARIES = [
         0 => 'beneficiary_0',
-        1 => 'beneficiary_1'
+        1 => 'beneficiary_1',
+        2 => 'beneficiary_2',
+        3 => 'beneficiary_3',
+        4 => 'beneficiary_4',
+        5 => 'beneficiary_5'
     ];
 
     const DEPARTURES = [
@@ -40,12 +48,20 @@ class TripFixtures extends Fixture implements DependentFixtureInterface
 
     const DATES_EMPTY_TRIP = [
         '2020-08-13 13:30',
-        '2020-08-18 16:00'
+        '2020-08-18 16:00',
+        '2020-08-19 17:00',
+        '2020-08-20 18:00',
+        '2020-08-21 16:30',
+        '2020-08-23 14:00'
     ];
 
     const DATES_FULL_TRIP = [
         '2020-08-16 11:00',
-        '2020-08-24 09:30'
+        '2020-08-24 09:30',
+        '2020-08-25 10:30',
+        '2020-08-26 08:00',
+        '2020-08-27 11:15',
+        '2020-08-30 08:30'
     ];
 
 
