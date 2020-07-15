@@ -4,10 +4,10 @@
 
 {% block body %}
     <div class="container-wide">
-        <div class="row">
-            <div class="center-align z-depth-2 border-radius mb-l mt-l pad-0">
+        <div class="row pt-s">
+            <div class="center-align z-depth-2 border-radius mb-l pad-0">
                 <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">
-                    Accompagnement
+                    Accompagnements
                 </h4>
                 <table class="striped centered" id="trips-table">
                     <thead>
@@ -28,11 +28,15 @@
                     </tbody>
                 </table>
                 <div class="row">
-                    <div class="col s6">
-                        <a id="previous" class="waves-effect waves-light btn paginator display-button" data-limit="0" data-paginator="previous">Page précédente</a>
+                    <div class="col s6 mb-s mt-s">
+                        <a id="previous" class="waves-effect waves-light btn-floating paginator display-button" data-limit="0" data-paginator="previous">
+                            <i class="material-icons">chevron_left</i>
+                        </a>
                     </div>
-                    <div class="col s6">
-                        <a id="next" class="waves-effect waves-light btn paginator" data-limit="5" data-paginator="next">Page suivante</a>
+                    <div class="col s6 mb-s mt-s">
+                        <a id="next" class="waves-effect waves-light btn-floating paginator" data-limit="5" data-paginator="next">
+                            <i class="material-icons">chevron_right</i>
+                        </a>
                     </div>
                 </div>
             </div>
