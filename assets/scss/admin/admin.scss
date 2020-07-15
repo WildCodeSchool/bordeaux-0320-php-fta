@@ -58,6 +58,15 @@ nav .brand-logo {
 .users-list {
   height: 31.6rem;
 }
+
+.schedule-true {
+  color: $green;
+}
+
+.schedule-false {
+  color: $red;
+}
+
 #searchRow {
   .col {
     input#searchUser {

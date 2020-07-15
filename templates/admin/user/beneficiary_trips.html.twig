@@ -1,15 +1,13 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Accompagnement{% endblock %}
-
 {% block body %}
     <div class="container-wide">
         <div class="row">
-            <div class="center-align z-depth-2 border-radius mb-l mt-l pad-0">
+            <div class="col s10 offset-s1 center-align z-depth-2 border-radius mb-l mt-l pad-0">
                 <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">
-                    Accompagnement
+                    Demandes de {{ user.givenName }} {{ user.familyName }}
                 </h4>
-                <table class="striped centered">
+                <table class="centered striped">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -17,13 +15,19 @@
                         <th>ARRIVÉE</th>
                         <th>DATE</th>
                         <th>HEURE</th>
-                        <th>BÉNÉFICIAIRE</th>
                         <th>ACCOMPAGNANT</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for trip in trips %}
-                        {% include 'admin/_components/_tableTrips.html.twig' %}
+                        <tr>
+                            <td class="{{ trip.volunteer ? 'bck-green' : 'bck-red' }}">{{ loop.index }}</td>
+                            <td>{{ trip.departure.name }}</td>
+                            <td>{{ trip.arrival.name }}</td>
+                            <td>{{ trip.date.format('d-m-Y') }}</td>
+                            <td>{{ trip.date.format('H:i') }}</td>
+                            <td>{{ trip.volunteer ? trip.volunteer.givenName ~ ' ' ~ trip.volunteer.familyName : 'Aucun' }}</td>
+                        </tr>
                     {% endfor %}
                     </tbody>
                 </table>

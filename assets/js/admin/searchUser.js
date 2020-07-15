@@ -1,9 +1,5 @@
 import { searchUser } from '../axios/ajaxSearch';
 
-const numberActionIcon = 2;
-const listActions = ['edit', 'delete'];
-const actionsHref = ['/admin/common/edit/', '/admin/common/delete'];
-
 const toggleLoading = () => {
     const loading = document.getElementById('loading');
     const searchRow = document.getElementById('searchRow');
@@ -38,13 +34,12 @@ const createIcon = (name) => {
     return icon;
 };
 
-const createActions = (newCell, id) => {
-    for (let j = 0; j < numberActionIcon; j++) {
-        const aHref = document.createElement('a');
-        aHref.setAttribute('href', actionsHref[j] + id);
-        aHref.appendChild(createIcon(listActions[j]));
-        newCell.appendChild(aHref);
-    }
+const createAction = (newCell, id) => {
+    const aHref = document.createElement('a');
+    aHref.setAttribute('href', `/admin/common/edit/${id}/volunteer`);
+    aHref.appendChild(createIcon('edit'));
+    aHref.setAttribute('class', 'admin-link');
+    newCell.appendChild(aHref);
 };
 
 const createLine = (tableRef, value, i) => {
@@ -68,9 +63,11 @@ const createLine = (tableRef, value, i) => {
     newCell = newRow.insertCell(3);
     newCell.className = 'center-align';
     const createA = document.createElement('a');
-    const hrefEditTrip = value[i].status === 'beneficiary' ? 'beneficiary/trip/' : 'volunteer/schedule/';
-    createA.setAttribute('href', `/admin/${hrefEditTrip} ${value[i].id}`);
-    createA.appendChild(createIcon('date_range'));
+    const hrefEditTrip = value[i].status === 'beneficiary' ? 'beneficiary/trips/' : 'volunteer/schedule/';
+    const iconUser = value[i].status === 'beneficiary' ? 'directions_car' : 'date_range';
+    createA.setAttribute('href', `/admin/${hrefEditTrip}${value[i].id}`);
+    createA.setAttribute('class', 'admin-link');
+    createA.appendChild(createIcon(iconUser));
     newCell.appendChild(createA);
 
     newCell = newRow.insertCell(4);
@@ -79,7 +76,7 @@ const createLine = (tableRef, value, i) => {
 
     newCell = newRow.insertCell(5);
     newCell.className = 'center-align';
-    createActions(newCell, value[i].id);
+    createAction(newCell, value[i].id);
 };
 
 const button = document.getElementById('searchButton');

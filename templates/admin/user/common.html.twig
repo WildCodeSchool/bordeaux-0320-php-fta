@@ -18,15 +18,15 @@
                 <div id="loading" class="progress display-loading">
                     <div class="indeterminate"></div>
                 </div>
-                <table class="striped mt-l" id="users-table">
+                <table class="striped centered mt-l" id="users-table">
                     <thead>
                     <tr>
-                        <th class="center-align">#</th>
-                        <th class="center-align">PRÉNOM</th>
-                        <th class="center-align">NOM</th>
-                        <th class="center-align">DISPOS</th>
-                        <th class="center-align">ACTIF</th>
-                        <th class="center-align">ACTION</th>
+                        <th>#</th>
+                        <th>PRÉNOM</th>
+                        <th>NOM</th>
+                        <th>{{ status == 'volunteer' ? 'DISPOS' : 'DEMANDES' }}</th>
+                        <th>ACTIF</th>
+                        <th>ACTION</th>
                     </tr>
                     </thead>
                     <tbody>
