@@ -78,4 +78,4 @@ export function createLine(tableRef, value, i) {
     newCell = newRow.insertCell(5);
     newCell.className = 'center-align';
     createActions(newCell, value[i].id);
-};
+}

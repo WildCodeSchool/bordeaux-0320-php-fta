@@ -26,6 +26,7 @@ Encore
     .addEntry('appAdmin', './assets/js/appAdmin.js')
     .addEntry('searchUser', './assets/js/admin/searchUser.js')
     .addEntry('paginator', './assets/js/admin/paginator.js')
+    .addEntry('paginatorTrips', './assets/js/admin/paginatorTrips.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
