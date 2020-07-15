@@ -67,6 +67,8 @@ class AdminController extends AbstractController
             'usersVolunteer' => $usersVolunteer,
             'usersBeneficiary' => $usersBeneficiary,
             'trips' => $tripRepository->findBy([], ['id' => 'DESC'], self::LIMIT),
+            'allUsers' => $userRepository->findAll(),
+            'allTrips' => $tripRepository->findAll(),
         ]);
     }
 

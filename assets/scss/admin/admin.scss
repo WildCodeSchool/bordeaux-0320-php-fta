@@ -39,6 +39,12 @@ nav .brand-logo {
   color: $blue-duck;
 }
 
+.admin-logo {
+  width: 80%;
+  margin: 12% 10% 4% 10%;
+  filter: drop-shadow(0 0 0.3rem #144a8a);
+}
+
 .admin-link:hover {
   color: $blue-night;
 }
@@ -53,6 +59,26 @@ nav .brand-logo {
 
 .mdp {
   font-size: 0.8rem;
+}
+
+.info-point {
+  font-size: 3.5rem;
+  position: fixed;
+  margin-left: 1.4rem;
+}
+
+.sidenav {
+  &-list {
+    display: flex;
+    align-items: center;
+    height: 32px;
+  }
+  &-icon {
+    width: 35px;
+    margin-left: 1rem;
+    color: $blue-ice;
+    padding-bottom: 0.2rem;
+  }
 }
 
 .users-list {

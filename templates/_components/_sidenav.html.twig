@@ -1,0 +1,109 @@
+<ul id="slide-out" class="sidenav bck-duck txt-shadow-black">
+    <li>
+        <img class="admin-logo center-align" src="{{ asset('build/Logo_FTA.png') }}" alt="Logo de France Terre d'Asile">
+    </li>
+    <li>
+        <h5 class="mt-0 color-white txt-shadow-black center-align mb-s">Informations générales</h5>
+        <h6 class="mt-0 color-white txt-shadow-black center-align mb-l">{{ "now"|date("d/m/Y", "Europe/Paris") }}</h6>
+    </li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li>
+        <div class="sidenav-list mt-l">
+            <i class="material-icons sidenav-icon">people_alt</i>
+            {% set numberOfBeneficiaries = '0' %}
+            {% for beneficiary in allUsers|filter(beneficiary => beneficiary.status == 'beneficiary') %}
+                {% set numberOfBeneficiaries = loop.length %}
+            {% endfor %}
+            <span class="color-blue-ice">{{ numberOfBeneficiaries }} bénéficiaires</span>
+        </div>
+    </li>
+    <li>
+        <div class="sidenav-list">
+            <i class="material-icons sidenav-icon">arrow_forward</i>
+            {% set numberOfActiveBeneficiaries = '0' %}
+            {% for beneficiary in allUsers|filter(beneficiary => beneficiary.status == 'beneficiary' and beneficiary.isActive) %}
+                {% set numberOfActiveBeneficiaries = loop.length %}
+            {% endfor %}
+            <span class="color-blue-ice">{{ numberOfActiveBeneficiaries }} actifs</span>
+        </div>
+    </li>
+    <li>
+        <div class="sidenav-list mb-l">
+            <i class="material-icons sidenav-icon">arrow_forward</i>
+            {% set numberOfInactiveBeneficiaries = '0' %}
+            {% for beneficiary in allUsers|filter(beneficiary => beneficiary.status == 'beneficiary' and not beneficiary.isActive) %}
+                {% set numberOfInactiveBeneficiaries = loop.length %}
+            {% endfor %}
+            <span class="color-blue-ice">{{ numberOfInactiveBeneficiaries }} inactifs</span>
+        </div>
+    </li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li>
+        <div class="sidenav-list mt-l">
+            <i class="material-icons sidenav-icon">people_alt</i>
+            {% set numberOfVolunteers = '0' %}
+            {% for volunteer in allUsers|filter(volunteer => volunteer.status == 'volunteer') %}
+                {% set numberOfVolunteers = loop.length %}
+            {% endfor %}
+            <span class="color-blue-ice">{{ numberOfVolunteers }} accompagnants</span>
+        </div>
+    </li>
+    <li>
+        <div class="sidenav-list">
+            <i class="material-icons sidenav-icon">arrow_forward</i>
+            {% set numberOfActiveVolunteers = '0' %}
+            {% for volunteer in allUsers|filter(volunteer => volunteer.status == 'volunteer' and volunteer.isActive) %}
+                {% set numberOfActiveVolunteers = loop.length %}
+            {% endfor %}
+            <span class="color-blue-ice">{{ numberOfActiveVolunteers }} actifs</span>
+        </div>
+    </li>
+    <li>
+        <div class="sidenav-list mb-l">
+            <i class="material-icons sidenav-icon">arrow_forward</i>
+            {% set numberOfInactiveVolunteers = '0' %}
+            {% for volunteer in allUsers|filter(volunteer => volunteer.status == 'volunteer' and not volunteer.isActive) %}
+                {% set numberOfInactiveVolunteers = loop.length %}
+            {% endfor %}
+            <span class="color-blue-ice">{{ numberOfInactiveVolunteers }} inactifs</span>
+        </div>
+    </li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li>
+        <div class="sidenav-list mt-l">
+            <i class="material-icons sidenav-icon">directions_car</i>
+            {% set numberOfTrips = '0' %}
+            {% for trip in allTrips %}
+                {% set numberOfTrips = loop.length %}
+            {% endfor %}
+            <span class="color-blue-ice">{{ numberOfTrips }} accompagnements</span>
+        </div>
+    </li>
+    <li>
+        <div class="sidenav-list">
+            <i class="material-icons sidenav-icon">arrow_forward</i>
+            {% set numberOfActiveTrips = '0' %}
+            {% for trip in allTrips|filter(trip => trip.volunteer) %}
+                {% set numberOfActiveTrips = loop.length %}
+            {% endfor %}
+            <span class="color-blue-ice">{{ numberOfActiveTrips }} avec accompagnant</span>
+        </div>
+    </li>
+    <li>
+        <div class="sidenav-list mb-l">
+            <i class="material-icons sidenav-icon">arrow_forward</i>
+            {% set numberOfInactiveTrips = '0' %}
+            {% for trip in allTrips|filter(trip => not trip.volunteer) %}
+                {% set numberOfInactiveTrips = loop.length %}
+            {% endfor %}
+            <span class="color-blue-ice">{{ numberOfInactiveTrips }} sans accompagnant</span>
+        </div>
+    </li>
+</ul>
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons admin-link info-point txt-shadow-grey">info</i></a>
