@@ -1,0 +1,13 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Édition d'une arrivée{% endblock %}
+
+{% block body %}
+    <div class="container-small z-depth-2 border-radius center-align pb-l mt-l">
+        <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Edition d'une arrivée</h4>
+        {% include 'admin/arrival/_form.html.twig' %}
+    </div>
+    <div class="container-small center-align">
+        {% include 'admin/arrival/_delete_form.html.twig' %}
+    </div>
+{% endblock %}

@@ -12,7 +12,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
-
 class MobicoopForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -61,13 +60,11 @@ class MobicoopForm extends AbstractType
                 'placeholder' => 'Gender',
                 'mapped' => !$options['edit'],
             ])
-            
             ->add('birthDate', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'datepicker',
                     'placeholder' => 'Birthday'
-
                     ],
                 'mapped' => !$options['edit'],
             ]);
@@ -77,10 +74,8 @@ class MobicoopForm extends AbstractType
                 'required' => false,
                 'allow_delete' => true, // not mandatory, default is true
                 'download_uri' => true, // not mandatory, default is true
-
             ]);
         }
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -35,6 +35,22 @@ nav .brand-logo {
   margin-left: 8.33%;
 }
 
+.admin-link {
+  color: $blue-duck;
+}
+
+.admin-link:hover {
+  color: $blue-night;
+}
+
+.admin-delete-btn {
+  background-color: $red;
+}
+
+.admin-delete-btn:hover {
+  background-color: darken($red, 20%);
+}
+
 .mdp {
   font-size: 0.8rem;
 }
@@ -42,6 +58,15 @@ nav .brand-logo {
 .users-list {
   height: 31.6rem;
 }
+
+.schedule-true {
+  color: $green;
+}
+
+.schedule-false {
+  color: $red;
+}
+
 #searchRow {
   .col {
     input#searchUser {

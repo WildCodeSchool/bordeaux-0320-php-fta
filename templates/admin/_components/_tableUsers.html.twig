@@ -1,9 +1,23 @@
 <tr>
-    <td class="center-align">{{ loop.index }}</td>
-    <td class="center-align">{{ user.givenName }}</td>
-    <td class="center-align">{{ user.familyName }}</td>
-    <td class="center-align">{{ user.createdAt|date("d-m-Y") }}</td>
-    <td class="center-align">
+    <td>{{ loop.index }}</td>
+    <td>{{ user.givenName }}</td>
+    <td>{{ user.familyName }}</td>
+    {% if app.request.attributes.get('_route') == 'admin_index' %}
+        <td>{{ user.createdAt|date("d-m-Y") }}</td>
+    {% elseif status == 'beneficiary' %}
+        <td>
+            <a href="{{ path('admin_beneficiary_trips', {'id': user.id}) }}" class="admin-link">
+                <i class="material-icons">directions_car</i>
+            </a>
+        </td>
+    {% else %}
+        <td>
+            <a href="{{ path('admin_volunteer_schedule', {'id': user.id}) }}" class="admin-link">
+                <i class="material-icons">date_range</i>
+            </a>
+        </td>
+    {% endif %}
+    <td>
         <div class="switch">
             <label>
                 <input type="checkbox" {{ user.isActive == '1' ? 'checked' : '' }}>
@@ -11,10 +25,9 @@
             </label>
         </div>
     </td>
-    <td class="center-align">
-        <a href="{{ path('admin_edit_user', {'id': user.mobicoopId, 'status': user.status}) }}">
+    <td>
+        <a href="{{ path('admin_edit_user', {'id': user.id, 'status': user.status}) }}" class="admin-link">
             <i class="material-icons">edit</i>
         </a>
-        <i class="material-icons">delete</i>
     </td>
 </tr>

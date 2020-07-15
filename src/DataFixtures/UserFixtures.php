@@ -26,6 +26,8 @@ class UserFixtures extends Fixture
         5 => '32',
     ];
 
+    const ADMIN = 39;
+
     public function load(ObjectManager $manager)
     {
         foreach (self::BENEFICIARIES as $key => $beneficiaryID) {
@@ -47,6 +49,13 @@ class UserFixtures extends Fixture
             $manager->persist($volunteer);
             $this->addReference('volunteer_' . $key, $volunteer);
         }
+
+        $admin = new User();
+        $admin->setMobicoopId(self::ADMIN);
+        $admin->setIsActive(1);
+        $admin->setStatus('admin');
+        $admin->setRoles(array('ROLE_ADMIN'));
+        $manager->persist($admin);
 
         $manager->flush();
     }
