@@ -35,6 +35,14 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col s6">
+                        <a id="previous" class="waves-effect waves-light btn paginator display-button" data-limit="0" data-type="{{ status }}" data-paginator="previous">Page précédente</a>
+                    </div>
+                    <div class="col s6">
+                        <a id="next" class="waves-effect waves-light btn paginator" data-limit="5" data-type="{{ status }}" data-paginator="next">Page suivante</a>
+                    </div>
+                </div>
             </div>
             <div class="col s5 offset-s1 center-align z-depth-2 border-radius mb-l mt-l">
                 <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Ajouter un {{ status == 'volunteer' ? 'accompagnant' : 'bénéficiaire' }}</h4>
@@ -46,4 +54,5 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('searchUser') }}
+    {{ encore_entry_script_tags('paginator') }}
 {% endblock %}

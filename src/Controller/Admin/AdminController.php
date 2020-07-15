@@ -118,7 +118,7 @@ class AdminController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        $users = $userRepository->findBy(['status' => $status]);
+        $users = $userRepository->findBy(['status' => $status], ['id' => 'ASC'], self::LIMIT);
         $apiService->getToken();
         $form = $this->createForm(MobicoopAdminForm::class);
         $form->handleRequest($request);
@@ -232,6 +232,7 @@ class AdminController extends AbstractController
         );
 
         $usersMobicoop = $apiService::createAjaxUserArray($usersMobicoop, $usersBeneficiary);
+
         return new JsonResponse($usersMobicoop);
     }
 
@@ -265,17 +266,39 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /**
+   /**
+     * @Route("/ajax/page/users")
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param ApiService $apiService
+     * @return JsonResponse
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function ajaxPageUsers(
+        Request $request,
+        UserRepository $userRepository,
+        ApiService $apiService
+    ): JsonResponse {
+        $apiService->getToken();
+        $limit = $request->query->get('limit');
+        $type = $request->query->get('type');
+
+        $usersMobicoop = $apiService->getAllUsers();
+        $users = $userRepository->findBy(['status' => $type], ['id' => 'ASC'], 5, $limit);
+
+        return new JsonResponse($apiService::createAjaxUserArray($usersMobicoop, $users));
+    }
+
+   /**
      * @Route("/beneficiary/trips/{id}", name="beneficiary_trips")
      * @param int $id
      * @param TripRepository $tripRepository
      * @param ApiService $apiService
      * @param UserRepository $userRepository
      * @return Response
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function beneficiaryTrips(
         int $id,

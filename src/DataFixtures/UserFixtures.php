@@ -10,12 +10,20 @@ class UserFixtures extends Fixture
 {
     const BENEFICIARIES = [
         0 => '23',
-        1 => '24'
+        1 => '24',
+        2 => '25',
+        3 => '27',
+        4 => '29',
+        5 => '31'
     ];
 
     const VOLUNTEERS = [
         0 => '21',
         1 => '22',
+        2 => '26',
+        3 => '28',
+        4 => '30',
+        5 => '32',
     ];
 
     const ADMIN = 39;
