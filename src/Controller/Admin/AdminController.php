@@ -8,6 +8,7 @@ use App\Repository\ScheduleVolunteerRepository;
 use App\Repository\TripRepository;
 use App\Repository\UserRepository;
 use App\Service\ApiService;
+use App\Service\TripService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -323,5 +324,33 @@ class AdminController extends AbstractController
             'users' => $users,
             'trips' => $trips
         ]);
+    }
+
+
+    /**
+     * @Route("/ajax/page/trips")
+     * @param Request $request
+     * @param TripRepository $tripRepository
+     * @param ApiService $apiService
+     * @param TripService $tripService
+     * @return JsonResponse
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function ajaxPageTrips(
+        Request $request,
+        TripRepository $tripRepository,
+        ApiService $apiService,
+        TripService $tripService
+    ): JsonResponse {
+        $apiService->getToken();
+        $limit = $request->query->get('limit');
+
+        $usersMobicoop = $apiService->getAllUsers();
+        $trips = $tripRepository->findBy([], ['id' => 'ASC'], 5, $limit);
+
+        return new JsonResponse($tripService::createAjaxTripsArray($usersMobicoop, $trips));
     }
 }

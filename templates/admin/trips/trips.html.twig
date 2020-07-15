@@ -27,7 +27,19 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col s6">
+                        <a id="previous" class="waves-effect waves-light btn paginator display-button" data-limit="0" data-paginator="previous">Page précédente</a>
+                    </div>
+                    <div class="col s6">
+                        <a id="next" class="waves-effect waves-light btn paginator" data-limit="5" data-paginator="next">Page suivante</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('paginatorTrips') }}
 {% endblock %}
