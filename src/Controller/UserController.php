@@ -57,7 +57,7 @@ class UserController extends AbstractController
     /**
      * @Route("/common/user/{id}/edit", name="user_edit", methods={"GET","PUT","POST"})
      * @param Request $request
-     * @param ApiService $api
+     * @param ApiService $apiService
      * @param int $id
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -66,26 +66,29 @@ class UserController extends AbstractController
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function edit(Request $request, ApiService $api, int $id, EntityManagerInterface $entityManager): Response
-    {
-        $user = $api->getUserById($id);
+    public function edit(
+        int $id,
+        Request $request,
+        ApiService $apiService
+    ): Response {
+        $user = $apiService->getUserById($id);
         $userLocal = $this->getDoctrine()
                             ->getRepository(User::class)
                             ->findOneBy(['mobicoopId' => $id]);
-
         $userLocalId = $userLocal->getId();
 
-        $form = $this->createForm(MobicoopForm::class, $userLocal, [
+        $form = $this->createForm(MobicoopForm::class, null, [
             'gender' => $user['gender'],
             'status' => $user['status'],
             'edit' => true,
         ]);
         $form->handleRequest($request);
-        $api->getToken();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($userLocal);
-            $entityManager->flush();
+            $client = $apiService->baseUri();
+            $client->request('PUT', '/users/' . $id, [
+                'json' => $form->getData(),
+            ]);
 
             return $this->redirectToRoute('user_show', ['id' => $userLocalId]);
         }

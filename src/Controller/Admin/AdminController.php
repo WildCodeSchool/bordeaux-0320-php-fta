@@ -187,12 +187,12 @@ class AdminController extends AbstractController
             'status' => $user['status']
         ]);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $apiService->baseUri();
-            $response = $client->request('PUT', '/users/' . $id, [
+            $client->request('PUT', '/users/' . $mobicoopId, [
                 'json' => $form->getData(),
             ]);
-            dump($response->getContent());
 
             return $this->redirectToRoute('admin_common', [
                 'status' => $status,
