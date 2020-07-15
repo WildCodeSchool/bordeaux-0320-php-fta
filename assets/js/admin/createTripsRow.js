@@ -2,7 +2,8 @@ export function createLine(tableRef, value, i) {
     const newRow = tableRef.insertRow(tableRef.rows.length);
 
     let newCell = newRow.insertCell(0);
-    newCell.className = 'center-align';
+    newCell.classList.add('center-align');
+    newCell.classList.add(value[i].volunteerFullName ? 'bck-green' : 'bck-red');
     let newText = document.createTextNode(i + 1);
     newCell.appendChild(newText);
 
@@ -28,11 +29,11 @@ export function createLine(tableRef, value, i) {
 
     newCell = newRow.insertCell(5);
     newCell.className = 'center-align';
-    newText = document.createTextNode(value[i].beneficiaryName);
+    newText = document.createTextNode(value[i].beneficiaryFullName);
     newCell.appendChild(newText);
 
     newCell = newRow.insertCell(6);
     newCell.className = 'center-align';
-    newText = document.createTextNode(value[i].volunteerName);
+    newText = document.createTextNode((value[i].volunteerFullName || 'Aucun'));
     newCell.appendChild(newText);
 }

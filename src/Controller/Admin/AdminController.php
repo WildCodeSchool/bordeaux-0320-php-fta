@@ -94,7 +94,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/trips/trips.html.twig', [
             'users' => $users,
-            'trips' => $tripRepository->findAll(),
+            'trips' => $tripRepository->findBy([], ['id' => 'ASC'], 5),
         ]);
     }
 
@@ -333,6 +333,7 @@ class AdminController extends AbstractController
      * @param TripRepository $tripRepository
      * @param ApiService $apiService
      * @param TripService $tripService
+     * @param UserRepository $userRepository
      * @return JsonResponse
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -343,12 +344,17 @@ class AdminController extends AbstractController
         Request $request,
         TripRepository $tripRepository,
         ApiService $apiService,
-        TripService $tripService
+        TripService $tripService,
+        UserRepository $userRepository
     ): JsonResponse {
         $apiService->getToken();
         $limit = $request->query->get('limit');
 
+        $usersLocal = $userRepository->findAll();
         $usersMobicoop = $apiService->getAllUsers();
+
+        $users = $apiService->setFullName($usersMobicoop, $usersLocal);
+        dump($users);
         $trips = $tripRepository->findBy([], ['id' => 'ASC'], 5, $limit);
 
         return new JsonResponse($tripService::createAjaxTripsArray($usersMobicoop, $trips));
