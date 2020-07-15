@@ -353,8 +353,8 @@ class AdminController extends AbstractController
         $usersLocal = $userRepository->findAll();
         $usersMobicoop = $apiService->getAllUsers();
 
-        $users = $apiService->setFullName($usersMobicoop, $usersLocal);
-        dump($users);
+        $apiService->setFullName($usersMobicoop, $usersLocal);
+
         $trips = $tripRepository->findBy([], ['id' => 'ASC'], 5, $limit);
 
         return new JsonResponse($tripService::createAjaxTripsArray($usersMobicoop, $trips));

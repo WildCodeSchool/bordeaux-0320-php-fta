@@ -11,7 +11,6 @@ button.addEventListener('click', () => {
     searchUser(name, userType).then((value) => {
         const tableRef = document.getElementById('users-table').getElementsByTagName('tbody')[0];
         tableRef.innerHTML = '';
-        console.log(value);
         if (value.length > 0) {
             for (let i = 0; i < value.length; i++) {
                 createLine(tableRef, value, i);
