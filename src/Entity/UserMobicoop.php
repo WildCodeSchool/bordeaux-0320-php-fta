@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-
 /**
  * Class UserMobicoop
  * @package App\Entity
@@ -158,5 +157,4 @@ class UserMobicoop
     {
         $this->role = $role;
     }
-
 }
