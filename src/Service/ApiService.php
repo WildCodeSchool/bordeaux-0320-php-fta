@@ -185,19 +185,19 @@ class ApiService
     public static function createAjaxUserArray(array $usersMobicoop, $usersCommon): array
     {
         $newArray = [];
-        $i = 0;
+        $inc = 0;
         foreach ($usersMobicoop['hydra:member'] as $user) {
             foreach ($usersCommon as $data) {
                 if ($user['id'] === $data->getMobicoopId()) {
-                    $newArray[$i]['id'] = $data->getId();
-                    $newArray[$i]['mobicoopId'] = $data->getMobicoopId();
-                    $newArray[$i]['givenName'] = $user['givenName'];
-                    $newArray[$i]['familyName'] = $user['familyName'];
-                    $newArray[$i]['status'] = $data->getStatus();
-                    $newArray[$i]['isActive'] = $data->getIsActive();
+                    $newArray[$inc]['id'] = $data->getId();
+                    $newArray[$inc]['mobicoopId'] = $data->getMobicoopId();
+                    $newArray[$inc]['givenName'] = $user['givenName'];
+                    $newArray[$inc]['familyName'] = $user['familyName'];
+                    $newArray[$inc]['status'] = $data->getStatus();
+                    $newArray[$inc]['isActive'] = $data->getIsActive();
+                    $inc++;
                 }
             }
-            $i++;
         }
         return $newArray;
     }
