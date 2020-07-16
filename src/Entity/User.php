@@ -3,21 +3,21 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use DateTime;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
-
-
-
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity("picture", message="cette image existe déjà")
  * @Vich\Uploadable
  */
 class User implements UserInterface
@@ -82,21 +82,30 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true, unique=true)
+     * @Assert\File(
+     *      maxSize="5242880",
+     *      mimeTypes = {
+     *          "image/png",
+     *          "image/jpeg",
+     *          "image/jpg",
+     *          "image/gif",
+     *          "application/pdf",
+     *          "application/x-pdf"
+     *      },
+     *      mimeTypesMessage = "Please upload a valid file, png, jpeg, jpg, gif")
      */
-    private  $picture;
+    private $picture;
 
     /**
      * @Vich\UploadableField(mapping="picture_file", fileNameProperty="picture")
      * @var File
      */
-    private  $pictureFile;
+    private $pictureFile;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private  $updateAt;
-
-
+    private $updateAt;
 
     public function __construct()
     {
@@ -146,7 +155,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -162,7 +171,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -354,17 +363,15 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeInterface
+    public function getUpdateAt(): ?DateTimeInterface
     {
         return $this->updateAt;
     }
 
-    public function setUpdateAt(\DateTimeInterface $updateAt): self
+    public function setUpdateAt(DateTimeInterface $updateAt): self
     {
         $this->updateAt = $updateAt;
 
         return $this;
     }
-
-
 }
