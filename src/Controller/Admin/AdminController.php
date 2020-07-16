@@ -67,6 +67,8 @@ class AdminController extends AbstractController
             'usersVolunteer' => $usersVolunteer,
             'usersBeneficiary' => $usersBeneficiary,
             'trips' => $tripRepository->findBy([], ['id' => 'DESC'], self::LIMIT),
+            'allUsers' => $userRepository->findAll(),
+            'allTrips' => $tripRepository->findAll(),
         ]);
     }
 
@@ -130,11 +132,10 @@ class AdminController extends AbstractController
             $response = $client->request('POST', '/users', [
                 'json' => $fullForm,
             ]);
-            $response->getContent();
             $decodeUser = ApiService::decodeJson($response->getContent());
             $user = new User();
             $user->setMobicoopId($decodeUser['id'])
-                ->setIsActive(true)
+                ->setIsActive(false)
                 ->setStatus($status)
                 ->setRoles(['ROLE_USER_UNVALIDATE']);
             $entityManager->persist($user);
@@ -143,14 +144,15 @@ class AdminController extends AbstractController
             $this->addFlash('success', 'Le ' . $status . ' est bien inscrit');
         }
 
-        $userMobicoop = $apiService->getAllUsers();
+        $apiService->getToken();
+        $usersMobicoop = $apiService->getAllUsers();
 
-        $users = $apiService->setFullName($userMobicoop, $users);
+        $users = $apiService->setFullName($usersMobicoop, $users);
 
         return $this->render('admin/user/common.html.twig', [
+            'form' => $form->createView(),
             'users' => $users,
             'status' => $status,
-            'form' => $form->createView(),
         ]);
     }
 
