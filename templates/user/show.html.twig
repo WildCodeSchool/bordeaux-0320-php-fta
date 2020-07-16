@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My profile{% endblock %}
+{% block title %}
+    {% trans %}My profile{% endtrans %}
+{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -10,27 +12,37 @@
             </h3>
             <table class="table table-trip col s10 offset-s1">
                 <tbody>
-                <tr>
-                    <th><i class="material-icons small pt-s pl color-blue-night">person_pin</i></th>
-                    <td class="right-align pr">{{ user.givenName }} {{ user.familyName }}</td>
-                </tr>
-                <tr>
-                    <th><i class="material-icons small pt-s pl color-blue-night">mail</i></th>
-                    <td class="right-align pr">{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <th><i class="material-icons small pt-s pl color-blue-night">phone</i></th>
-                    <td class="right-align pr">{{ user.telephone }}</td>
-                </tr>
-                <tr class="border-bottom-0">
-                    <th><i class="material-icons small pt-s pl color-blue-night">photo</i></th>
-                </tr>
+                    <tr>
+                        <th>
+                            <i class="material-icons small pt-s pl color-blue-night">person_pin</i>
+                        </th>
+                        <td class="right-align pr">{{ user.givenName }} {{ user.familyName }}</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <i class="material-icons small pt-s pl color-blue-night">mail</i>
+                        </th>
+                        <td class="right-align pr">{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <i class="material-icons small pt-s pl color-blue-night">phone</i>
+                        </th>
+                        <td class="right-align pr">{{ user.telephone }}</td>
+                    </tr>
+                    <tr class="border-bottom-0">
+                        <th>
+                            <i class="material-icons small pt-s pl color-blue-night">photo</i>
+                        </th>
+                    </tr>
                 </tbody>
             </table>
         </div>
         <div class="pt trip-show-tools bck-ice z-depth-2 border-radius-bottom pt pb">
             <div class="center-align">
-                <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn"><i class="material-icons">edit</i></a>
+                <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn">
+                    <i class="material-icons">edit</i>
+                </a>
             </div>
             <div class="center-align">
                 {{ include('user/_delete_form.html.twig') }}
@@ -38,6 +50,10 @@
         </div>
     </div>
     <div class="container center-align">
-        <h2><a href="{{ path('logout') }}"><i class="material-icons trip-title color-red txt-shadow-black">cancel</i></a></h2>
+        <h2>
+            <a href="{{ path('logout') }}">
+                <i class="material-icons trip-title color-red txt-shadow-black">cancel</i>
+            </a>
+        </h2>
     </div>
 {% endblock %}

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="mcQKtAW" resname="Date">
+        <source>Date</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="M7k0ds9" resname="Time">
+        <source>Time</source>
+        <target>Heure</target>
+      </trans-unit>
+      <trans-unit id="asWwuWC" resname="Add an availability">
+        <source>Add an availability</source>
+        <target>Ajouter un accompagnement</target>
+      </trans-unit>
+      <trans-unit id="CMbELgF" resname="Set date">
+        <source>Set date</source>
+        <target>Choisir la date</target>
+      </trans-unit>
+      <trans-unit id="6TdqKBq" resname="Morning">
+        <source>Morning</source>
+        <target>Matin</target>
+      </trans-unit>
+      <trans-unit id="_4R7Q2N" resname="Afternoon">
+        <source>Afternoon</source>
+        <target>Après-midi</target>
+      </trans-unit>
+      <trans-unit id="xwz5n5r" resname="My availabilities :">
+        <source>My availabilities :</source>
+        <target>Mes disponibilités :</target>
+      </trans-unit>
+      <trans-unit id="z7GsDIB" resname="Inscription">
+        <source>Inscription</source>
+        <target>Inscription</target>
+      </trans-unit>
+      <trans-unit id="nWMiwfT" resname="Login">
+        <source>Login</source>
+        <target>Connexion</target>
+      </trans-unit>
+      <trans-unit id="mPwwgW0" resname="Are you sure you want to delete this user ?">
+        <source>Are you sure you want to delete this user ?</source>
+        <target>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</target>
+      </trans-unit>
+      <trans-unit id="CG9UULI" resname="Edit my profile">
+        <source>Edit my profile</source>
+        <target>Éditer mon profil</target>
+      </trans-unit>
+      <trans-unit id="Jxxi_i3" resname="My profile">
+        <source>My profile</source>
+        <target>Mon profil</target>
+      </trans-unit>
+      <trans-unit id="63rd3uH" resname="Welcome to France Terre d'Asile">
+        <source>Welcome to France Terre d'Asile</source>
+        <target>Bienvenue sur France Terre d'Asile</target>
+      </trans-unit>
+      <trans-unit id="v9QCsvb" resname="Sign in">
+        <source>Sign in</source>
+        <target>Connexion</target>
+      </trans-unit>
+      <trans-unit id="XiuOllA" resname="Sign up">
+        <source>Sign up</source>
+        <target>Inscription</target>
+      </trans-unit>
+      <trans-unit id="E9vQv9V" resname="Are you sure you want to delete this accompanying?">
+        <source>Are you sure you want to delete this accompanying?</source>
+        <target>Êtes-vous sûr de vouloir supprimer cet accompagnement ?</target>
+      </trans-unit>
+      <trans-unit id="Y7eUPH_" resname="Edit your trip">
+        <source>Edit your trip</source>
+        <target>Éditer l'accompagnement</target>
+      </trans-unit>
+      <trans-unit id="lFeJd1M" resname="Add an accompanying">
+        <source>Add an accompanying</source>
+        <target>Ajouter un accompagnement</target>
+      </trans-unit>
+      <trans-unit id="uOKBtSv" resname="Matching accompanying">
+        <source>Matching accompanying</source>
+        <target>Accompagnements compatibles</target>
+      </trans-unit>
+      <trans-unit id="qbvdg9V" resname="Accompanying index">
+        <source>Accompanying index</source>
+        <target>Liste des accompagnements</target>
+      </trans-unit>
+      <trans-unit id="Q9MQW.w" resname="Accompanying">
+        <source>Accompanying</source>
+        <target>Accompagnements</target>
+      </trans-unit>
+      <trans-unit id="iXE7nJw" resname="Accept">
+        <source>Accept</source>
+        <target>Accepter</target>
+      </trans-unit>
+      <trans-unit id="j1d2zOR" resname="Disengage">
+        <source>Disengage</source>
+        <target>Se désengager</target>
+      </trans-unit>
+      <trans-unit id="pGmrTKT" resname="Page not found">
+        <source>Page not found</source>
+        <target>Page non trouvée</target>
+      </trans-unit>
+      <trans-unit id="1cIKEdi" resname="The requested page couldn't be located.">
+        <source>The requested page couldn't be located.</source>
+        <target>La page demandée n'a pas pu être localisée.</target>
+      </trans-unit>
+      <trans-unit id="yBAbsaq" resname="return to the homepage">
+        <source>return to the homepage</source>
+        <target>retour à la page d'accueil</target>
+      </trans-unit>
+      <trans-unit id="VmWQ4CH" resname="Server problem.">
+        <source>Server problem.</source>
+        <target>Problème de serveur.</target>
+      </trans-unit>
+      <trans-unit id="UT_Ypc1" resname="Access denied. You are not allowed to see this page.">
+        <source>Access denied. You are not allowed to see this page.</source>
+        <target>Accès refusé. Vous n'êtes pas autorisé à accéder à cette page.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

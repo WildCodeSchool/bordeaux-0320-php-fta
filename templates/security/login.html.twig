@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}
+    {% trans %}Login{% endtrans %}
+{% endblock %}
 
 {% block body %}
-
     <div class="container">
         <div class="row z-depth-2 border-radius-bottom">
             <h3 class="bck-night-gr white-text center pad border-radius-top mb-s">
@@ -15,5 +16,5 @@
         </div>
     </div>
 {% endblock %}
-{% block navigation %}
-{% endblock %}
+
+{% block navigation %}{% endblock %}

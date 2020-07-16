@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
+{% block title %}
+    {% trans %}Inscription{% endtrans %}
+{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -13,5 +15,5 @@
         </div>
     </div>
 {% endblock %}
-{% block navigation %}
-{% endblock %}
+
+{% block navigation %}{% endblock %}

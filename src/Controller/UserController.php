@@ -19,19 +19,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class UserController extends AbstractController
 {
-
-    /**
-     * @Route("/user", name="user_index", methods={"GET"})
-     * @param UserRepository $userRepository
-     * @return Response
-     */
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
-
     /**
      * Route to access user profile page
      * @Route("common/user/{id}", name="user_show", methods={"GET"})

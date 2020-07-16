@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ volunteer is defined ? 'Matching trip' : 'Trip index' }}{% endblock %}
+{% block title %}{{ volunteer is defined ? 'Matching accompanying'|trans : 'Accompanying index'|trans }}{% endblock %}
 
 {% block body %}
-
     {% for label, messages in app.flashes(['success']) %}
         {% for message in messages %}
             <div class="green lighten-2 flash-{{ label }}">
@@ -11,7 +10,6 @@
             </div>
         {% endfor %}
     {% endfor %}
-
     <div class="container">
         <div class="row">
             <h3 class="bck-night-gr white-text center pad border-radius mb-s">
@@ -26,11 +24,11 @@
             </h3>
             {% include '_components/_tripTable.html.twig' %}
             {% if app.user.status == 'beneficiary' %}
-                <div class="center-align mt">
-                    <a href="{{ path('trip_new') }}" class="btn">
-                        <i class="material-icons">add</i>
-                    </a>
-                </div>
+            <div class="center-align mt">
+                <a href="{{ path('trip_new') }}" class="btn">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>
             {% endif %}
         </div>
     </div>
