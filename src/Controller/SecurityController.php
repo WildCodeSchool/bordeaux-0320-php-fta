@@ -51,7 +51,7 @@ class SecurityController extends AbstractController
             $decodeUser = ApiService::decodeJson($response->getContent());
             $user = new User();
             $user->setMobicoopId($decodeUser['id'])
-                ->setIsActive(true)
+                ->setIsActive(false)
                 ->setStatus('volunteer')
                 ->setRoles(['ROLE_USER_UNVALIDATE']);
             $entityManager->persist($user);
@@ -114,7 +114,7 @@ class SecurityController extends AbstractController
                 } elseif ($user->getStatus() === 'beneficiary') {
                     return $this->redirectToRoute('trip_beneficiary');
                 } else {
-                    //TODO return the route to the admin page when created
+                    return $this->redirectToRoute('admin_index');
                 }
             }
         }

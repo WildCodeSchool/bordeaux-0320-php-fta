@@ -6,10 +6,12 @@ use App\Entity\Trip;
 use App\Entity\User;
 use App\Form\TripType;
 use App\Service\ApiService;
+use App\Service\EmailService;
 use App\Service\TripService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -146,14 +148,20 @@ class TripController extends AbstractController
      * @Route("/beneficiary/{id}", name="trip_delete", methods={"DELETE"})
      * @param Request $request
      * @param Trip $trip
+     * @param EmailService $emailService
      * @return Response
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function delete(Request $request, Trip $trip): Response
+    public function delete(Request $request, Trip $trip, EmailService $emailService): Response
     {
         if ($this->isCsrfTokenValid('delete' . $trip->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trip);
             $entityManager->flush();
+            $emailService->canceled($trip);
         }
 
         return $this->redirectToRoute('trip_beneficiary');
@@ -204,15 +212,43 @@ class TripController extends AbstractController
      * @Route("/volunteer/accept/{tripId}", name="trip_accept", methods={"GET","POST"})
      * @param int $tripId
      * @param EntityManagerInterface $entityManagerm
+     * @param EmailService $emailService
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function addVolunteerToTrip(int $tripId, EntityManagerInterface $entityManagerm)
+    public function addVolunteerToTrip(int $tripId, EntityManagerInterface $entityManager, EmailService $emailService)
     {
         $trip = $this->getDoctrine()
             ->getRepository(Trip::class)
             ->findOneById($tripId);
         $trip->setVolunteer($this->getUser());
-        $entityManagerm->persist($trip);
-        $entityManagerm->flush();
+
+        $entityManager->persist($trip);
+        $entityManager->flush();
+        $emailService->accepted($trip);
+
+
+        return $this->redirectToRoute('trip_volunteer');
+    }
+
+    /**
+     * Route to remove acceptance to a trip created by a beneficiary (only ROLE_USER_VOLUNTEER)
+     * @Route("/volunteer/disengage/{tripId}", name="trip_revert_accept", methods={"GET","POST"})
+     * @param int $tripId
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
+    public function removeVolunteerToTrip(int $tripId, EntityManagerInterface $entityManager)
+    {
+        $trip = $this->getDoctrine()
+            ->getRepository(Trip::class)
+            ->findOneById($tripId);
+        $trip->setVolunteer(null);
+        $entityManager->persist($trip);
+        $entityManager->flush();
 
         return $this->redirectToRoute('trip_volunteer');
     }

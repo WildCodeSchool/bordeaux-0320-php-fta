@@ -35,13 +35,80 @@ nav .brand-logo {
   margin-left: 8.33%;
 }
 
+.admin-link {
+  color: $blue-duck;
+}
+
+.admin-logo {
+  width: 80%;
+  margin: 12% 10% 4% 10%;
+  filter: drop-shadow(0 0 0.3rem #144a8a);
+}
+
+.admin-link:hover {
+  color: $blue-night;
+}
+
+.admin-delete-btn {
+  background-color: $red;
+}
+
+.admin-delete-btn:hover {
+  background-color: darken($red, 20%);
+}
+
 .mdp {
   font-size: 0.8rem;
 }
 
-.users-list {
-  height: 31.6rem;
+.info-point {
+  font-size: 3.5rem;
+  position: fixed;
+  margin-left: 1.4rem;
 }
+
+.sidenav {
+  &-list {
+    display: flex;
+    align-items: center;
+    height: 32px;
+  }
+  &-icon {
+    width: 35px;
+    margin-left: 1rem;
+    color: $blue-ice;
+    padding-bottom: 0.2rem;
+  }
+}
+
+.users-list {
+  height: 37.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.places-list {
+  height: 37.6rem;
+}
+
+.scrollable-places {
+  height: 32rem;
+  overflow-x: scroll;
+}
+
+.add-user-card {
+  height: 37.6rem;
+}
+
+.schedule-true {
+  color: $green;
+}
+
+.schedule-false {
+  color: $red;
+}
+
 #searchRow {
   .col {
     input#searchUser {
@@ -57,5 +124,12 @@ div#searchRow.display-loading {
   display: none;
 }
 div#loading.display-loading {
+  display: none;
+}
+
+#previous.display-button {
+  display: none;
+}
+#next.display-button {
   display: none;
 }

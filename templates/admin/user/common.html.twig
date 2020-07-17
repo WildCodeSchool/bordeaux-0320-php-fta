@@ -3,40 +3,54 @@
 {% block body %}
     <div class="container-wide">
         <div class="row admin-margin">
-            <div class="col s5 center-align users-list z-depth-2 border-radius mb-l mt-l pad-0">
-                <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">
-                    {{ status == 'volunteer' ? 'Accompagnants' : 'Bénéficiaires' }}
-                </h4>
-                <div id="searchRow" class="row mt-l">
-                    <div class="col s6 offset-s1">
-                        <input type="text" data-type="{{ status }}" name="search" id="searchUser">
+            <div class="col s5 center-align users-list z-depth-2 border-radius mb-l mt-s pad-0">
+                <div>
+                    <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">
+                        {{ status == 'volunteer' ? 'Accompagnants' : 'Bénéficiaires' }}
+                    </h4>
+                    <div id="searchRow" class="row mt-l">
+                        <div class="col s6 offset-s1">
+                            <input type="text" data-type="{{ status }}" name="search" id="searchUser">
+                        </div>
+                        <div class="col s4 mr-s">
+                            <a class="waves-effect waves-light btn" id="searchButton">Rechercher</a>
+                        </div>
                     </div>
-                    <div class="col s4 mr-s">
-                        <a class="waves-effect waves-light btn" id="searchButton">Rechercher</a>
+                    <div id="loading" class="progress display-loading">
+                        <div class="indeterminate"></div>
+                    </div>
+                    <table class="striped centered mt-s" id="users-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>PRÉNOM</th>
+                            <th>NOM</th>
+                            <th>{{ status == 'volunteer' ? 'DISPOS' : 'DEMANDES' }}</th>
+                            <th>ACTIF</th>
+                            <th>ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            {% include 'admin/_components/_tableUsers.html.twig' %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col s6 mb-s">
+                        <a id="previous" class="waves-effect waves-light btn-floating paginator display-button" data-limit="0" data-type="{{ status }}" data-paginator="previous">
+                            <i class="material-icons">chevron_left</i>
+                        </a>
+                    </div>
+                    <div class="col s6 mb-s">
+                        <a id="next" class="waves-effect waves-light btn-floating paginator" data-limit="5" data-type="{{ status }}" data-paginator="next">
+                            <i class="material-icons">chevron_right</i>
+                        </a>
                     </div>
                 </div>
-                <div id="loading" class="progress display-loading">
-                    <div class="indeterminate"></div>
-                </div>
-                <table class="striped mt-l" id="users-table">
-                    <thead>
-                    <tr>
-                        <th class="center-align">#</th>
-                        <th class="center-align">PRÉNOM</th>
-                        <th class="center-align">NOM</th>
-                        <th class="center-align">DISPOS</th>
-                        <th class="center-align">ACTIF</th>
-                        <th class="center-align">ACTION</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for user in users %}
-                        {% include 'admin/_components/_tableUsers.html.twig' %}
-                    {% endfor %}
-                    </tbody>
-                </table>
             </div>
-            <div class="col s5 offset-s1 center-align z-depth-2 border-radius mb-l mt-l">
+            <div class="col s5 offset-s1 center-align z-depth-2 border-radius mb-l mt-s add-user-card">
                 <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Ajouter un {{ status == 'volunteer' ? 'accompagnant' : 'bénéficiaire' }}</h4>
                 {{ include('admin/_components/_form_register.html.twig') }}
             </div>
@@ -46,4 +60,5 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('searchUser') }}
+    {{ encore_entry_script_tags('paginator') }}
 {% endblock %}

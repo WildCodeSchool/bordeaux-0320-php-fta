@@ -3,19 +3,20 @@
 {% block title %}Administration - Accueil{% endblock %}
 
 {% block body %}
+    {% include '_components/_sidenav.html.twig' %}
     <div class="container-wide">
         <div class="row admin-margin">
-            <div class="col s5 center-align z-depth-2 border-radius mb-l mt-l pad-0">
+            <div class="col s5 center-align z-depth-2 border-radius mb-l mt-s pad-0">
                 <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Accompagnants</h4>
-                <table class="striped">
+                <table class="striped centered">
                     <thead>
                         <tr>
-                            <th class="center-align">#</th>
-                            <th class="center-align">PRÉNOM</th>
-                            <th class="center-align">NOM</th>
-                            <th class="center-align">CRÉÉ LE</th>
-                            <th class="center-align">ACTIF</th>
-                            <th class="center-align">ACTION</th>
+                            <th>#</th>
+                            <th>PRÉNOM</th>
+                            <th>NOM</th>
+                            <th>CRÉÉ LE</th>
+                            <th>ACTIF</th>
+                            <th>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,17 +29,17 @@
                     <button class="waves-effect waves-light btn mb-l mt-l">En voir plus</button>
                 </a>
             </div>
-            <div class="col s5 offset-s1 center-align z-depth-2 border-radius mb-l mt-l pad-0">
+            <div class="col s5 offset-s1 center-align z-depth-2 border-radius mb-l mt-s pad-0">
                 <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Bénéficiaires</h4>
-                <table class="striped">
+                <table class="striped centered">
                     <thead>
                     <tr>
-                        <th class="center-align">#</th>
-                        <th class="center-align">PRÉNOM</th>
-                        <th class="center-align">NOM</th>
-                        <th class="center-align">CRÉÉ LE</th>
-                        <th class="center-align">ACTIF</th>
-                        <th class="center-align">ACTION</th>
+                        <th>#</th>
+                        <th>PRÉNOM</th>
+                        <th>NOM</th>
+                        <th>CRÉÉ LE</th>
+                        <th>ACTIF</th>
+                        <th>ACTION</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -52,28 +53,33 @@
                 </a>
             </div>
         </div>
-        <div class="row mt-l admin-margin">
+        <div class="row mt-s admin-margin">
             <div class="col s11 center-align z-depth-2 border-radius mb-l pad-0">
-                <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Accompagnement</h4>
-                <table class="striped">
+                <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">Accompagnements</h4>
+                <table class="striped centered">
                     <thead>
                     <tr>
-                        <th class="center-align">#</th>
-                        <th class="center-align">DÉPART</th>
-                        <th class="center-align">ARRIVÉE</th>
-                        <th class="center-align">DATE</th>
-                        <th class="center-align">BÉNÉFICIAIRE</th>
-                        <th class="center-align">ACCOMPAGNANT</th>
-                        <th class="center-align">ACTION</th>
+                        <th>#</th>
+                        <th>DÉPART</th>
+                        <th>ARRIVÉE</th>
+                        <th>DATE</th>
+                        <th>BÉNÉFICIAIRE</th>
+                        <th>ACCOMPAGNANT</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for trip in trips %}
                             {% include 'admin/_components/_tableTrips.html.twig' %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Aucun accompagnement trouvé</td>
+                        </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-                <button class="waves-effect waves-light btn mb-l mt-l">En voir plus</button>
+                <a href="{{ path('admin_trips') }}">
+                    <button class="waves-effect waves-light btn mb-l mt-l">En voir plus</button>
+                </a>
             </div>
         </div>
     </div>

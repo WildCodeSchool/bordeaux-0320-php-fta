@@ -32,6 +32,9 @@
   &-green {
     color: $green;
   }
+  &-white {
+    color: $white;
+  }
   &-black {
     color: $black;
   }
@@ -194,7 +197,7 @@
   border-bottom: 0;
 }
 
-.btn {
+.btn, .btn-floating {
   background-color: $blue-duck;
 }
 
