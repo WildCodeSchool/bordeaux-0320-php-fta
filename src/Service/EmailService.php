@@ -67,7 +67,6 @@ class EmailService
                 'time' => $trip->getDate()->format('H:i'),
                 'volunteer' => $volunteer['givenName'],
 
-
             ]));
 
         $this->mailer->send($email);
@@ -95,7 +94,6 @@ class EmailService
             $volunteer = null;
         }
 
-        dd($volunteer);
         $email = (new Email())
             ->from($this->container->getParameter('mailer_from'))
             ->to($beneficiary['email'])
@@ -110,11 +108,7 @@ class EmailService
                 'time' => $trip->getDate()->format('H:i'),
                 'volunteer' => ($volunteer ? $volunteer['givenName'] : null),
 
-
             ]));
-
         $this->mailer->send($email);
-
-        // ...
     }
 }
