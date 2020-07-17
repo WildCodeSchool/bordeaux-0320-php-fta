@@ -55,13 +55,10 @@ class EmailService
 
         $email = (new Email())
             ->from($this->container->getParameter('mailer_from'))
-            ->to('projet.franceterredasile@gmail.com')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
+            ->to($beneficiary['email'])
+            ->addTo($volunteer['email'])
+            //->cc(AgentFTA)
             ->subject('Trip accepted!')
-            //->text('Sending emails is fun again!')
             ->html($this->templating->render('emails/confirmation.html.twig', [
                 'username' => $beneficiary['givenName'],
                 'departure' => $trip->getDeparture()->getName(),
@@ -98,13 +95,13 @@ class EmailService
             $volunteer = null;
         }
 
-        dd($volunteer);
+
         $email = (new Email())
             ->from($this->container->getParameter('mailer_from'))
-            ->to('projet.franceterredasile@gmail.com')
-            //->cc('cc@example.com')
+            ->to($beneficiary['email'])
+            ->addTo($volunteer['email'])
+            //->cc(AgentFTA)
             ->subject('Trip canceled!')
-            //->text('Sending emails is fun again!')
             ->html($this->templating->render('emails/canceled.html.twig', [
                 'username' => $beneficiary['givenName'],
                 'departure' => $trip->getDeparture()->getName(),
