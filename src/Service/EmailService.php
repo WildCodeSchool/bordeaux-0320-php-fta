@@ -95,7 +95,7 @@ class EmailService
             $volunteer = null;
         }
 
-
+        dd($volunteer);
         $email = (new Email())
             ->from($this->container->getParameter('mailer_from'))
             ->to($beneficiary['email'])
