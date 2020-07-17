@@ -68,7 +68,7 @@ class MobicoopAdminForm extends AbstractType
     {
         $resolver->setDefaults([
             'gender' => null,
-            'status' => null
+            'status' => null,
         ]);
     }
 }

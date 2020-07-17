@@ -1,0 +1,37 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div class="container-wide">
+        <div class="row">
+            <div class="col s10 offset-s1 center-align z-depth-2 border-radius mb-l mt-l pad-0">
+                <h4 class="bck-night-gr border-radius-top admin-title-card pt-l pb-l">
+                    Demandes de {{ user.givenName }} {{ user.familyName }}
+                </h4>
+                <table class="centered striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>DÉPART</th>
+                        <th>ARRIVÉE</th>
+                        <th>DATE</th>
+                        <th>HEURE</th>
+                        <th>ACCOMPAGNANT</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for trip in trips %}
+                        <tr>
+                            <td class="{{ trip.volunteer ? 'bck-green' : 'bck-red' }}">{{ loop.index }}</td>
+                            <td>{{ trip.departure.name }}</td>
+                            <td>{{ trip.arrival.name }}</td>
+                            <td>{{ trip.date.format('d-m-Y') }}</td>
+                            <td>{{ trip.date.format('H:i') }}</td>
+                            <td>{{ trip.volunteer ? trip.volunteer.givenName ~ ' ' ~ trip.volunteer.familyName : 'Aucun' }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
