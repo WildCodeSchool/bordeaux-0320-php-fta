@@ -20,6 +20,10 @@ use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class TripController extends AbstractController
 {
@@ -72,11 +76,15 @@ class TripController extends AbstractController
      * @Route("/beneficiary/trip/new", name="trip_new", methods={"GET","POST"})
      * @param Request $request
      * @param SessionInterface $session
+     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Exception
      */
-    public function new(Request $request, SessionInterface $session): Response
-    {
+    public function new(
+        Request $request,
+        SessionInterface $session,
+        TranslatorInterface $translator
+    ): Response {
         $beneficiary = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(['mobicoopId' => $session->get('user')->getMobicoopId()]);
@@ -103,7 +111,8 @@ class TripController extends AbstractController
             $entityManager->persist($trip);
             $entityManager->flush();
 
-            $this->addFlash('success', 'New trip added ');
+            $message = $translator->trans('New trip added');
+            $this->addFlash('success', $message);
 
             return $this->redirectToRoute('trip_beneficiary');
         }
@@ -151,9 +160,9 @@ class TripController extends AbstractController
      * @param EmailService $emailService
      * @return Response
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function delete(Request $request, Trip $trip, EmailService $emailService): Response
     {
@@ -211,16 +220,19 @@ class TripController extends AbstractController
      * Route to accept a trip created by a beneficiary (only ROLE_USER_VOLUNTEER)
      * @Route("/volunteer/accept/{tripId}", name="trip_accept", methods={"GET","POST"})
      * @param int $tripId
-     * @param EntityManagerInterface $entityManagerm
+     * @param EntityManagerInterface $entityManager
      * @param EmailService $emailService
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function addVolunteerToTrip(int $tripId, EntityManagerInterface $entityManager, EmailService $emailService)
-    {
+    public function addVolunteerToTrip(
+        int $tripId,
+        EntityManagerInterface $entityManager,
+        EmailService $emailService
+    ) {
         $trip = $this->getDoctrine()
             ->getRepository(Trip::class)
             ->findOneById($tripId);

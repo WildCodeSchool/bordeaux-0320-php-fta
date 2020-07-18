@@ -4,9 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\MobicoopForm;
-use App\Repository\UserRepository;
 use App\Service\ApiService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +30,9 @@ class UserController extends AbstractController
      */
     public function show(ApiService $api, int $id): Response
     {
-        $userLocal = $this->getDoctrine()->getRepository(User::class)->findOneById($id);
+        $userLocal = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneById($id);
         $user = $api->getUserById($userLocal->getMobicoopId());
 
         return $this->render('user/show.html.twig', [
@@ -74,7 +74,6 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($userLocal);
             $entityManager->flush();
-
             $userLocal->setPicture(null);
             $userLocal->setPictureFile(null);
             $client = $apiService->baseUri();
@@ -82,7 +81,6 @@ class UserController extends AbstractController
             $userInfo = [
                 'givenName'  => $userLocal->getGivenName(),
                 'familyName' => $userLocal->getfamilyName(),
-                'status'     => (int)$userLocal->getStatus(),
             ];
 
             $client->request('PUT', '/users/' . $id, [

@@ -64,15 +64,15 @@ class MobicoopForm extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'datepicker',
-                    'placeholder' => 'Birthday'
+                    'placeholder' => 'Birth date'
                     ],
                 'mapped' => !$options['edit'],
             ]);
         if ($options['edit']) {
             $builder->add('pictureFile', VichFileType::class, [
-                'label' => 'Picture',
+                'label' => false,
                 'required' => false,
-                'allow_delete' => true, // not mandatory, default is true
+                'allow_delete' => false, // not mandatory, default is true
                 'download_uri' => true, // not mandatory, default is true
             ]);
         }

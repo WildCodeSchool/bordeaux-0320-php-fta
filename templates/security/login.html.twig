@@ -5,6 +5,13 @@
 {% endblock %}
 
 {% block body %}
+    {% for label, messages in app.flashes(['warning']) %}
+        {% for message in messages %}
+            <div class="green lighten-2 flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <div class="container">
         <div class="row z-depth-2 border-radius-bottom">
             <h3 class="bck-night-gr white-text center pad border-radius-top mb-s">
@@ -14,6 +21,13 @@
                 {{ include('user/_form.html.twig') }}
             </div>
         </div>
+    </div>
+    <div class="container center-align">
+        <h2>
+            <a href="{{ path('homepage') }}">
+                <i class="material-icons trip-title color-red txt-shadow-black">home</i>
+            </a>
+        </h2>
     </div>
 {% endblock %}
 
