@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trip{% endblock %}
+{% block title %}
+    {% trans %}Accompanying{% endtrans %}
+{% endblock %}
 
 {% block body %}
     {{ include('_components/_modalTrip.html.twig') }}
@@ -13,39 +15,39 @@
                 </h3>
                 <table class="table table-trip col s10 offset-s1">
                     <tbody>
-                    <tr>
-                        <th>
-                            <i class="material-icons small pt-s pl">date_range</i>
-                        </th>
-                        <td class="right-align pr">
-                            {{ trip.date|date('Y-m-d') }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <i class="material-icons small pt-s pl">access_time</i>
-                        </th>
-                        <td class="right-align pr">
-                            {{ trip.date|date('h:i A') }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <i class="material-icons small pt-s pl">gps_fixed</i>
-                        </th>
-                        <td class="right-align pr">
-                            {{ trip.departure.name }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <i class="material-icons small pt-s pl">location_on</i>
-                        </th>
-                        <td class="right-align pr">
-                            {{ trip.arrival.name }}
-                        </td>
-                    </tr>
-                    {% if trip.volunteer and app.user.status == 'beneficiary' %}
+                        <tr>
+                            <th>
+                                <i class="material-icons small pt-s pl">date_range</i>
+                            </th>
+                            <td class="right-align pr">
+                                {{ trip.date|date('Y-m-d') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <i class="material-icons small pt-s pl">access_time</i>
+                            </th>
+                            <td class="right-align pr">
+                                {{ trip.date|date('h:i A') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <i class="material-icons small pt-s pl">gps_fixed</i>
+                            </th>
+                            <td class="right-align pr">
+                                {{ trip.departure.name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <i class="material-icons small pt-s pl">location_on</i>
+                            </th>
+                            <td class="right-align pr">
+                                {{ trip.arrival.name }}
+                            </td>
+                        </tr>
+                        {% if trip.volunteer and app.user.status == 'beneficiary' %}
                         <tr>
                             <th>
                                 <i class="material-icons small pt-s pl">people</i>
@@ -56,8 +58,8 @@
                                 </a>
                             </td>
                         </tr>
-                    {% endif %}
-                    {% if app.user.status == 'volunteer' %}
+                        {% endif %}
+                        {% if app.user.status == 'volunteer' %}
                         <tr>
                             <th>
                                 <i class="material-icons small pt-s pl">people</i>
@@ -68,35 +70,35 @@
                                 </a>
                             </td>
                         </tr>
-                    {% endif %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
             <div class="pt trip-show-tools bck-ice border-radius-bottom pt pb">
-                {% if app.user.status == 'beneficiary' %}
-                    {% if not trip.volunteer %}
-                        <div class="center-align">
-                            <a href="{{ path('trip_edit', {'id': trip.id}) }}" class="btn">
-                                <i class="material-icons">edit</i>
-                            </a>
-                        </div>
-                    {% endif %}
-                    <div class="center-align">
-                        {{ include('trip/_delete_form.html.twig') }}
-                    </div>
-                {% elseif app.user.status == 'volunteer' and not trip.volunteer %}
-                    <div class="center-align">
-                        <a href="{{ path('trip_accept', {'tripId': trip.id}) }}" class="btn">
-                            Accept
-                        </a>
-                    </div>
-                {% elseif app.user.status == 'volunteer' and trip.volunteer %}
-                    <div class="center-align">
-                        <a href="{{ path('trip_revert_accept', {'tripId': trip.id}) }}" class="btn">
-                            Disengage
-                        </a>
-                    </div>
+            {% if app.user.status == 'beneficiary' %}
+                {% if not trip.volunteer %}
+                <div class="center-align">
+                    <a href="{{ path('trip_edit', {'id': trip.id}) }}" class="btn">
+                        <i class="material-icons">edit</i>
+                    </a>
+                </div>
                 {% endif %}
+                <div class="center-align">
+                    {{ include('trip/_delete_form.html.twig') }}
+                </div>
+            {% elseif app.user.status == 'volunteer' and not trip.volunteer %}
+            <div class="center-align">
+                <a href="{{ path('trip_accept', {'tripId': trip.id}) }}" class="btn">
+                    {% trans %}Accept{% endtrans %}
+                </a>
+            </div>
+            {% elseif app.user.status == 'volunteer' and trip.volunteer %}
+            <div class="center-align">
+                <a href="{{ path('trip_revert_accept', {'tripId': trip.id}) }}" class="btn">
+                    {% trans %}Disengage{% endtrans %}
+                </a>
+            </div>
+            {% endif %}
             </div>
         </div>
     </div>

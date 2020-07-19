@@ -21,6 +21,7 @@ use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -71,19 +72,20 @@ class SecurityController extends AbstractController
      * @param ApiService $api
      * @param SessionInterface $session
      * @param EventDispatcherInterface $eventDispatcher
+     * @param TranslatorInterface $translator
      * @return RedirectResponse|Response
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
-     * @throws Exception
      * @Route("/login", name="login")
      */
     public function connection(
         Request $request,
         ApiService $api,
         SessionInterface $session,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        TranslatorInterface $translator
     ) {
         $form = $this->createForm(ConnectionType::class);
         $form->handleRequest($request);
@@ -92,7 +94,7 @@ class SecurityController extends AbstractController
             try {
                 $mobicoopUser = $api->getUser($form);
             } catch (Exception $e) {
-                throw new Exception('Error server' . $e, 500);
+                throw new Exception('Server error' . $e, 500);
             }
             $passwordSaved = $mobicoopUser['hydra:member'][0]['password'];
             $password = $form->getData()['password'];
@@ -113,12 +115,18 @@ class SecurityController extends AbstractController
                     return $this->redirectToRoute('trip_matching');
                 } elseif ($user->getStatus() === 'beneficiary') {
                     return $this->redirectToRoute('trip_beneficiary');
-                } else {
+                } elseif ($user->getStatus() === 'admin') {
                     return $this->redirectToRoute('admin_index');
+                } else {
+                    $error = $translator->trans('There is a problem with your account, please contact us');
+                    $this->addFlash('warning', $error);
+                    return $this->redirectToRoute('login');
                 }
             }
         }
-        $this->addFlash('success', 'You are now connected');
+
+        $message = $translator->trans('You are now connected');
+        $this->addFlash('success', $message);
 
         return $this->render('security/login.html.twig', [
             'form' => $form->createView(),
@@ -130,9 +138,5 @@ class SecurityController extends AbstractController
      */
     public function logout(): void
     {
-        $this->addFlash(
-            'succes',
-            'Your are disconnected !'
-        );
     }
 }

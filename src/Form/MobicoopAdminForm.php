@@ -59,7 +59,7 @@ class MobicoopAdminForm extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'datepicker',
-                    'placeholder' => 'Anniversaire'
+                    'placeholder' => 'Né(e) le'
                 ],
             ]);
     }

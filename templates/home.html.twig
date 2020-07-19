@@ -1,28 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Welcome to France Terre d'Asile{% endblock %}
+{% block title %}
+    {% trans %}Welcome to France Terre d'Asile{% endtrans %}
+{% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row center-align">
             <img class="img-home"  src="{{ asset('build/Logo_FTA.png') }}">
             <div class="trip-show-tools">
-                <div class="center-align bck-night-gr border-radius pr-l pl-l pb-s pt-s z-depth-2">
+                {% for locale in locales %}
+                <a href="{{ path('change_locale', {'locale': locale}) }}">
+                    <img src="{{ asset('build/FTA_flag_'~locale~'.png') }}" alt="Flag {{ locale }}" class="home-flags {{ app.request.locale == locale ? 'flag-selected' : 'img-shadow' }}">
+                </a>
+                {% endfor %}
+            </div>
+            <div class="trip-show-tools mt-l col s12">
+                <div class="center-align bck-night-gr border-radius pr-l pl-l pb-s pt-s mt-l z-depth-2">
                     <a class="center color-blue-ice" href="/login">
-                        <h2 class="center color-blue-ice margin-0"><i class="medium material-icons">account_box</i></h2>
-                        <p class="mt-s mb-0">Sign in</p>
+                        <h2 class="center color-blue-ice margin-0">
+                            <i class="medium material-icons">account_box</i>
+                        </h2>
+                        <p class="mt-s mb-0">
+                            {% trans %}Sign in{% endtrans %}
+                        </p>
                     </a>
                 </div>
-                <div class="center-align bck-night-gr border-radius pr-l pl-l pb-s pt-s z-depth-2">
+                <div class="center-align bck-night-gr border-radius pr-l pl-l pb-s pt-s mt-l z-depth-2">
                     <a class="center color-blue-ice" href="/register">
-                        <h2 class="center color-blue-ice margin-0"><i class="medium material-icons">person_add</i></h2>
-                        <p class="mt-s mb-0">Sign up</p>
+                        <h2 class="center color-blue-ice margin-0">
+                            <i class="medium material-icons">person_add</i>
+                        </h2>
+                        <p class="mt-s mb-0">
+                            {% trans %}Sign up{% endtrans %}
+                        </p>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-
 {% block navigation %}{% endblock %}
 
 {% endblock %}

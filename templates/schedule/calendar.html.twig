@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add an availability{% endblock %}
+{% block title %}
+    {% trans %}Add an availability{% endtrans %}
+{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -12,39 +14,49 @@
                 </h3>
                 <div class="row pl-l pr-l mb-s mt-l">
                     <i class="material-icons mt-s small col s1">date_range</i>
-                    <input name='datePicker' type="text" class="datepicker pl-l pr-l col s10 offset-s1" value="Set date">
+                    <input name='datePicker' type="text" class="datepicker pl-l pr-l col s10 offset-s1" value="{{ 'Set date'|trans }}">
                 </div>
                 <div class="row mt-l mb-l pr-l pl-l">
                     <div class="col s5 offset-s2">
                         <label>
-                            <input name="morning" type="checkbox" value="Morning" class="pl-s">
-                            <span>Morning</span>
+                            <input name="morning" type="checkbox" value="{{ 'Morning'|trans }}" class="pl-s">
+                            <span>
+                                {% trans %}Morning{% endtrans %}
+                            </span>
                         </label>
                     </div>
                     <div class="col s5">
                         <label>
-                            <input name="afternoon" type="checkbox" value="Afternoon">
-                            <span>Afternoon</span>
+                            <input name="afternoon" type="checkbox" value="{{ 'Afternoon'|trans }}">
+                            <span>
+                                {% trans %}Afternoon{% endtrans %}
+                            </span>
                         </label>
                     </div>
                 </div>
             </form>
         </div>
         <div class="center-align mt-l">
-            <button class="btn waves-effect waves-light ml mt mb" id="button_schedule" type="button" name="action"><i class="material-icons">add</i></button>
+            <button class="btn waves-effect waves-light ml mt mb" id="button_schedule" type="button" name="action">
+                <i class="material-icons">add</i>
+            </button>
         </div>
         <div class="row pl-s pr-s">
-            <h5 class="mt">My availabilities :</h5>
+            <h5 class="mt">
+                {% trans %}My availabilities :{% endtrans %}
+            </h5>
             <table id="calendar-table">
                 <thead>
-                <tr>
-                    <th>Date</th>
-                    <th class="center-align">AM</th>
-                    <th class="center-align">PM</th>
-                </tr>
+                    <tr>
+                        <th>
+                            {% trans %}Date{% endtrans %}
+                        </th>
+                        <th class="center-align">AM</th>
+                        <th class="center-align">PM</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for calendar in calendars|sort((a, b) => a.date <=> b.date) %}
+                    {% for calendar in calendars|sort((a, b) => a.date <=> b.date) %}
                     <tr>
                         <td>{{ calendar.date|date("Y-m-d") }}</td>
                         <td class="center-align">
@@ -62,7 +74,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endfor %}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

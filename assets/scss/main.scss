@@ -247,3 +247,22 @@ button, input, select, textarea, table {
   width: 80%;
   filter: drop-shadow(0 0 0.3rem $blue-night);
 }
+
+.home-flags {
+  width: 50px;
+  height: 50px;
+}
+
+.img-shadow {
+  filter: drop-shadow(0 0 0.2rem $black);
+}
+
+.flag-selected {
+  filter: drop-shadow(0 0 0.5rem $red);
+}
+
+@media screen and (min-width: 600px) {
+  .img-home {
+    width: 450px;
+  }
+}

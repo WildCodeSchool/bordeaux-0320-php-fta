@@ -1,5 +1,3 @@
-/* VOLUNTEER */
-
 input[type=text]:not(.browser-default) {
   font-size: 1.2em;
 }
@@ -39,4 +37,14 @@ input[type=text]:not(.browser-default) {
   justify-content: space-evenly;
 }
 
-/* END */
+.img-profile {
+  width: 100%;
+}
+
+.profile-link {
+  color: $blue-duck;
+}
+
+.profile-link:hover {
+  color: $blue-night;
+}
