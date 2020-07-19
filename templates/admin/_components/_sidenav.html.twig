@@ -16,7 +16,7 @@
             {% for beneficiary in allUsers|filter(beneficiary => beneficiary.status == 'beneficiary') %}
                 {% set numberOfBeneficiaries = loop.length %}
             {% endfor %}
-            <span class="color-blue-ice">{{ numberOfBeneficiaries }} bénéficiaires</span>
+            <span class="color-blue-ice">{{ numberOfBeneficiaries }} bénéficiaire{% if numberOfBeneficiaries > 1 %}s{% endif %}</span>
         </div>
     </li>
     <li>
@@ -26,7 +26,7 @@
             {% for beneficiary in allUsers|filter(beneficiary => beneficiary.status == 'beneficiary' and beneficiary.isActive) %}
                 {% set numberOfActiveBeneficiaries = loop.length %}
             {% endfor %}
-            <span class="color-blue-ice">{{ numberOfActiveBeneficiaries }} actifs</span>
+            <span class="color-blue-ice">{{ numberOfActiveBeneficiaries }} actif{% if numberOfActiveBeneficiaries > 1 %}s{% endif %}</span>
         </div>
     </li>
     <li>
@@ -36,7 +36,7 @@
             {% for beneficiary in allUsers|filter(beneficiary => beneficiary.status == 'beneficiary' and not beneficiary.isActive) %}
                 {% set numberOfInactiveBeneficiaries = loop.length %}
             {% endfor %}
-            <span class="color-blue-ice">{{ numberOfInactiveBeneficiaries }} inactifs</span>
+            <span class="color-blue-ice">{{ numberOfInactiveBeneficiaries }} inactif{% if numberOfInactiveBeneficiaries > 1 %}s{% endif %}</span>
         </div>
     </li>
     <li>
@@ -49,7 +49,7 @@
             {% for volunteer in allUsers|filter(volunteer => volunteer.status == 'volunteer') %}
                 {% set numberOfVolunteers = loop.length %}
             {% endfor %}
-            <span class="color-blue-ice">{{ numberOfVolunteers }} accompagnants</span>
+            <span class="color-blue-ice">{{ numberOfVolunteers }} accompagnant{% if numberOfVolunteers > 1 %}s{% endif %}</span>
         </div>
     </li>
     <li>
@@ -59,7 +59,7 @@
             {% for volunteer in allUsers|filter(volunteer => volunteer.status == 'volunteer' and volunteer.isActive) %}
                 {% set numberOfActiveVolunteers = loop.length %}
             {% endfor %}
-            <span class="color-blue-ice">{{ numberOfActiveVolunteers }} actifs</span>
+            <span class="color-blue-ice">{{ numberOfActiveVolunteers }} actif{% if numberOfActiveVolunteers > 1 %}s{% endif %}</span>
         </div>
     </li>
     <li>
@@ -69,7 +69,7 @@
             {% for volunteer in allUsers|filter(volunteer => volunteer.status == 'volunteer' and not volunteer.isActive) %}
                 {% set numberOfInactiveVolunteers = loop.length %}
             {% endfor %}
-            <span class="color-blue-ice">{{ numberOfInactiveVolunteers }} inactifs</span>
+            <span class="color-blue-ice">{{ numberOfInactiveVolunteers }} inactif{% if numberOfInactiveVolunteers > 1 %}s{% endif %}</span>
         </div>
     </li>
     <li>
@@ -82,7 +82,7 @@
             {% for trip in allTrips %}
                 {% set numberOfTrips = loop.length %}
             {% endfor %}
-            <span class="color-blue-ice">{{ numberOfTrips }} accompagnements</span>
+            <span class="color-blue-ice">{{ numberOfTrips }} accompagnement{% if numberOfTrips > 1 %}s{% endif %}</span>
         </div>
     </li>
     <li>

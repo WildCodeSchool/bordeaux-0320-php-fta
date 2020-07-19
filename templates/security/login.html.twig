@@ -18,7 +18,11 @@
                 <i class="material-icons trip-title">account_circle</i>
             </h3>
             <div class="mt-l mb-l">
-                {{ include('user/_form.html.twig') }}
+                {% if app.request.locale == 'ar' %}
+                    {{ include('_arab_templates/ar_user_login_form.html.twig') }}
+                {% else %}
+                    {{ include('user/_form.html.twig') }}
+                {% endif %}
             </div>
         </div>
     </div>

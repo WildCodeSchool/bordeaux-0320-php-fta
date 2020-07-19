@@ -1,0 +1,10 @@
+{% block date_time_picker_row %}
+    <div class="row pad">
+        <input name='datePicker' type="text" class="datepicker pl pr schedule-date col s10" value="{{ 'Date'|trans }}">
+        <i class="material-icons pictos-trip pt col s1 offset-s1">date_range</i>
+    </div>
+    <div class="row pl pr pb">
+        <input name='timePicker' type="text" class="timepicker pl pr schedule-date col s10" value="{{ 'Time'|trans }}">
+        <i class="material-icons pictos-trip pt col s1 offset-s1">access_time</i>
+    </div>
+{% endblock %}

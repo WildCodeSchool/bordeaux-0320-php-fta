@@ -11,7 +11,11 @@
             <i class="material-icons trip-title">account_circle</i>
             <i class="material-icons trip-title">edit</i>
         </h3>
-        {{ include('user/_form_edit.html.twig', {'button_label': 'Update'}) }}
+        {% if app.request.locale == 'ar' %}
+            {{ include('_arab_templates/ar_user_edit_form.html.twig') }}
+        {% else %}
+            {{ include('user/_form_edit.html.twig', {'button_label': 'Update'}) }}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

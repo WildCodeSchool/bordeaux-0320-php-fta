@@ -13,6 +13,9 @@
                     <i class="material-icons trip-title">directions_car</i>
                     <i class="material-icons trip-title">map</i>
                 </h3>
+                {% if app.request.locale == 'ar' %}
+                    {{ include('_arab_templates/ar_trip_show.html.twig') }}
+                {% else %}
                 <table class="table table-trip col s10 offset-s1">
                     <tbody>
                         <tr>
@@ -73,6 +76,7 @@
                         {% endif %}
                     </tbody>
                 </table>
+                {% endif %}
             </div>
             <div class="pt trip-show-tools bck-ice border-radius-bottom pt pb">
             {% if app.user.status == 'beneficiary' %}

@@ -11,7 +11,11 @@
                 <i class="material-icons trip-title">account_circle</i>
                 <i class="material-icons trip-title">add</i>
             </h3>
-            {{ include('user/_form_register.html.twig') }}
+            {% if app.request.locale == 'ar' %}
+                {{ include('_arab_templates/ar_user_register_form.html.twig') }}
+            {% else %}
+                {{ include('user/_form_register.html.twig') }}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
