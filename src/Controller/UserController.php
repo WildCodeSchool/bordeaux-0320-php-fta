@@ -34,10 +34,12 @@ class UserController extends AbstractController
             ->getRepository(User::class)
             ->findOneById($id);
         $user = $api->getUserById($userLocal->getMobicoopId());
+        $picture = $userLocal->getPicture();
+        dump($picture);
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
-
+            'picture' => $picture,
         ]);
     }
 
@@ -61,7 +63,7 @@ class UserController extends AbstractController
         $userLocal = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(['mobicoopId' => $id]);
-        $userLocalId = $userLocal->getId();
+        $status = $userLocal->getStatus();
 
         $form = $this->createForm(MobicoopForm::class, $userLocal, [
             'gender' => $user['gender'],
@@ -71,6 +73,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userLocal->setStatus($status);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($userLocal);
             $entityManager->flush();
@@ -87,7 +90,7 @@ class UserController extends AbstractController
                 'json' => $userInfo,
             ]);
 
-            return $this->redirectToRoute('user_show', ['id' => $userLocalId]);
+            return $this->redirectToRoute('user_show', ['id' => $userLocal->getId()]);
         }
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
