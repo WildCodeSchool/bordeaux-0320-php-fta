@@ -20,6 +20,9 @@
             <h3 class="bck-night-gr white-text center pad border-radius-top mb-s">
                 <i class="material-icons trip-title">account_circle</i>
             </h3>
+            {% if app.request.locale == 'ar' %}
+                {{ include('_arab_templates/ar_user_show.html.twig') }}
+            {% else %}
             <table class="table table-trip col s10 offset-s1">
                 <tbody>
                     <tr>
@@ -52,6 +55,7 @@
                     </tr>
                 </tbody>
             </table>
+            {% endif %}
         </div>
         <div class="pt trip-show-tools bck-ice z-depth-2 border-radius-bottom pt pb">
             <div class="center-align">

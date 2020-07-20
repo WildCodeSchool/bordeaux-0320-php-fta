@@ -17,7 +17,9 @@
         </tr>
         {% else %}
         <tr>
-            <td colspan="5" class="center-align">No trip found</td>
+            <td colspan="5" class="center-align">
+                {% trans %}No trip found{% endtrans %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>

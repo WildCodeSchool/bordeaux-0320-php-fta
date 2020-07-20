@@ -1,0 +1,53 @@
+{{ form_start(form) }}
+<div class="row pl pr mt">
+    <div class="col s10 pl pr mb">
+        {{ form_widget(form.givenName) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">person_pin</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_widget(form.familyName) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">person_pin</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_widget(form.email) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">mail</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_widget(form.status) }}
+    </div>
+    <i class="material-icons pictos-trip pt col s1 offset-s1 pt">person_pin</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_widget(form.password) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">lock</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_widget(form.telephone) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">phone</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_widget(form.gender) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">person_pin</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_widget(form.birthDate) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">cake</i>
+</div>
+<div class="center-align mb">
+    <button class="btn"><i class="material-icons">arrow_forward</i></button>
+</div>
+{{ form_end(form) }}
