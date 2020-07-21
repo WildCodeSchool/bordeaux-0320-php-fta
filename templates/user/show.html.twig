@@ -7,7 +7,8 @@
 {% block body %}
     <div id="profile-picture" class="modal">
         <div class="modal-content">
-            <img src="{{ asset('uploads/' ~ picture) }}" class="img-profile">
+            <img src="{{ picture ? asset('uploads/' ~ picture) : asset('build/user_avatar.png') }}" class="img-profile">
+            {{ include('user/_form_picture.html.twig') }}
         </div>
         <div class="modal-footer">
             <a href="" class="modal-close waves-effect waves-green btn-flat">
@@ -43,7 +44,6 @@
                         </th>
                         <td class="right-align pr">{{ user.telephone }}</td>
                     </tr>
-                    {% if picture %}
                     <tr class="border-bottom-0">
                         <th>
                             <i class="material-icons small pt-s pl color-blue-night">photo</i>
@@ -54,7 +54,6 @@
                             </a>
                         </td>
                     </tr>
-                    {% endif %}
                 </tbody>
             </table>
             {% endif %}

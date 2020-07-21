@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\MobicoopForm;
+use App\Form\PictureType;
 use App\Service\ApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,8 +20,9 @@ class UserController extends AbstractController
 {
     /**
      * Route to access user profile page
-     * @Route("common/user/{id}", name="user_show", methods={"GET"})
+     * @Route("common/user/{id}", name="user_show", methods={"GET", "POST"})
      * @param ApiService $api
+     * @param Request $request
      * @param int $id
      * @return Response
      * @throws ClientExceptionInterface
@@ -28,18 +30,29 @@ class UserController extends AbstractController
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function show(ApiService $api, int $id): Response
+    public function show(ApiService $api, Request $request, int $id): Response
     {
         $userLocal = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneById($id);
         $user = $api->getUserById($userLocal->getMobicoopId());
         $picture = $userLocal->getPicture();
-        dump($picture);
+
+        $form = $this->createForm(PictureType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userLocal->setPictureFile($form->getData()['pictureFile']);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($userLocal);
+            $entityManager->flush();
+            $this->redirect($request->headers->get('referer'));
+        }
 
         return $this->render('user/show.html.twig', [
-            'user' => $user,
+            'user'    => $user,
             'picture' => $picture,
+            'form'    => $form->createView(),
         ]);
     }
 
@@ -63,31 +76,17 @@ class UserController extends AbstractController
         $userLocal = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(['mobicoopId' => $id]);
-        $status = $userLocal->getStatus();
 
-        $form = $this->createForm(MobicoopForm::class, $userLocal, [
+        $form = $this->createForm(MobicoopForm::class, null, [
             'gender' => $user['gender'],
             'status' => $user['status'],
-            'edit' => true,
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userLocal->setStatus($status);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($userLocal);
-            $entityManager->flush();
-            $userLocal->setPicture(null);
-            $userLocal->setPictureFile(null);
             $client = $apiService->baseUri();
-
-            $userInfo = [
-                'givenName'  => $userLocal->getGivenName(),
-                'familyName' => $userLocal->getfamilyName(),
-            ];
-
             $client->request('PUT', '/users/' . $id, [
-                'json' => $userInfo,
+                'json' => $form->getData(),
             ]);
 
             return $this->redirectToRoute('user_show', ['id' => $userLocal->getId()]);

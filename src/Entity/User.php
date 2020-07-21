@@ -17,7 +17,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity("picture", message="cette image existe déjà")
  * @Vich\Uploadable
  */
 class User implements UserInterface
@@ -81,7 +80,7 @@ class User implements UserInterface
     private $familyName;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true, unique=true)
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      * @Assert\File(
      *      maxSize="5242880",
      *      mimeTypes = {
@@ -97,8 +96,8 @@ class User implements UserInterface
     private $picture;
 
     /**
-     * @Vich\UploadableField(mapping="picture_file", fileNameProperty="picture")
-     * @var File
+     * @Vich\UploadableField(mapping="user_image", fileNameProperty="picture")
+     * @var File|null
      */
     private $pictureFile;
 
@@ -338,10 +337,10 @@ class User implements UserInterface
         return $this;
     }
 
-    public function setPictureFile(File $picture = null)
+    public function setPictureFile(?File $picture = null)
     {
         $this->pictureFile = $picture;
-        if ($picture) {
+        if (null !== $picture) {
             $this->updatedAt = new DateTime('now');
         }
     }
