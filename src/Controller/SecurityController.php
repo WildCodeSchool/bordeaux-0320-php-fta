@@ -91,8 +91,9 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $api->getToken();
+            $email = $form->getData()['email'];
             try {
-                $mobicoopUser = $api->getUser($form);
+                $mobicoopUser = $api->getUserByEmail($email);
             } catch (Exception $e) {
                 throw new Exception('Server error' . $e, 500);
             }
