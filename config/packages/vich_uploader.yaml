@@ -2,7 +2,10 @@ vich_uploader:
     db_driver: orm
 
     mappings:
-        user_image:
+        user_picture:
             uri_prefix: /uploads
             upload_destination: '%upload_directory%'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true

@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserPhoto;
 use App\Form\MobicoopForm;
 use App\Form\PictureType;
+use App\Repository\UserPhotoRepository;
 use App\Service\ApiService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,38 +23,38 @@ class UserController extends AbstractController
 {
     /**
      * Route to access user profile page
-     * @Route("common/user/{id}", name="user_show", methods={"GET", "POST"})
+     * @Route("common/user", name="user_show", methods={"GET", "POST"})
      * @param ApiService $api
      * @param Request $request
-     * @param int $id
+     * @param EntityManagerInterface $entityManager
+     * @param UserPhotoRepository $userPhoto
      * @return Response
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function show(ApiService $api, Request $request, int $id): Response
+    public function show(ApiService $api, Request $request, EntityManagerInterface $entityManager, UserPhotoRepository $userPhoto): Response
     {
-        $userLocal = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneById($id);
-        $user = $api->getUserById($userLocal->getMobicoopId());
-        $picture = $userLocal->getPicture();
+        $user = $api->getUserById($this->getUser()->getMobicoopId());
+        $pictureUser = $this->getUser()->getProfilePicture();
 
-        $form = $this->createForm(PictureType::class);
+        $profilePicture = new UserPhoto();
+
+        $form = $this->createForm(PictureType::class, $profilePicture);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userLocal->setPictureFile($form->getData()['pictureFile']);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($userLocal);
+            $entityManager->persist($profilePicture);
+            $new = $this->getUser()->setProfilePicture($profilePicture);
+            $entityManager->persist($new);
             $entityManager->flush();
             $this->redirect($request->headers->get('referer'));
         }
 
         return $this->render('user/show.html.twig', [
             'user'    => $user,
-            'picture' => $picture,
+            'picture' => $pictureUser,
             'form'    => $form->createView(),
         ]);
     }
