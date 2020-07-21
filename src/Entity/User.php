@@ -79,6 +79,11 @@ class User implements UserInterface
      */
     private $updateAt;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profilePicture;
+
     public function __construct()
     {
         $this->trips = new ArrayCollection();
@@ -318,6 +323,18 @@ class User implements UserInterface
     public function setUpdateAt(DateTimeInterface $updateAt): self
     {
         $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): self
+    {
+        $this->profilePicture = $profilePicture;
 
         return $this;
     }

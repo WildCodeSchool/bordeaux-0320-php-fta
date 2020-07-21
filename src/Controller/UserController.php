@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Entity\UserPhoto;
 use App\Form\MobicoopForm;
 use App\Form\PictureType;
-use App\Repository\UserPhotoRepository;
 use App\Service\ApiService;
+use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,29 +26,34 @@ class UserController extends AbstractController
      * @param ApiService $api
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @param UserPhotoRepository $userPhoto
      * @return Response
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function show(ApiService $api, Request $request, EntityManagerInterface $entityManager, UserPhotoRepository $userPhoto): Response
-    {
+    public function show(
+        ApiService $api,
+        PictureService $pictureService,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
         $user = $api->getUserById($this->getUser()->getMobicoopId());
         $pictureUser = $this->getUser()->getProfilePicture();
 
-        $profilePicture = new UserPhoto();
 
-        $form = $this->createForm(PictureType::class, $profilePicture);
+        $form = $this->createForm(PictureType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($profilePicture);
-            $new = $this->getUser()->setProfilePicture($profilePicture);
-            $entityManager->persist($new);
+            if ($pictureUser) {
+                $pictureService->deleteOldPicture($pictureUser);
+            }
+            $pictureName = $pictureService->uploadImage($form->getData()['imageFile']);
+            $setPicture = $this->getUser()->setProfilePicture($pictureName);
+            $entityManager->persist($setPicture);
             $entityManager->flush();
-            $this->redirect($request->headers->get('referer'));
+            $this->redirectToRoute('user_show');
         }
 
         return $this->render('user/show.html.twig', [
