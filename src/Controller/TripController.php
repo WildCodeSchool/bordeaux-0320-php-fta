@@ -164,13 +164,13 @@ class TripController extends AbstractController
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function delete(Request $request, Trip $trip, EmailService $emailService): Response
+    public function delete(Request $request, Trip $trip/*, EmailService $emailService*/): Response
     {
         if ($this->isCsrfTokenValid('delete' . $trip->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trip);
             $entityManager->flush();
-            $emailService->canceled($trip);
+            //$emailService->canceled($trip);
         }
 
         return $this->redirectToRoute('trip_beneficiary');
