@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionsForDatepickers = {
         autoClose: true,
         firstDay: 1,
+        maxDate: new Date(),
     };
     const instancesOfDatepickers = M.Datepicker.init(datepickers, optionsForDatepickers);
     const modals = document.querySelectorAll('.modal');
