@@ -1,0 +1,54 @@
+{{ form_start(form) }}
+<div class="row pl pr mt">
+    <div class="col s10 pl pr mb">
+        {{ form_row(form.givenName, {'attr': {'value': user.givenName }}) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">person_pin</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_row(form.familyName, {'attr': {'value': user.familyName }}) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">person_pin</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_row(form.email, {'attr': {'value': user.email }}) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">mail</i>
+</div>
+<div class="row pl pr mb-l">
+    <div class="col s10 pl pr mb">
+        {{ form_row(form.telephone, {'attr': {'value': user.telephone }}) }}
+    </div>
+    <i class="material-icons pictos-trip col s1 offset-s1 pt">phone</i>
+</div>
+<div class="row pl pr mb-l" hidden>
+    <i class="material-icons pictos-trip col s1 pt">lock</i>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.password, {'attr': {'value': user.password }}) }}
+    </div>
+</div>
+<div class="row pl pr mb-l" hidden>
+    <i class="material-icons pictos-trip col s1 pt">person_pin</i>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_widget(form.gender) }}
+    </div>
+</div>
+<div class="row pl pr mb-l" hidden>
+    <i class="material-icons pictos-trip col s1 pt">person_pin</i>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_widget(form.status) }}
+    </div>
+</div>
+<div class="row pl pr mb-l" hidden>
+    <i class="material-icons pictos-trip col s1 pt">cake</i>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.birthDate, {'attr': {'value': user.birthDate }}) }}
+    </div>
+</div>
+{{ form_rest(form) }}
+<div class="center-align mb">
+    <button class="btn"><i class="material-icons">arrow_forward</i></button>
+</div>
+{{ form_end(form) }}

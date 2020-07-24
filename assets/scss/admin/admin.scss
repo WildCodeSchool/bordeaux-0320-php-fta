@@ -39,14 +39,14 @@ nav .brand-logo {
   color: $blue-duck;
 }
 
+.admin-link:hover {
+  color: $blue-night;
+}
+
 .admin-logo {
   width: 80%;
   margin: 12% 10% 4% 10%;
   filter: drop-shadow(0 0 0.3rem #144a8a);
-}
-
-.admin-link:hover {
-  color: $blue-night;
 }
 
 .admin-delete-btn {

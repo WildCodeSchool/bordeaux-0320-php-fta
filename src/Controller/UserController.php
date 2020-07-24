@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\MobicoopForm;
-use App\Repository\UserRepository;
+use App\Form\PictureType;
 use App\Service\ApiService;
+use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,38 +20,46 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class UserController extends AbstractController
 {
-
-    /**
-     * @Route("/user", name="user_index", methods={"GET"})
-     * @param UserRepository $userRepository
-     * @return Response
-     */
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
-
     /**
      * Route to access user profile page
-     * @Route("common/user/{id}", name="user_show", methods={"GET"})
+     * @Route("common/user", name="user_show", methods={"GET", "POST"})
      * @param ApiService $api
-     * @param int $id
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
      * @return Response
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function show(ApiService $api, int $id): Response
-    {
-        $userLocal = $this->getDoctrine()->getRepository(User::class)->findOneById($id);
-        $user = $api->getUserById($userLocal->getMobicoopId());
+    public function show(
+        ApiService $api,
+        PictureService $pictureService,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $user = $api->getUserById($this->getUser()->getMobicoopId());
+        $pictureUser = $this->getUser()->getProfilePicture();
+
+
+        $form = $this->createForm(PictureType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($pictureUser) {
+                $pictureService->deleteOldPicture($pictureUser);
+            }
+            $pictureName = $pictureService->uploadImage($form->getData()['imageFile']);
+            $setPicture = $this->getUser()->setProfilePicture($pictureName);
+            $entityManager->persist($setPicture);
+            $entityManager->flush();
+            $this->redirectToRoute('user_show');
+        }
 
         return $this->render('user/show.html.twig', [
-            'user' => $user,
-
+            'user'    => $user,
+            'picture' => $pictureUser,
+            'form'    => $form->createView(),
         ]);
     }
 
@@ -74,35 +83,20 @@ class UserController extends AbstractController
         $userLocal = $this->getDoctrine()
             ->getRepository(User::class)
             ->findOneBy(['mobicoopId' => $id]);
-        $userLocalId = $userLocal->getId();
 
-        $form = $this->createForm(MobicoopForm::class, $userLocal, [
+        $form = $this->createForm(MobicoopForm::class, null, [
             'gender' => $user['gender'],
             'status' => $user['status'],
-            'edit' => true,
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($userLocal);
-            $entityManager->flush();
-
-            $userLocal->setPicture(null);
-            $userLocal->setPictureFile(null);
             $client = $apiService->baseUri();
-
-            $userInfo = [
-                'givenName'  => $userLocal->getGivenName(),
-                'familyName' => $userLocal->getfamilyName(),
-                'status'     => (int)$userLocal->getStatus(),
-            ];
-
             $client->request('PUT', '/users/' . $id, [
-                'json' => $userInfo,
+                'json' => $form->getData(),
             ]);
 
-            return $this->redirectToRoute('user_show', ['id' => $userLocalId]);
+            return $this->redirectToRoute('user_show', ['id' => $userLocal->getId()]);
         }
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),

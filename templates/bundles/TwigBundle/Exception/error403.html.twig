@@ -2,11 +2,13 @@
 
 {% block body %}
     <div class="center-align">
-    <h1>Page not found</h1>
+    <h1>
+        {% trans %}Page not found{% endtrans %}
+    </h1>
 
     <p>
-        Access denied. You are not allowed to see this page.
-        <a href="{{ asset('/') }}">return to the homepage</a>.
+        {% trans %}Access denied. You are not allowed to see this page.{% endtrans %}
+        <a href="{{ asset('/') }}">{% trans %}return to the homepage{% endtrans %}</a>.
     </p>
     </div>
 {% endblock %}

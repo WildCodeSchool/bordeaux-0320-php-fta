@@ -1,0 +1,60 @@
+<table class="table table-trip col s10 offset-s1">
+    <tbody>
+    <tr>
+        <th class="left-align pl">
+            {{ trip.date|date('Y-m-d') }}
+        </th>
+        <td>
+            <i class="material-icons small pt-s pr">date_range</i>
+        </td>
+    </tr>
+    <tr>
+        <th class="left-align pl">
+            {{ trip.date|date('h:i A') }}
+        </th>
+        <td>
+            <i class="material-icons small pt-s pr">access_time</i>
+        </td>
+    </tr>
+    <tr>
+        <th class="left-align pl">
+            {{ trip.departure.name }}
+        </th>
+        <td>
+            <i class="material-icons small pt-s pr">gps_fixed</i>
+        </td>
+    </tr>
+    <tr>
+        <th class="left-align pl">
+            {{ trip.arrival.name }}
+        </th>
+        <td>
+            <i class="material-icons small pt-s pr">location_on</i>
+        </td>
+    </tr>
+    {% if trip.volunteer and app.user.status == 'beneficiary' %}
+        <tr>
+            <th class="left-align pl">
+                <a class="waves-effect waves-light modal-trigger" href="#userInfo">
+                    {{ volunteer.givenName }} {{ volunteer.familyName }}
+                </a>
+            </th>
+            <td>
+                <i class="material-icons small pt-s pr">people</i>
+            </td>
+        </tr>
+    {% endif %}
+    {% if app.user.status == 'volunteer' %}
+        <tr>
+            <th class="left-align pl">
+                <a class="waves-effect waves-light modal-trigger" href="#userInfo">
+                    {{ beneficiary.givenName }} {{ beneficiary.familyName }}
+                </a>
+            </th>
+            <td>
+                <i class="material-icons small pt-s pr">people</i>
+            </td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

@@ -1,0 +1,34 @@
+<table class="table table-trip col s10 offset-s1">
+    <tbody>
+    <tr>
+        <th class="right-align pr">{{ user.givenName }} {{ user.familyName }}</th>
+        <td>
+            <i class="material-icons small pt-s pl color-blue-night">person_pin</i>
+        </td>
+    </tr>
+    <tr>
+        <th class="right-align pr">{{ user.email }}</th>
+        <td>
+            <i class="material-icons small pt-s pl color-blue-night">mail</i>
+        </td>
+    </tr>
+    <tr>
+        <th class="right-align pr">{{ user.telephone }}</th>
+        <td>
+            <i class="material-icons small pt-s pl color-blue-night">phone</i>
+        </td>
+    </tr>
+    {% if picture %}
+    <tr class="border-bottom-0">
+        <th class="right-align pr">
+            <a class="modal-trigger profile-link" href="#profile-picture">
+                {% trans %}See my picture{% endtrans %}
+            </a>
+        </th>
+        <td>
+            <i class="material-icons small pt-s pl color-blue-night">photo</i>
+        </td>
+    </tr>
+    {% endif %}
+    </tbody>
+</table>
