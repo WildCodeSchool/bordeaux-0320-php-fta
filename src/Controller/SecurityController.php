@@ -94,6 +94,10 @@ class SecurityController extends AbstractController
             } catch (Exception $e) {
                 throw new Exception('Error server' . $e, 500);
             }
+            if (!isset($mobicoopUser['hydra:member'][0])) {
+                $this->addFlash('error', 'Your a not registred');
+                return $this->redirectToRoute('login');
+            }
             $passwordSaved = $mobicoopUser['hydra:member'][0]['password'];
             $password = $form->getData()['password'];
             if (ApiService::passwordVerify($passwordSaved, $password)) {
