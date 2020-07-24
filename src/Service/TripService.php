@@ -25,9 +25,9 @@ class TripService
     {
         $newArray = [];
         $inc = 0;
-        foreach ($usersMobicoop as $user) {
+        foreach ($usersMobicoop['hydra:member'] as $user) {
             foreach ($trips as $data) {
-                if ($user->id === $data->getBeneficiary()->getMobicoopId()) {
+                if ($user['id'] === $data->getBeneficiary()->getMobicoopId()) {
                     $newArray[$inc]['id'] = $data->getId();
                     $newArray[$inc]['departureName'] = $data->getDeparture()->getName();
                     $newArray[$inc]['arrivalName'] = $data->getArrival()->getName();

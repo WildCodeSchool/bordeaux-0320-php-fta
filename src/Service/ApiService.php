@@ -23,6 +23,8 @@ class ApiService
      *
      */
     const BASE_URL = 'https://api.mobicoop.io';
+    const PER_PAGE_FOR_NAME = 200;
+    const PER_PAGE_ALL_USERS = 500;
 
     /**
      * @var SessionInterface
@@ -80,19 +82,19 @@ class ApiService
     }
 
     /**
-     * @param FormInterface $form
+     * @param string $email
      * @return array
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function getUser(FormInterface $form): array
+    public function getUserByEmail(string $email): array
     {
         $client = $this->baseUri();
         $response = $client->request('GET', '/users', [
             'query' => [
-                'email' => $form->getData()['email']
+                'email' => $email,
             ]
         ]);
         return ApiService::decodeJson($response->getContent());
@@ -118,7 +120,8 @@ class ApiService
         $client = $this->baseUri();
         $response = $client->request('GET', '/users', [
             'query' => [
-                'givenName' => $name
+                'givenName' => $name,
+                'perPage' => self::PER_PAGE_FOR_NAME,
             ]
         ]);
         return ApiService::decodeJson($response->getContent());
@@ -126,25 +129,23 @@ class ApiService
 
     public function getAllUsers(): array
     {
-        $result = [];
-        $users = $this->userRepository->findAll();
         $client = $this->baseUri();
-        foreach ($users as $user) {
-            $response = $client->request('GET', '/users/' . $user->getMobicoopId());
-            $result[] = json_decode($response->getContent());
-        }
-
-        return $result;
+        $response = $client->request('GET', '/users/', [
+            'query' => [
+                'perPage' => self::PER_PAGE_ALL_USERS,
+            ]
+        ]);
+        return self::decodeJson($response->getContent());
     }
 
     public function setFullName(array $usersMobicoop, array $users): ?array
     {
         $result = null;
-        foreach ($usersMobicoop as $userMobicoop) {
+        foreach ($usersMobicoop['hydra:member'] as $userMobicoop) {
             foreach ($users as $user) {
-                if ($userMobicoop->id === $user->getMobicoopId()) {
-                    $user->setGivenName($userMobicoop->givenName);
-                    $user->setFamilyName($userMobicoop->familyName);
+                if ($userMobicoop['id'] === $user->getMobicoopId()) {
+                    $user->setGivenName($userMobicoop['givenName']);
+                    $user->setFamilyName($userMobicoop['familyName']);
                     $result = $users;
                 }
             }
@@ -202,13 +203,13 @@ class ApiService
     {
         $newArray = [];
         $inc = 0;
-        foreach ($usersMobicoop as $user) {
+        foreach ($usersMobicoop['hydra:member'] as $user) {
             foreach ($usersCommon as $data) {
-                if ($user->id === $data->getMobicoopId()) {
+                if ($user['id'] === $data->getMobicoopId()) {
                     $newArray[$inc]['id'] = $data->getId();
                     $newArray[$inc]['mobicoopId'] = $data->getMobicoopId();
-                    $newArray[$inc]['givenName'] = $user->givenName;
-                    $newArray[$inc]['familyName'] = $user->familyName;
+                    $newArray[$inc]['givenName'] = $user['givenName'];
+                    $newArray[$inc]['familyName'] = $user['familyName'];
                     $newArray[$inc]['status'] = $data->getStatus();
                     $newArray[$inc]['isActive'] = $data->getIsActive();
                     $inc++;
