@@ -41,6 +41,10 @@ class MobicoopForm extends AbstractType
                 'label' => false,
                 'attr' => ['placeholder' => 'Password'],
             ])
+            ->add('confirm_password', PasswordType::class,[
+                'label'=> false,
+                'attr'=> ['placeholder' => 'Confirm Password']
+            ])
             ->add('telephone', TelType::class, [
                 'label' => false,
                 'attr' => ['placeholder' => '0123456789'],
