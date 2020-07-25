@@ -3,7 +3,6 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes:
-        - 'Form/ar_datepicker.html.twig'
         - 'Form/_datepicker.html.twig'
     globals:
         locales: '%app.locales%'
