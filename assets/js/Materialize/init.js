@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     M.AutoInit();
-    const datepickerBirthday = document.querySelectorAll('#mobicoop_form_birthDate');
+    const datepickerBirthday = document.querySelectorAll('#mobicoop_form_birthDate, #mobicoop_admin_form_birthDate');
     const optionsForDatepickerBirthday = {
         autoClose: true,
         firstDay: 1,
         maxDate: new Date(),
+        yearRange: 70,
     };
     const instancesOfDatepickerBirthday = M.Datepicker.init(
         datepickerBirthday,
