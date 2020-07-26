@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\MobicoopEditForm;
 use App\Form\MobicoopForm;
 use App\Form\PictureType;
 use App\Service\ApiService;
@@ -87,10 +88,7 @@ class UserController extends AbstractController
             ->getRepository(User::class)
             ->findOneBy(['mobicoopId' => $id]);
 
-        $form = $this->createForm(MobicoopForm::class, null, [
-            'gender' => $user['gender'],
-            'status' => $user['status'],
-        ]);
+        $form = $this->createForm(MobicoopEditForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\MobicoopAdminEditForm;
 use App\Form\MobicoopAdminForm;
 use App\Repository\ScheduleVolunteerRepository;
 use App\Repository\TripRepository;
@@ -189,9 +190,7 @@ class AdminController extends AbstractController
         $apiService->getToken();
         $user = $apiService->getUserById($mobicoopId);
 
-        $form = $this->createForm(MobicoopAdminForm::class, null, [
-            'gender' => $user['gender'],
-        ]);
+        $form = $this->createForm(MobicoopAdminEditForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
