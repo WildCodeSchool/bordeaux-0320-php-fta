@@ -191,7 +191,6 @@ class AdminController extends AbstractController
 
         $form = $this->createForm(MobicoopAdminForm::class, null, [
             'gender' => $user['gender'],
-            'status' => $user['status']
         ]);
         $form->handleRequest($request);
 
@@ -236,8 +235,8 @@ class AdminController extends AbstractController
         $usersMobicoop = $apiService->getUserByGivenName($name);
         $usersBeneficiary = $userRepository->findBy(
             ['status' => $type],
-            ['id' => 'ASC'],
-            self::LIMIT
+            ['id' => 'DESC'],
+            self::LIMIT,
         );
 
         $usersMobicoop = $apiService::createAjaxUserArray($usersMobicoop, $usersBeneficiary);
@@ -296,18 +295,22 @@ class AdminController extends AbstractController
         $type = $request->query->get('type');
 
         $usersMobicoop = $apiService->getAllUsers();
-        $users = $userRepository->findBy(['status' => $type], ['id' => 'ASC'], 5, $limit);
+        $users = $userRepository->findBy(['status' => $type], ['id' => 'DESC'], 5, $limit);
 
         return new JsonResponse($apiService::createAjaxUserArray($usersMobicoop, $users));
     }
 
-   /**
+    /**
      * @Route("/beneficiary/trips/{id}", name="beneficiary_trips")
      * @param int $id
      * @param TripRepository $tripRepository
      * @param ApiService $apiService
      * @param UserRepository $userRepository
      * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function beneficiaryTrips(
         int $id,

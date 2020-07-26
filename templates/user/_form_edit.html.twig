@@ -23,10 +23,10 @@
         {{ form_row(form.telephone, {'attr': {'value': user.telephone }}) }}
     </div>
 </div>
-<div class="row pl pr mb-l" hidden>
+<div class="row pl pr mb-l">
     <i class="material-icons pictos-trip col s1 pt">lock</i>
     <div class="col s10 offset-s1 pl pr mb">
-        {{ form_row(form.password, {'attr': {'value': user.password }}) }}
+        {{ form_row(form.password) }}
     </div>
 </div>
 <div class="row pl pr mb-l" hidden>
@@ -47,7 +47,12 @@
         {{ form_row(form.birthDate, {'attr': {'value': user.birthDate }}) }}
     </div>
 </div>
-{{ form_rest(form) }}
+<div class="row pl pr mb-l">
+    <i class="material-icons pictos-trip col s1 pt">lock</i>
+    <div class="col s10 offset-s1 pl pr mb">
+        {{ form_row(form.confirm_password) }}
+    </div>
+</div>
 <div class="center-align mb">
     <button class="btn"><i class="material-icons">arrow_forward</i></button>
 </div>

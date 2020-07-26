@@ -260,9 +260,10 @@ class TripController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param EmailService $emailService
      * @return RedirectResponse
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     public function removeVolunteerToTrip(
