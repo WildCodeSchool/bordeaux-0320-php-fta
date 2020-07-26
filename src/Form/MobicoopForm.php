@@ -53,7 +53,6 @@ class MobicoopForm extends AbstractType
             ])
             ->add('confirm_password', PasswordType::class,[
                 'label'=> false,
-
                 'attr'=> [
                     'placeholder' => 'Confirm password',
                     'pattern' => '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$',
