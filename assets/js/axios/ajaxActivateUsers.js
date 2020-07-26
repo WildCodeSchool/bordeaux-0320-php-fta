@@ -3,10 +3,10 @@ import axios from 'axios';
 const activateUser = (id) => {
     axios.post(`/ajax/activate/${id}`)
         .then((response) => {
-            console.log(response.data);
+            // do somethings
         })
         .catch((error) => {
-            console.log(error);
+            // do somethings
         });
 };
 

@@ -1,5 +1,5 @@
 You are now connected: انت متصل
-There is a problem with your account, please contact us: هناك مشكلة في حسابك ، يرجى الاتصال بنا
+You are not registred: انت لم تسجل
 New trip added: وأضاف مرافقة جديدة
 Email: عنوان بريد إلكتروني
 Password: كلمة سر
@@ -18,3 +18,9 @@ Starting point: نقطة الانطلاق
 Destination: وجهة
 Download: يُحمِّل، ينزّل
 Delete: يحذف شيئًا
+6 characters minimum (with at leat one upper case letter, one lower case letter and one numeric digit):
+  6 أحرف على الأقل (بحرف واحد كبير على الأقل ، وحرف صغير واحد ورقم رقمي واحد)
+Confirm password: مُعَزِّز لو موت دو باس
+You must write the same password as above: يجب عليك كتابة نفس كلمة المرور أعلاه
+Only numbers and symbol (+) allowed: يسمح فقط بالأرقام والرمز (+)
+Your file is not a jpeg, jpg or png: ملفك ليس بتنسيق jpeg أو jpg أو png

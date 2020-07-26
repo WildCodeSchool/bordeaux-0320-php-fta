@@ -6,9 +6,11 @@ use App\Entity\User;
 use App\Form\ConnectionType;
 use App\Form\MobicoopForm;
 use App\Service\ApiService;
+use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,27 +38,35 @@ class SecurityController extends AbstractController
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function new(Request $request, ApiService $api, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, ApiService $api, EntityManagerInterface $entityManager, EmailService $emailService): Response
     {
         $form = $this->createForm(MobicoopForm::class);
         $form->handleRequest($request);
         $api->getToken();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $client = $api->baseUri();
-            $fullForm = $api::addPhoneDisplay($form->getData());
-            $response = $client->request('POST', '/users', [
-                'json' => $fullForm,
-            ]);
-            $response->getContent();
-            $decodeUser = ApiService::decodeJson($response->getContent());
-            $user = new User();
-            $user->setMobicoopId($decodeUser['id'])
-                ->setIsActive(false)
-                ->setStatus('volunteer')
-                ->setRoles(['ROLE_USER_UNVALIDATE']);
-            $entityManager->persist($user);
-            $entityManager->flush();
+            try {
+                $client = $api->baseUri();
+                $fullForm = $api::addPhoneDisplay($form->getData());
+                $response = $client->request('POST', '/users', [
+                    'json' => $fullForm,
+                ]);
+                $response->getContent();
+                $decodeUser = ApiService::decodeJson($response->getContent());
+                $status = $decodeUser['status'] === 1 ? 'beneficiary' : 'volunteer';
+                $user = new User();
+                $user->setMobicoopId($decodeUser['id'])
+                    ->setIsActive(false)
+                    ->setStatus($status)
+                    ->setRoles(['ROLE_USER_' . strtoupper($status)]);
+                $entityManager->persist($user);
+                $entityManager->flush();
+            } catch (ClientException $e) {
+                $this->addFlash('error', $e->getMessage());
+                $this->redirectToRoute('user_new');
+            }
+
+            $emailService->createdAccountMail($decodeUser);
 
             $this->addFlash('success', 'You are now connected');
 
@@ -91,10 +101,16 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $api->getToken();
+            $email = $form->getData()['email'];
             try {
-                $mobicoopUser = $api->getUser($form);
+                $mobicoopUser = $api->getUserByEmail($email);
             } catch (Exception $e) {
                 throw new Exception('Server error' . $e, 500);
+            }
+            if (!isset($mobicoopUser['hydra:member'][0])) {
+                $error = $translator->trans('You are not registred');
+                $this->addFlash('error', $error);
+                return $this->redirectToRoute('login');
             }
             $passwordSaved = $mobicoopUser['hydra:member'][0]['password'];
             $password = $form->getData()['password'];
@@ -111,15 +127,13 @@ class SecurityController extends AbstractController
                 $event = new InteractiveLoginEvent($request, $token);
                 $eventDispatcher->dispatch("security.interactive_login", $event);
 
-                if ($user->getStatus() === 'volunteer') {
+                if ($user->getStatus() === 'volunteer' && $user->getIsActive()) {
                     return $this->redirectToRoute('trip_matching');
-                } elseif ($user->getStatus() === 'beneficiary') {
+                } elseif ($user->getStatus() === 'beneficiary' && $user->getIsActive()) {
                     return $this->redirectToRoute('trip_beneficiary');
                 } elseif ($user->getStatus() === 'admin') {
                     return $this->redirectToRoute('admin_index');
                 } else {
-                    $error = $translator->trans('There is a problem with your account, please contact us');
-                    $this->addFlash('warning', $error);
                     return $this->redirectToRoute('login');
                 }
             }

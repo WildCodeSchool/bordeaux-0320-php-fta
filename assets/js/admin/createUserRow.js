@@ -5,13 +5,14 @@ export function toggleLoading() {
     loading.classList.toggle('display-loading');
 }
 
-const createSwitch = (isActive) => {
+const createSwitch = (isActive, id) => {
     const div = document.createElement('div');
     const label = document.createElement('label');
     const input = document.createElement('input');
     const span = document.createElement('span');
 
-    span.className = 'lever';
+    span.className = 'lever switchActiveUser';
+    span.dataset.id = id;
     input.setAttribute('type', 'checkbox');
     input.checked = isActive;
     div.className = 'switch';
@@ -70,7 +71,7 @@ export function createLine(tableRef, value, i) {
 
     newCell = newRow.insertCell(4);
     newCell.className = 'center-align';
-    newCell.appendChild(createSwitch(value[i].isActive));
+    newCell.appendChild(createSwitch(value[i].isActive, value[i].id));
 
     newCell = newRow.insertCell(5);
     newCell.className = 'center-align';

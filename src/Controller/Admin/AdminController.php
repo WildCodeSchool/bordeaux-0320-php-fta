@@ -49,12 +49,10 @@ class AdminController extends AbstractController
         $usersVolunteer = $userRepository->findBy(
             ['status' => User::STATUS_VOLUNTEER],
             ['id' => 'DESC'],
-            self::LIMIT
         );
         $usersBeneficiary = $userRepository->findBy(
             ['status' => User::STATUS_BENEFICIARY],
             ['id' => 'DESC'],
-            self::LIMIT
         );
 
         $apiService->getToken();
@@ -63,10 +61,16 @@ class AdminController extends AbstractController
         $usersVolunteer = $apiService->setFullName($usersMobicoop, $usersVolunteer);
         $usersBeneficiary = $apiService->setFullName($usersMobicoop, $usersBeneficiary);
 
+        $trips = $tripRepository->findBy(
+            [],
+            ['id' => 'DESC'],
+            self::LIMIT
+        );
+
         return $this->render('admin/index.html.twig', [
             'usersVolunteer' => $usersVolunteer,
             'usersBeneficiary' => $usersBeneficiary,
-            'trips' => $tripRepository->findBy([], ['id' => 'DESC'], self::LIMIT),
+            'trips' => $trips,
             'allUsers' => $userRepository->findAll(),
             'allTrips' => $tripRepository->findAll(),
         ]);
@@ -96,7 +100,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/trips/trips.html.twig', [
             'users' => $users,
-            'trips' => $tripRepository->findBy([], ['id' => 'ASC'], 5),
+            'trips' => $tripRepository->findBy([], ['id' => 'ASC'], self::LIMIT),
         ]);
     }
 
@@ -121,7 +125,7 @@ class AdminController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        $users = $userRepository->findBy(['status' => $status], ['id' => 'ASC'], self::LIMIT);
+        $users = $userRepository->findBy(['status' => $status], ['id' => 'DESC'], self::LIMIT);
         $apiService->getToken();
         $form = $this->createForm(MobicoopAdminForm::class);
         $form->handleRequest($request);
@@ -137,7 +141,7 @@ class AdminController extends AbstractController
             $user->setMobicoopId($decodeUser['id'])
                 ->setIsActive(false)
                 ->setStatus($status)
-                ->setRoles(['ROLE_USER_UNVALIDATE']);
+                ->setRoles(['ROLE_USER_' . strtoupper($status)]);
             $entityManager->persist($user);
             $entityManager->flush();
 

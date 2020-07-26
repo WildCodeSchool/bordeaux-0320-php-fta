@@ -18,11 +18,13 @@ class MobicoopForm extends AbstractType
         $builder
             ->add('givenName', TextType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'First name']
+                'attr' => ['placeholder' => 'First name'],
+                'required' => true,
             ])
             ->add('familyName', TextType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'Last name']
+                'attr' => ['placeholder' => 'Last name'],
+                'required' => true,
             ])
             ->add('status', ChoiceType::class, [
                 'label' => false,
@@ -30,24 +32,43 @@ class MobicoopForm extends AbstractType
                     'Beneficiary' => 1,
                     'Volunteer' => 2,
                 ],
-                'data' => $options['status'] ?? $options['status'],
+                'data' => $options['status'],
                 'placeholder' => 'Status',
+                'required' => true,
             ])
             ->add('email', EmailType::class, [
                 'label' => false,
                 'attr' => ['placeholder' => 'email@example.com'],
+                'required' => true,
             ])
             ->add('password', PasswordType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'Password'],
+                'attr' => [
+                    'placeholder' => 'Password',
+                    'pattern' => '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$',
+                    'title' => '6 characters minimum (with at leat one upper 
+                    case letter, one lower case letter and one numeric digit)',
+                    ],
+                'required' => true,
             ])
             ->add('confirm_password', PasswordType::class,[
                 'label'=> false,
-                'attr'=> ['placeholder' => 'Confirm password']
+
+                'attr'=> [
+                    'placeholder' => 'Confirm password',
+                    'pattern' => '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$',
+                    'title' => 'You must write the same password as above',
+                    ],
+                'required' => true,
             ])
             ->add('telephone', TelType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => '0123456789'],
+                'attr' => [
+                    'placeholder' => '0123456789',
+                    'pattern' => '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$',
+                    'title' => 'Only numbers and symbol (+) allowed',
+                ],
+                'required' => true,
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => false,
@@ -56,8 +77,9 @@ class MobicoopForm extends AbstractType
                     'Male' => 2,
                     'Other' => 3,
                 ],
-                'data' => $options['gender'] ?? $options['gender'],
+                'data' => $options['gender'],
                 'placeholder' => 'Gender',
+                'required' => true,
             ])
             ->add('birthDate', TextType::class, [
                 'label' => false,
@@ -65,6 +87,7 @@ class MobicoopForm extends AbstractType
                     'class' => 'datepicker',
                     'placeholder' => 'Birth date'
                     ],
+                'required' => true,
             ]);
     }
 
