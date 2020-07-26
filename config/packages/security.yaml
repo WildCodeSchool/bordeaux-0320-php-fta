@@ -14,7 +14,7 @@ security:
             anonymous: ~
             logout:
                 path: logout
-                target: login
+                target: homepage
     access_control:
          #- { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/beneficiary, roles: ROLE_USER_BENEFICIARY }

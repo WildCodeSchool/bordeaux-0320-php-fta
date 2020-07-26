@@ -9,6 +9,7 @@ use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,20 +44,25 @@ class SecurityController extends AbstractController
         $api->getToken();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $client = $api->baseUri();
-            $fullForm = $api::addPhoneDisplay($form->getData());
-            $response = $client->request('POST', '/users', [
-                'json' => $fullForm,
-            ]);
-            $response->getContent();
-            $decodeUser = ApiService::decodeJson($response->getContent());
-            $user = new User();
-            $user->setMobicoopId($decodeUser['id'])
-                ->setIsActive(false)
-                ->setStatus('volunteer')
-                ->setRoles(['ROLE_USER_UNVALIDATE']);
-            $entityManager->persist($user);
-            $entityManager->flush();
+            try {
+                $client = $api->baseUri();
+                $fullForm = $api::addPhoneDisplay($form->getData());
+                $response = $client->request('POST', '/users', [
+                    'json' => $fullForm,
+                ]);
+                $response->getContent();
+                $decodeUser = ApiService::decodeJson($response->getContent());
+                $user = new User();
+                $user->setMobicoopId($decodeUser['id'])
+                    ->setIsActive(false)
+                    ->setStatus('volunteer')
+                    ->setRoles(['ROLE_USER_UNVALIDATE']);
+                $entityManager->persist($user);
+                $entityManager->flush();
+            } catch (ClientException $e) {
+                $this->addFlash('error', $e->getMessage());
+                $this->redirectToRoute('user_new');
+            }
 
             $this->addFlash('success', 'You are now connected');
 

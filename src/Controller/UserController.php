@@ -141,6 +141,6 @@ class UserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('logout');
     }
 }
