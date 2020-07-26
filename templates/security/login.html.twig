@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    {% for label, messages in app.flashes(['warning']) %}
+    {% for label, messages in app.flashes(['error']) %}
         {% for message in messages %}
             <div class="green lighten-2 flash-{{ label }}">
                 {{ message }}

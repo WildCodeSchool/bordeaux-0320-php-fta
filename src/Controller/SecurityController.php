@@ -98,7 +98,8 @@ class SecurityController extends AbstractController
                 throw new Exception('Server error' . $e, 500);
             }
             if (!isset($mobicoopUser['hydra:member'][0])) {
-                $this->addFlash('error', 'You are not registred');
+                $error = $translator->trans('You are not registred');
+                $this->addFlash('error', $error);
                 return $this->redirectToRoute('login');
             }
             $passwordSaved = $mobicoopUser['hydra:member'][0]['password'];
@@ -123,8 +124,6 @@ class SecurityController extends AbstractController
                 } elseif ($user->getStatus() === 'admin') {
                     return $this->redirectToRoute('admin_index');
                 } else {
-                    $error = $translator->trans('There is a problem with your account, please contact us');
-                    $this->addFlash('warning', $error);
                     return $this->redirectToRoute('login');
                 }
             }

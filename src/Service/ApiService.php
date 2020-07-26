@@ -24,7 +24,7 @@ class ApiService
      */
     const BASE_URL = 'https://api.mobicoop.io';
     const PER_PAGE_FOR_NAME = 200;
-    const PER_PAGE_ALL_USERS = 500;
+    const PER_PAGE_ALL_USERS = 5000;
 
     /**
      * @var SessionInterface

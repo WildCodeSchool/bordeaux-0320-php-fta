@@ -24,6 +24,7 @@ class UserController extends AbstractController
      * Route to access user profile page
      * @Route("common/user", name="user_show", methods={"GET", "POST"})
      * @param ApiService $api
+     * @param PictureService $pictureService
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -40,7 +41,7 @@ class UserController extends AbstractController
     ): Response {
         $user = $api->getUserById($this->getUser()->getMobicoopId());
         $pictureUser = $this->getUser()->getProfilePicture();
-
+        $userForDelete = $this->getUser();
 
         $form = $this->createForm(PictureType::class);
         $form->handleRequest($request);
@@ -57,9 +58,10 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/show.html.twig', [
-            'user'    => $user,
-            'picture' => $pictureUser,
-            'form'    => $form->createView(),
+            'user'       => $user,
+            'userDelete' => $userForDelete,
+            'picture'    => $pictureUser,
+            'form'       => $form->createView(),
         ]);
     }
 
@@ -139,6 +141,6 @@ class UserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute('homepage');
     }
 }
