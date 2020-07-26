@@ -44,12 +44,12 @@ class EmailService
     const TYPE_ACCOUNT_IS_ACTIVE = 'isActiveAccount';
     const TYPE_ACCOUNT_CREATED = 'createdAccount';
 
-    const SUBJECT_CREATED = 'Un accompagnement à était créer';
-    const SUBJECT_ACCEPTED = 'Un accompagnement à était accepter';
-    const SUBJECT_CANCELED = 'Un accompagnement à était annuler';
-    const SUBJECT_ACCOUNT_ACTIVE = 'Votre compte à était activer';
-    const SUBJECT_ACCOUNT_INACTIVE = 'Votre compte à était désactiver';
-    const SUBJECT_ACCOUNT_CREATED = 'Votre compte à bien était créer';
+    const SUBJECT_CREATED = 'Un accompagnement a été créé';
+    const SUBJECT_ACCEPTED = 'Un accompagnement a été accepté';
+    const SUBJECT_CANCELED = 'Un accompagnement a été annulé';
+    const SUBJECT_ACCOUNT_ACTIVE = 'Votre compte a été activé';
+    const SUBJECT_ACCOUNT_INACTIVE = 'Votre compte a été désactivé';
+    const SUBJECT_ACCOUNT_CREATED = 'Votre compte a bien été créé';
 
     public function newTrip(Trip $trip): void
     {
