@@ -29,21 +29,12 @@
     </tr>
     <tr>
       <td height="30" style="font-size:30px; line-height: 30px;">&nbsp;</td>
-      <td style="text-align: center;">
-        <!--corps du mail -->
-        <p>We are sending you this message because your reservation has been canceled</p>
-        <p><strong> {{ trip.departure.name }} -> {{ trip.arrival.name }}, {{ trip.date|date('d-m') }} at {{ trip.date|date('h:i') }} </strong></p>
-        <p>reserved by : {{ beneficiary.givenName }}  {{ beneficiary.familyName }}</p>
+      <td>
+        <p>This accompanying asked by {{ beneficiary.givenName }} {{ beneficiary.familyName }} has been canceled :</p>
+        <p><strong> {{ trip.departure.name }} -> {{ trip.arrival.name }}, {{ trip.date|date('Y-m-d') }} at {{ trip.date|date('h:i A') }} </strong></p>
         {% if volunteer %}
           <p>Volunteer : {{ volunteer.givenName }} {{ volunteer.familyName }}</p>
         {% endif %}
-      </td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr bgcolor="navy">
-      <td height="100" style="font-size:100px; line-height: 100px;">&nbsp;</td>
-      <td style="text-align: center; color: white;">
-        <a style="color:white" href="mailto:projet.franceterredasile@gmail.com">projet.franceterredasile@gmail.com</a>
       </td>
       <td>&nbsp;</td>
     </tr>

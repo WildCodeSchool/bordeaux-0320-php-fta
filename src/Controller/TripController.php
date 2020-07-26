@@ -44,8 +44,11 @@ class TripController extends AbstractController
         $userID = $trip->getBeneficiary()->getMobicoopId();
         $api->getToken();
         $user = $api->getUserById($userID);
+        $beneficiaryPicture = $trip->getBeneficiary()->getProfilePicture();
+        $volunteerPicture = null;
 
         if ($trip->getVolunteer() != null) {
+            $volunteerPicture = $trip->getVolunteer()->getProfilePicture();
             $api->getToken();
             $volunteerId = $trip->getVolunteer()->getMobicoopId();
             $volunteer = $api->getUserById($volunteerId);
@@ -54,7 +57,9 @@ class TripController extends AbstractController
         return $this->render('trip/show.html.twig', [
             'trip' => $trip,
             'volunteer' => $volunteer,
-            'beneficiary' => $user
+            'volunteerPicture' => $volunteerPicture,
+            'beneficiary' => $user,
+            'beneficiaryPicture' => $beneficiaryPicture,
         ]);
     }
 
