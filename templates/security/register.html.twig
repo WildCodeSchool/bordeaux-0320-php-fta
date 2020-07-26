@@ -7,7 +7,7 @@
 {% block body %}
     {% for label, messages in app.flashes(['error']) %}
         {% for message in messages %}
-            <div class="green lighten-2 flash-{{ label }}">
+            <div class="border-radius flash-{{ label }}">
                 {{ message }}
             </div>
         {% endfor %}
