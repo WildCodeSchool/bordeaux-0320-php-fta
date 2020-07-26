@@ -125,7 +125,7 @@ class AdminController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        $users = $userRepository->findBy(['status' => $status], ['id' => 'ASC'], self::LIMIT);
+        $users = $userRepository->findBy(['status' => $status], ['id' => 'DESC'], self::LIMIT);
         $apiService->getToken();
         $form = $this->createForm(MobicoopAdminForm::class);
         $form->handleRequest($request);
