@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     M.AutoInit();
-    const datepickerBirthday = document.querySelectorAll('#mobicoop_form_birthDate');
+    const datepickerBirthday = document.querySelectorAll('#mobicoop_form_birthDate, #mobicoop_admin_form_birthDate');
     const optionsForDatepickerBirthday = {
         autoClose: true,
         firstDay: 1,
         maxDate: new Date(),
+        yearRange: [1950, 2010],
     };
     const instancesOfDatepickerBirthday = M.Datepicker.init(
         datepickerBirthday,
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         autoClose: true,
         firstDay: 1,
         minDate: new Date(),
+        yearRange: [2020, 2030],
     };
     const instancesOfDatepickerTrip = M.Datepicker.init(
         datepickerTrip,

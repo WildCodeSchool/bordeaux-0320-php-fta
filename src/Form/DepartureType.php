@@ -16,7 +16,8 @@ class DepartureType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'Nom']
+                'attr' => ['placeholder' => 'Nom'],
+                'required' => true,
             ])
             ->add('category', ChoiceType::class, [
                 'label' => false,
@@ -27,6 +28,7 @@ class DepartureType extends AbstractType
                     'Transport'      => '<i class="material-icons">directions_transit</i>',
                 ],
                 'placeholder' => 'Catégorie',
+                'required' => true,
             ])
         ;
     }
