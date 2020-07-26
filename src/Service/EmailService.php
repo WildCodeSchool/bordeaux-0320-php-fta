@@ -48,12 +48,12 @@ class EmailService
     const TYPE_ACCOUNT_IS_ACTIVE = 'isActiveAccount';
     const TYPE_ACCOUNT_CREATED = 'createdAccount';
 
-    const SUBJECT_CREATED = 'Un accompagnement a été créé';
-    const SUBJECT_ACCEPTED = 'Un accompagnement a été accepté';
-    const SUBJECT_CANCELED = 'Un accompagnement a été annulé';
-    const SUBJECT_ACCOUNT_ACTIVE = 'Votre compte a été activé';
-    const SUBJECT_ACCOUNT_INACTIVE = 'Votre compte a été désactivé';
-    const SUBJECT_ACCOUNT_CREATED = 'Votre compte a bien été créé';
+    const SUBJECT_CREATED = 'An accompanying has been created';
+    const SUBJECT_ACCEPTED = 'An accompanying has been accepted';
+    const SUBJECT_CANCELED = 'An accompanying has been canceled';
+    const SUBJECT_ACCOUNT_ACTIVE = 'Your account is now activated';
+    const SUBJECT_ACCOUNT_INACTIVE = 'Your account is now deactivated';
+    const SUBJECT_ACCOUNT_CREATED = 'Your account has been created';
 
     public function newTrip(Trip $trip): void
     {
@@ -69,10 +69,11 @@ class EmailService
     /**
      * Send email to Beneficiary and Volunteer for matched confirmation
      * @param Trip $trip
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
     public function acceptedTrip(Trip $trip)
     {
