@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\ConnectionType;
 use App\Form\MobicoopForm;
 use App\Service\ApiService;
+use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,7 +38,7 @@ class SecurityController extends AbstractController
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function new(Request $request, ApiService $api, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, ApiService $api, EntityManagerInterface $entityManager, EmailService $emailService): Response
     {
         $form = $this->createForm(MobicoopForm::class);
         $form->handleRequest($request);
@@ -64,6 +65,8 @@ class SecurityController extends AbstractController
                 $this->addFlash('error', $e->getMessage());
                 $this->redirectToRoute('user_new');
             }
+
+            $emailService->createdAccountMail($decodeUser);
 
             $this->addFlash('success', 'You are now connected');
 
