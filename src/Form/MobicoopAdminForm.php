@@ -37,16 +37,6 @@ class MobicoopAdminForm extends AbstractType
                 'placeholder' => 'Genre',
                 'required' => true,
             ])
-            ->add('status', ChoiceType::class, [
-                'label' => false,
-                'choices' => [
-                    'Bénéficiaire' => 1,
-                    'Accompagnant' => 2,
-                ],
-                'data' => $options['status'],
-                'placeholder' => 'Statut',
-                'required' => true,
-            ])
             ->add('email', EmailType::class, [
                 'label' => false,
                 'attr' => ['placeholder' => 'Adresse email'],

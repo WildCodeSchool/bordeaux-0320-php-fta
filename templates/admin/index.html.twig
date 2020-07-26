@@ -20,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for user in usersVolunteer %}
+                        {% for user in usersVolunteer[:5] %}
                                 {% include 'admin/_components/_tableUsers.html.twig' %}
                         {% endfor %}
                     </tbody>
@@ -43,7 +43,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for user in usersBeneficiary %}
+                    {% for user in usersBeneficiary[:5] %}
                             {% include 'admin/_components/_tableUsers.html.twig' %}
                     {% endfor %}
                     </tbody>

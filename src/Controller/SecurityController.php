@@ -52,11 +52,12 @@ class SecurityController extends AbstractController
                 ]);
                 $response->getContent();
                 $decodeUser = ApiService::decodeJson($response->getContent());
+                $status = $decodeUser['status'] === 1 ? 'beneficiary' : 'volunteer';
                 $user = new User();
                 $user->setMobicoopId($decodeUser['id'])
                     ->setIsActive(false)
-                    ->setStatus('volunteer')
-                    ->setRoles(['ROLE_USER_UNVALIDATE']);
+                    ->setStatus($status)
+                    ->setRoles(['ROLE_USER_' . strtoupper($status)]);
                 $entityManager->persist($user);
                 $entityManager->flush();
             } catch (ClientException $e) {
@@ -123,9 +124,9 @@ class SecurityController extends AbstractController
                 $event = new InteractiveLoginEvent($request, $token);
                 $eventDispatcher->dispatch("security.interactive_login", $event);
 
-                if ($user->getStatus() === 'volunteer') {
+                if ($user->getStatus() === 'volunteer' && $user->getIsActive()) {
                     return $this->redirectToRoute('trip_matching');
-                } elseif ($user->getStatus() === 'beneficiary') {
+                } elseif ($user->getStatus() === 'beneficiary' && $user->getIsActive()) {
                     return $this->redirectToRoute('trip_beneficiary');
                 } elseif ($user->getStatus() === 'admin') {
                     return $this->redirectToRoute('admin_index');
