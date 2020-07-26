@@ -48,3 +48,23 @@ input[type=text]:not(.browser-default) {
 .profile-link:hover {
   color: $blue-night;
 }
+
+.flash {
+  &-success {
+    text-align: center;
+    padding: 0.5rem;
+    background-color: $green;
+  }
+  &-error {
+    text-align: center;
+    padding: 0.5rem;
+    background-color: $red;
+    color: $white;
+  }
+  &-warning {
+    text-align: center;
+    padding: 0.5rem;
+    background-color: $red;
+    color: $white;
+  }
+}
