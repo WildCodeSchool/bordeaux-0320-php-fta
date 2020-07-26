@@ -7,17 +7,12 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use DateTime;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
- * @Vich\Uploadable
  */
 class User implements UserInterface
 {
@@ -80,31 +75,14 @@ class User implements UserInterface
     private $familyName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
-     * @Assert\File(
-     *      maxSize="5242880",
-     *      mimeTypes = {
-     *          "image/png",
-     *          "image/jpeg",
-     *          "image/jpg",
-     *          "image/gif",
-     *          "application/pdf",
-     *          "application/x-pdf"
-     *      },
-     *      mimeTypesMessage = "Please upload a valid file, png, jpeg, jpg, gif")
-     */
-    private $picture;
-
-    /**
-     * @Vich\UploadableField(mapping="user_image", fileNameProperty="picture")
-     * @var File|null
-     */
-    private $pictureFile;
-
-    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updateAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profilePicture;
 
     public function __construct()
     {
@@ -337,31 +315,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function setPictureFile(?File $picture = null)
-    {
-        $this->pictureFile = $picture;
-        if (null !== $picture) {
-            $this->updatedAt = new DateTime('now');
-        }
-    }
-
-    public function getPictureFile(): ?File
-    {
-        return $this->pictureFile;
-    }
-
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(?string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
     public function getUpdateAt(): ?DateTimeInterface
     {
         return $this->updateAt;
@@ -370,6 +323,18 @@ class User implements UserInterface
     public function setUpdateAt(DateTimeInterface $updateAt): self
     {
         $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): self
+    {
+        $this->profilePicture = $profilePicture;
 
         return $this;
     }

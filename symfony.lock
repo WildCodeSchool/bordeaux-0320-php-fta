@@ -117,9 +117,6 @@
     "jean85/pretty-package-versions": {
         "version": "1.2"
     },
-    "jms/metadata": {
-        "version": "2.3.0"
-    },
     "justinrainbow/json-schema": {
         "version": "5.2.8"
     },
@@ -449,9 +446,6 @@
             "tests/.gitignore"
         ]
     },
-    "symfony/polyfill-intl-grapheme": {
-        "version": "v1.17.1"
-    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.11.0"
     },
@@ -535,9 +529,6 @@
     },
     "symfony/stopwatch": {
         "version": "v4.2.8"
-    },
-    "symfony/string": {
-        "version": "v5.1.2"
     },
     "symfony/test-pack": {
         "version": "v1.0.5"
@@ -649,18 +640,6 @@
     },
     "twig/twig": {
         "version": "v2.9.0"
-    },
-    "vich/uploader-bundle": {
-        "version": "1.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.5",
-            "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
-        },
-        "files": [
-            "config/packages/vich_uploader.yaml"
-        ]
     },
     "webimpress/safe-writer": {
         "version": "2.0.1"

@@ -10,6 +10,7 @@ for (let i = 0; i < paginators.length; i++) {
         const type = button.dataset.type;
         const paginatorType = button.dataset.paginator;
         const limit = Number(button.dataset.limit);
+
         showPage(limit, type).then((value) => {
             const tableRef = document.getElementById('users-table').getElementsByTagName('tbody')[0];
             tableRef.innerHTML = '';

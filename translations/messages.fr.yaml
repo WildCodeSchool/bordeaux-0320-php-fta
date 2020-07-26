@@ -1,5 +1,5 @@
 You are now connected: Vous êtes connecté
-There is a problem with your account, please contact us: Il y a un problème avec votre compte, veuillez nous contacter
+You are not registred: Vous n'avez pas de compte avec cette adresse mail
 New trip added: Accompagnement ajouté
 Email: Adresse mail
 Password: Mot de passe
@@ -18,3 +18,15 @@ Starting point: Point de départ
 Destination: Destination
 Download: Télécharger
 Delete: Supprimer
+6 characters minimum (with at leat one upper case letter, one lower case letter and one numeric digit):
+    6 caractères minimum (avec au moins une lettre en capitale, une lettre en minuscule et un chiffre)
+Confirm password: Confirmer le mot de passe
+You must write the same password as above: Vous devez écrire le même mot de passe que dans la case précédente
+Only numbers and symbol (+) allowed: Chiffres et symbole (+) uniquement
+Your file is not a jpeg, jpg or png: Votre fichier n'est pas de type jpeg, jpg ou png
+An accompanying has been created: Un accompagnement a été créé
+An accompanying has been accepted: Un accompagnement a été accepté
+An accompanying has been canceled: Un accompagnement a été annulé
+Your account is now activated: Votre compte est désormais activé
+Your account is now deactivated: Votre compte est désormais désactivé
+Your account has been created: Votre compte a bien été créé
