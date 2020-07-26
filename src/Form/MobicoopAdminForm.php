@@ -57,8 +57,8 @@ class MobicoopAdminForm extends AbstractType
                 'attr' => [
                     'placeholder' => 'Mot de passe *',
                     'pattern' => '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$',
-                    'title' => 'Your password must be at least 6 characters and must include at 
-                    least one upper case letter, one lower case letter, and one numeric digit',
+                    'title' => 'Le mot de passe doit faire au moins 6 caractères et avoir une 
+                    lettre en capitale, une lettre en minuscule et un chiffre',
                     ],
                 'required' => true,
             ])

@@ -3,19 +3,19 @@
     background-color: $blue-ice;
   }
   &-ice-gr {
-    background: linear-gradient(to bottom right, darken($blue-ice, 30), $blue-ice, darken($blue-ice, 30));
+    background: linear-gradient(darken($blue-ice, 30), $blue-ice);
   }
   &-night {
     background-color: $blue-night;
   }
   &-night-gr {
-    background: linear-gradient(to bottom right, darken($blue-night, 20), $blue-night, darken($blue-night, 20));
+    background: linear-gradient(darken($blue-night, 20), $blue-night);
   }
   &-duck {
     background-color: $blue-duck;
   }
   &-duck-gr {
-    background: linear-gradient(to bottom right, darken($blue-duck, 30), $blue-duck, darken($blue-duck, 30));
+    background: linear-gradient(darken($blue-duck, 30), $blue-duck);
   }
   &-green {
     background-color: $green;

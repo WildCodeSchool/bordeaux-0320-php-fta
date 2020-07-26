@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         autoClose: true,
         firstDay: 1,
         maxDate: new Date(),
-        yearRange: 70,
+        yearRange: [1950, 2010],
     };
     const instancesOfDatepickerBirthday = M.Datepicker.init(
         datepickerBirthday,
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         autoClose: true,
         firstDay: 1,
         minDate: new Date(),
+        yearRange: [2020, 2030],
     };
     const instancesOfDatepickerTrip = M.Datepicker.init(
         datepickerTrip,

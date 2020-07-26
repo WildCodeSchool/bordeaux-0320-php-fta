@@ -43,16 +43,20 @@ class MobicoopForm extends AbstractType
             ])
             ->add('password', PasswordType::class, [
                 'label' => false,
-                'attr' => ['placeholder' => 'Password'],
+                'attr' => [
+                    'placeholder' => 'Password',
+                    'pattern' => '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$',
+                    'title' => '6 characters minimum (with at leat one upper 
+                    case letter, one lower case letter and one numeric digit)',
+                    ],
                 'required' => true,
             ])
             ->add('confirm_password', PasswordType::class,[
                 'label'=> false,
                 'attr'=> [
-                    'placeholder' => 'Confirm Password',
+                    'placeholder' => 'Confirm password',
                     'pattern' => '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$',
-                    'title' => 'Your password must be at least 6 characters and must include at 
-                    least one upper case letter, one lower case letter, and one numeric digit',
+                    'title' => 'You must write the same password as above',
                     ],
                 'required' => true,
             ])

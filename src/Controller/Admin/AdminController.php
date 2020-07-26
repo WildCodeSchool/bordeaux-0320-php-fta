@@ -63,10 +63,16 @@ class AdminController extends AbstractController
         $usersVolunteer = $apiService->setFullName($usersMobicoop, $usersVolunteer);
         $usersBeneficiary = $apiService->setFullName($usersMobicoop, $usersBeneficiary);
 
+        $trips = $tripRepository->findBy(
+            [],
+            ['id' => 'DESC'],
+            self::LIMIT
+        );
+
         return $this->render('admin/index.html.twig', [
             'usersVolunteer' => $usersVolunteer,
             'usersBeneficiary' => $usersBeneficiary,
-            'trips' => $tripRepository->findBy([], ['id' => 'DESC'], self::LIMIT),
+            'trips' => $trips,
             'allUsers' => $userRepository->findAll(),
             'allTrips' => $tripRepository->findAll(),
         ]);
@@ -96,7 +102,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/trips/trips.html.twig', [
             'users' => $users,
-            'trips' => $tripRepository->findBy([], ['id' => 'ASC'], 5),
+            'trips' => $tripRepository->findBy([], ['id' => 'ASC'], self::LIMIT),
         ]);
     }
 

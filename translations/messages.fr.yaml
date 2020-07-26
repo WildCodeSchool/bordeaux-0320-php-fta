@@ -18,3 +18,9 @@ Starting point: Point de départ
 Destination: Destination
 Download: Télécharger
 Delete: Supprimer
+6 characters minimum (with at leat one upper case letter, one lower case letter and one numeric digit):
+    6 caractères minimum (avec au moins une lettre en capitale, une lettre en minuscule et un chiffre)
+Confirm password: Confirmer le mot de passe
+You must write the same password as above: Vous devez écrire le même mot de passe que dans la case précédente
+Only numbers and symbol (+) allowed: Chiffres et symbole (+) uniquement
+Your file is not a jpeg, jpg or png: Votre fichier n'est pas de type jpeg, jpg ou png

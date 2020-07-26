@@ -153,6 +153,14 @@ class ApiService
         return $result;
     }
 
+    public function setOneFullName($userMobicoop, $user)
+    {
+        $user->setGivenName($userMobicoop['givenName']);
+        $user->setFamilyName($userMobicoop['familyName']);
+
+        return $user;
+    }
+
     /**
      * @param array $array
      * @return UserMobicoop
