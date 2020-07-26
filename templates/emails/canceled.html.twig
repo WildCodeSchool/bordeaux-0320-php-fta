@@ -23,7 +23,7 @@
   <tr>
     <td height="30" style="font-size:30px; line-height: 30px;">&nbsp;</td>
     <td style="text-align: center;">
-      <h1>Trip canceled </h1>
+      <h1>Accompanying canceled</h1>
     </td>
     <td>&nbsp;</td>
   </tr>
@@ -32,10 +32,10 @@
     <td style="text-align: center;">
       <!--corps du mail -->
       <p>We are sending you this message because your reservation has been canceled</p>
-      <p><strong> {{ departure }} -> {{ arrival }}, {{ date }} at {{ time}} </strong></p>
-      <p>reserved by : {{ username }}</p>
+      <p><strong> {{ trip.departure.name }} -> {{ trip.arrival.name }}, {{ trip.date|date('d-m') }} at {{ trip.date|date('h:i') }} </strong></p>
+      <p>reserved by : {{ beneficiary.givenName }}  {{ beneficiary.familyName }}</p>
       {% if volunteer %}
-        <p>volunteer : {{ volunteer }}</p>
+        <p>Volunteer : {{ volunteer.givenName }} {{ volunteer.familyName }}</p>
       {% endif %}
     </td>
     <td>&nbsp;</td>

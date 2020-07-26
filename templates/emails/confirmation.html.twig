@@ -29,7 +29,7 @@
     <td style="text-align: center;">
 
       <h1>Accompanying confirmation</h1>
-      <h2>Hi,{{ username}} </h2>
+      <h2>Hi,{{ beneficiary['givenName'] }} {{ beneficiary['familyName'] }} </h2>
 
     </td>
     <td>&nbsp;</td>
@@ -39,10 +39,10 @@
     <td height="30" style="font-size:30px; line-height: 30px;">&nbsp;</td>
     <td style="text-align: center;">
       <h3>Summary</h3>
-      <p>Depart from : {{ departure}} </p>
-      <p>Arrive at : {{ arrival}} </p>
-      <p>Date : {{ date}} at {{ time}} </p>
-      <p>Volunteer : {{ volunteer}}  </p>
+      <p>Depart from : {{ trip.departure.name }} </p>
+      <p>Arrive at : {{ trip.arrival.name }} </p>
+      <p>Date : {{ trip.date|date('m-d-Y') }} at {{ trip.date|date('h:i') }} </p>
+      <p>Volunteer : {{ volunteer['givenName'] }} {{ volunteer['familyName'] }}  </p>
     </td>
     <td>&nbsp;</td>
   </tr>

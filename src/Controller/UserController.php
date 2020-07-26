@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\MobicoopForm;
 use App\Form\PictureType;
 use App\Service\ApiService;
+use App\Service\EmailService;
 use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -110,9 +111,10 @@ class UserController extends AbstractController
      * route ajax to activate or deactivate users
      * @Route("/ajax/activate/{id}")
      * @param int $id
+     * @param EmailService $emailService
      * @return JsonResponse
      */
-    public function activateUser(int $id)
+    public function activateUser(int $id, EmailService $emailService): JsonResponse
     {
         $entityManager   = $this->getDoctrine()->getManager();
         $user            = $this->getDoctrine()
@@ -123,6 +125,8 @@ class UserController extends AbstractController
 
         $entityManager->persist($user);
         $entityManager->flush();
+
+        $emailService->activateAccountMail($user->getIsActive(), $user->getMobicoopId());
 
         return new JsonResponse('Votre modification a bien été prise en compte');
     }
