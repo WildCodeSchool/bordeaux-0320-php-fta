@@ -11,7 +11,8 @@ const createSwitch = (isActive, id) => {
     const input = document.createElement('input');
     const span = document.createElement('span');
 
-    span.className = 'lever switchActiveUser';
+    span.classList.add('lever');
+    span.classList.add('switchActiveUser');
     span.dataset.id = id;
     input.setAttribute('type', 'checkbox');
     input.checked = isActive;

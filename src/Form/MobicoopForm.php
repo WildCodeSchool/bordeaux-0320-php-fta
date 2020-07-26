@@ -55,10 +55,10 @@ class MobicoopForm extends AbstractType
                 'label'=> false,
                 'attr'=> [
                     'placeholder' => 'Confirm password',
-                    'pattern' => '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$',
                     'title' => 'You must write the same password as above',
                     ],
                 'required' => true,
+                'mapped' => false,
             ])
             ->add('telephone', TelType::class, [
                 'label' => false,
