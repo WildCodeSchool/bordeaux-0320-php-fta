@@ -107,7 +107,9 @@ class EmailService
         $beneficiary = $this->api->getUserById($trip->getBeneficiary()->getMobicoopId());
         $rendering['beneficiary'] = $beneficiary;
         if ($trip->getVolunteer() || $volunteer) {
-            $volunteer = $this->api->getUserById($trip->getVolunteer()->getMobicoopId());
+            $volunteer = $this->api->getUserById(
+                $trip->getVolunteer() ? $trip->getVolunteer()->getMobicoopId() : $volunteer->getMobicoopId()
+            );
             $rendering['volunteer'] = $volunteer;
         }
         $rendering['trip'] = $trip;
