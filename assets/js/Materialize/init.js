@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         datepickerBirthday,
         optionsForDatepickerBirthday,
     );
-    const datepickerTrip = document.querySelectorAll('#datepicker_trip');
+    const datepickerTrip = document.querySelectorAll('#datepicker_trip, #datepicker_schedule');
     const optionsForDatepickerTrip = {
         autoClose: true,
         firstDay: 1,
