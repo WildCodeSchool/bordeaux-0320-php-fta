@@ -20,9 +20,10 @@ class CalendarService
         $table = [];
         $increment = 0;
         foreach ($availabilityUsers as $user) {
-            $table[$increment]['date'] = $user->getDate()->format('d/m/Y');
+            $table[$increment]['date'] = $user->getDate()->format('Y-m-d');
             $table[$increment]['isMorning'] = $user->getIsMorning();
             $table[$increment]['isAfternoon'] = $user->getIsAfternoon();
+            $table[$increment]['id'] = $user->getId();
             $increment++;
         }
         return $table;
