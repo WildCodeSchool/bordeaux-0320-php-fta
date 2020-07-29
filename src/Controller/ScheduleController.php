@@ -50,24 +50,26 @@ class ScheduleController extends AbstractController
         $user = $this->getUser();
         $schedule = new ScheduleVolunteer();
         $date = new DateTime($request->request->get('datePicker'));
-        $schedule->setDate($date);
-        $schedule->setUser($user);
-        $schedule->setIsAfternoon($request->request->has('afternoon'));
-        $schedule->setIsMorning($request->request->has('morning'));
         $scheduleCheck = $scheduleRepository->findOneBy([
+            'id' => $user->getId(),
             'date' => $date,
-            'isMorning' => $request->request->has('morning'),
-            'isAfternoon' => $request->request->has('afternoon')
         ]);
         if ($scheduleCheck) {
-            return $this->redirectToRoute('calendar_schedule');
+            $scheduleCheck->setIsAfternoon($request->request->has('afternoon'))
+                ->setIsMorning($request->request->has('morning'));
+            $entityManager->persist($scheduleCheck);
         } else {
+            $schedule->setUser($user)
+                ->setDate($date)
+                ->setIsAfternoon($request->request->has('afternoon'))
+                ->setIsMorning($request->request->has('morning'));
             $entityManager->persist($schedule);
-            $entityManager->flush();
-            $availabilityUsers = $user->getScheduleVolunteers();
-            $table = CalendarService::transformToJson($availabilityUsers);
-            return new JsonResponse($table);
         }
+
+        $entityManager->flush();
+        $availabilityUsers = $user->getScheduleVolunteers();
+        $table = CalendarService::transformToJson($availabilityUsers);
+        return new JsonResponse($table);
     }
 
     /**
