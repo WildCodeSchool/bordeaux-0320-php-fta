@@ -18,33 +18,4 @@ class ScheduleVolunteerRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ScheduleVolunteer::class);
     }
-
-    // /**
-    //  * @return ScheduleVolunteer[] Returns an array of ScheduleVolunteer objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ScheduleVolunteer
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
