@@ -59,7 +59,7 @@
                 <tbody>
                     {% for calendar in calendars|sort((a, b) => a.date <=> b.date) %}
                     <tr>
-                        <td>{{ app.request.locale == 'fr' ? calendar.date|date("d-m-Y") : calendar.date|date("Y-m-d") }}</td>
+                        <td>{{ app.request.locale == 'fr' ? calendar.date|date("Y-m-d") : calendar.date|date("Y-m-d") }}</td>
                         <td class="center-align">
                             <i class="material-icons {{ calendar.isMorning == true ? 'schedule-true' : 'schedule-false' }}">brightness_1</i>
                         </td>
