@@ -1,6 +1,7 @@
 import { showPage } from '../axios/ajaxPaginator';
 import { createLine } from './createUserRow';
 import { calculateLimit } from './paginatorButton';
+import { toggleUser } from '../axios/ajaxActivateUsers';
 
 const paginators = document.getElementsByClassName('paginator');
 
@@ -18,6 +19,7 @@ for (let i = 0; i < paginators.length; i++) {
                 createLine(tableRef, value, j);
             }
             calculateLimit(paginatorType, value.length);
+            toggleUser();
         }).catch((error) => {
 
         });

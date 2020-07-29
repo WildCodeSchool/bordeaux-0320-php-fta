@@ -14,7 +14,7 @@
                 </h3>
                 <div class="row pl-l pr-l mb-s mt-l">
                     <i class="material-icons mt-s small col s1">date_range</i>
-                    <input name='datePicker' type="text" class="datepicker pl-l pr-l col s10 offset-s1" value="{{ 'Set date'|trans }}">
+                    <input id="datepicker_schedule" name='datePicker' type="text" class="datepicker pl-l pr-l col s10 offset-s1" value="{{ 'Set date'|trans }}">
                 </div>
                 <div class="row mt-l mb-l pr-l pl-l">
                     <div class="col s5 offset-s2">
@@ -53,25 +53,23 @@
                         </th>
                         <th class="center-align">AM</th>
                         <th class="center-align">PM</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for calendar in calendars|sort((a, b) => a.date <=> b.date) %}
                     <tr>
-                        <td>{{ calendar.date|date("Y-m-d") }}</td>
+                        <td>{{ app.request.locale == 'fr' ? calendar.date|date("Y-m-d") : calendar.date|date("Y-m-d") }}</td>
                         <td class="center-align">
-                            {% if calendar.isMorning == true %}
-                                <i class="material-icons schedule-true">brightness_1</i>
-                            {% else %}
-                                <i class="material-icons schedule-false">brightness_1</i>
-                            {% endif %}
+                            <i class="material-icons {{ calendar.isMorning == true ? 'schedule-true' : 'schedule-false' }}">brightness_1</i>
                         </td>
                         <td class="center-align">
-                            {% if calendar.isAfternoon == true %}
-                                <i class="material-icons schedule-true">brightness_1</i>
-                            {% else %}
-                                <i class="material-icons schedule-false">brightness_1</i>
-                            {% endif %}
+                            <i class="material-icons {{ calendar.isAfternoon == true ? 'schedule-true' : 'schedule-false' }}">brightness_1</i>
+                        </td>
+                        <td class="center-align">
+                            <a href="{{ path('delete_schedule', {'id' : calendar.id}) }}">
+                                <i class="material-icons admin-link">delete</i>
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}

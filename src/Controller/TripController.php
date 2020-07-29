@@ -168,10 +168,11 @@ class TripController extends AbstractController
      * @param Trip $trip
      * @param EmailService $emailService
      * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function delete(
         Request $request,
@@ -235,10 +236,11 @@ class TripController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param EmailService $emailService
      * @return RedirectResponse
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function addVolunteerToTrip(
         int $tripId,
