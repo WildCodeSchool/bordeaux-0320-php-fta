@@ -4,8 +4,11 @@
 namespace App\Controller;
 
 use App\Entity\ScheduleVolunteer;
+use App\Repository\ScheduleVolunteerRepository;
 use App\Service\CalendarService;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,24 +38,52 @@ class ScheduleController extends AbstractController
      * Route ajax to add and refresh schedule list
      * @Route("/ajax/schedule", name="ajax_schedule")
      * @param Request $request
-     * @return JsonResponse
+     * @param ScheduleVolunteerRepository $scheduleRepository
+     * @return JsonResponse|RedirectResponse
      * @throws Exception
      */
-    public function ajaxAddSchedule(Request $request): JsonResponse
-    {
-        $entityManager = $this->getDoctrine()
-            ->getManager();
+    public function ajaxAddSchedule(
+        Request $request,
+        ScheduleVolunteerRepository $scheduleRepository
+    ): JsonResponse {
+        $entityManager = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $schedule = new ScheduleVolunteer();
         $date = new DateTime($request->request->get('datePicker'));
-        $schedule->setDate($date);
-        $schedule->setUser($user);
-        $schedule->setIsAfternoon($request->request->has('afternoon'));
-        $schedule->setIsMorning($request->request->has('morning'));
-        $entityManager->persist($schedule);
+        $scheduleCheck = $scheduleRepository->findOneBy([
+            'id' => $user->getId(),
+            'date' => $date,
+        ]);
+        if ($scheduleCheck) {
+            $scheduleCheck->setIsAfternoon($request->request->has('afternoon'))
+                ->setIsMorning($request->request->has('morning'));
+            $entityManager->persist($scheduleCheck);
+        } else {
+            $schedule->setUser($user)
+                ->setDate($date)
+                ->setIsAfternoon($request->request->has('afternoon'))
+                ->setIsMorning($request->request->has('morning'));
+            $entityManager->persist($schedule);
+        }
+
         $entityManager->flush();
         $availabilityUsers = $user->getScheduleVolunteers();
         $table = CalendarService::transformToJson($availabilityUsers);
         return new JsonResponse($table);
+    }
+
+    /**
+     * Route to delete a schedule
+     * @Route("/schedule/delete/{id}", name="delete_schedule")
+     * @param ScheduleVolunteer $schedule
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
+    public function delete(ScheduleVolunteer $schedule, EntityManagerInterface $entityManager)
+    {
+        $entityManager->remove($schedule);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('calendar_schedule');
     }
 }

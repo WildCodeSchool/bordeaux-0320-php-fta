@@ -44,8 +44,11 @@ class TripController extends AbstractController
         $userID = $trip->getBeneficiary()->getMobicoopId();
         $api->getToken();
         $user = $api->getUserById($userID);
+        $beneficiaryPicture = $trip->getBeneficiary()->getProfilePicture();
+        $volunteerPicture = null;
 
         if ($trip->getVolunteer() != null) {
+            $volunteerPicture = $trip->getVolunteer()->getProfilePicture();
             $api->getToken();
             $volunteerId = $trip->getVolunteer()->getMobicoopId();
             $volunteer = $api->getUserById($volunteerId);
@@ -54,7 +57,9 @@ class TripController extends AbstractController
         return $this->render('trip/show.html.twig', [
             'trip' => $trip,
             'volunteer' => $volunteer,
-            'beneficiary' => $user
+            'volunteerPicture' => $volunteerPicture,
+            'beneficiary' => $user,
+            'beneficiaryPicture' => $beneficiaryPicture,
         ]);
     }
 
@@ -77,13 +82,15 @@ class TripController extends AbstractController
      * @param Request $request
      * @param SessionInterface $session
      * @param TranslatorInterface $translator
+     * @param EmailService $emailService
      * @return Response
      * @throws \Exception
      */
     public function new(
         Request $request,
         SessionInterface $session,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        EmailService $emailService
     ): Response {
         $beneficiary = $this->getDoctrine()
             ->getRepository(User::class)
@@ -113,6 +120,8 @@ class TripController extends AbstractController
 
             $message = $translator->trans('New trip added');
             $this->addFlash('success', $message);
+
+            $emailService->newTrip($trip);
 
             return $this->redirectToRoute('trip_beneficiary');
         }
@@ -159,18 +168,22 @@ class TripController extends AbstractController
      * @param Trip $trip
      * @param EmailService $emailService
      * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
-    public function delete(Request $request, Trip $trip, EmailService $emailService): Response
-    {
+    public function delete(
+        Request $request,
+        Trip $trip,
+        EmailService $emailService
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $trip->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trip);
             $entityManager->flush();
-            $emailService->canceled($trip);
+            $emailService->canceledTrip($trip);
         }
 
         return $this->redirectToRoute('trip_beneficiary');
@@ -223,10 +236,11 @@ class TripController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param EmailService $emailService
      * @return RedirectResponse
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      */
     public function addVolunteerToTrip(
         int $tripId,
@@ -240,8 +254,8 @@ class TripController extends AbstractController
 
         $entityManager->persist($trip);
         $entityManager->flush();
-        $emailService->accepted($trip);
 
+        $emailService->acceptedTrip($trip);
 
         return $this->redirectToRoute('trip_volunteer');
     }
@@ -251,16 +265,28 @@ class TripController extends AbstractController
      * @Route("/volunteer/disengage/{tripId}", name="trip_revert_accept", methods={"GET","POST"})
      * @param int $tripId
      * @param EntityManagerInterface $entityManager
+     * @param EmailService $emailService
      * @return RedirectResponse
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function removeVolunteerToTrip(int $tripId, EntityManagerInterface $entityManager)
-    {
+    public function removeVolunteerToTrip(
+        int $tripId,
+        EntityManagerInterface $entityManager,
+        EmailService $emailService
+    ): Response {
         $trip = $this->getDoctrine()
             ->getRepository(Trip::class)
             ->findOneById($tripId);
+        $volunteer = $trip->getVolunteer();
         $trip->setVolunteer(null);
         $entityManager->persist($trip);
         $entityManager->flush();
+
+        $emailService->canceledTrip($trip, $volunteer);
 
         return $this->redirectToRoute('trip_volunteer');
     }

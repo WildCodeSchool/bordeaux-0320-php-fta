@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\MobicoopAdminEditForm;
 use App\Form\MobicoopAdminForm;
 use App\Repository\ScheduleVolunteerRepository;
 use App\Repository\TripRepository;
@@ -49,12 +50,10 @@ class AdminController extends AbstractController
         $usersVolunteer = $userRepository->findBy(
             ['status' => User::STATUS_VOLUNTEER],
             ['id' => 'DESC'],
-            self::LIMIT
         );
         $usersBeneficiary = $userRepository->findBy(
             ['status' => User::STATUS_BENEFICIARY],
             ['id' => 'DESC'],
-            self::LIMIT
         );
 
         $apiService->getToken();
@@ -63,10 +62,16 @@ class AdminController extends AbstractController
         $usersVolunteer = $apiService->setFullName($usersMobicoop, $usersVolunteer);
         $usersBeneficiary = $apiService->setFullName($usersMobicoop, $usersBeneficiary);
 
+        $trips = $tripRepository->findBy(
+            [],
+            ['id' => 'DESC'],
+            self::LIMIT
+        );
+
         return $this->render('admin/index.html.twig', [
             'usersVolunteer' => $usersVolunteer,
             'usersBeneficiary' => $usersBeneficiary,
-            'trips' => $tripRepository->findBy([], ['id' => 'DESC'], self::LIMIT),
+            'trips' => $trips,
             'allUsers' => $userRepository->findAll(),
             'allTrips' => $tripRepository->findAll(),
         ]);
@@ -96,7 +101,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/trips/trips.html.twig', [
             'users' => $users,
-            'trips' => $tripRepository->findBy([], ['id' => 'ASC'], 5),
+            'trips' => $tripRepository->findBy([], ['id' => 'ASC'], self::LIMIT),
         ]);
     }
 
@@ -121,7 +126,7 @@ class AdminController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        $users = $userRepository->findBy(['status' => $status], ['id' => 'ASC'], self::LIMIT);
+        $users = $userRepository->findBy(['status' => $status], ['id' => 'DESC'], self::LIMIT);
         $apiService->getToken();
         $form = $this->createForm(MobicoopAdminForm::class);
         $form->handleRequest($request);
@@ -137,7 +142,7 @@ class AdminController extends AbstractController
             $user->setMobicoopId($decodeUser['id'])
                 ->setIsActive(false)
                 ->setStatus($status)
-                ->setRoles(['ROLE_USER_UNVALIDATE']);
+                ->setRoles(['ROLE_USER_' . strtoupper($status)]);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -185,10 +190,7 @@ class AdminController extends AbstractController
         $apiService->getToken();
         $user = $apiService->getUserById($mobicoopId);
 
-        $form = $this->createForm(MobicoopAdminForm::class, null, [
-            'gender' => $user['gender'],
-            'status' => $user['status']
-        ]);
+        $form = $this->createForm(MobicoopAdminEditForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -232,8 +234,8 @@ class AdminController extends AbstractController
         $usersMobicoop = $apiService->getUserByGivenName($name);
         $usersBeneficiary = $userRepository->findBy(
             ['status' => $type],
-            ['id' => 'ASC'],
-            self::LIMIT
+            ['id' => 'DESC'],
+            self::LIMIT,
         );
 
         $usersMobicoop = $apiService::createAjaxUserArray($usersMobicoop, $usersBeneficiary);
@@ -292,18 +294,22 @@ class AdminController extends AbstractController
         $type = $request->query->get('type');
 
         $usersMobicoop = $apiService->getAllUsers();
-        $users = $userRepository->findBy(['status' => $type], ['id' => 'ASC'], 5, $limit);
+        $users = $userRepository->findBy(['status' => $type], ['id' => 'DESC'], 5, $limit);
 
         return new JsonResponse($apiService::createAjaxUserArray($usersMobicoop, $users));
     }
 
-   /**
+    /**
      * @Route("/beneficiary/trips/{id}", name="beneficiary_trips")
      * @param int $id
      * @param TripRepository $tripRepository
      * @param ApiService $apiService
      * @param UserRepository $userRepository
      * @return Response
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function beneficiaryTrips(
         int $id,

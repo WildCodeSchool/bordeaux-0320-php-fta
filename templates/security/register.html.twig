@@ -5,12 +5,19 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container mb-l">
         <div class="row z-depth-2 border-radius-bottom">
             <h3 class="bck-night-gr white-text center pad border-radius-top mb-s">
                 <i class="material-icons trip-title">account_circle</i>
                 <i class="material-icons trip-title">add</i>
             </h3>
+            {% for label, messages in app.flashes(['error']) %}
+                {% for message in messages %}
+                    <div class="border-radius flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
             {% if app.request.locale == 'ar' %}
                 {{ include('_arab_templates/ar_user_register_form.html.twig') }}
             {% else %}

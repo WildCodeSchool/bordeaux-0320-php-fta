@@ -5,7 +5,6 @@ const createLine = (tableRef, value, i) => {
     let newCell = newRow.insertCell(0);
     let newText = document.createTextNode(value[i].date);
     newCell.appendChild(newText);
-
     let icon = document.createElement('i');
     newCell = newRow.insertCell(1);
     newCell.className = 'center-align';
@@ -14,7 +13,6 @@ const createLine = (tableRef, value, i) => {
     icon.appendChild(newText);
     newCell.appendChild(icon);
 
-
     newCell = newRow.insertCell(2);
     newCell.className = 'center-align';
     icon = document.createElement('i');
@@ -22,6 +20,17 @@ const createLine = (tableRef, value, i) => {
     newText = document.createTextNode('brightness_1');
     icon.appendChild(newText);
     newCell.appendChild(icon);
+
+    newCell = newRow.insertCell(3);
+    newCell.className = 'center-align';
+    icon = document.createElement('i');
+    icon.className = 'material-icons admin-link';
+    newText = document.createTextNode('delete');
+    icon.appendChild(newText);
+    const link = document.createElement('a');
+    link.href = `/schedule/delete/${value[i].id}`;
+    link.appendChild(icon);
+    newCell.appendChild(link);
 };
 
 const buttonSchedule = document.getElementById('button_schedule');

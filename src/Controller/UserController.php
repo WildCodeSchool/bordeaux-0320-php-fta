@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\MobicoopEditForm;
 use App\Form\MobicoopForm;
 use App\Form\PictureType;
 use App\Service\ApiService;
+use App\Service\EmailService;
 use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +26,7 @@ class UserController extends AbstractController
      * Route to access user profile page
      * @Route("common/user", name="user_show", methods={"GET", "POST"})
      * @param ApiService $api
+     * @param PictureService $pictureService
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -40,7 +43,7 @@ class UserController extends AbstractController
     ): Response {
         $user = $api->getUserById($this->getUser()->getMobicoopId());
         $pictureUser = $this->getUser()->getProfilePicture();
-
+        $userForDelete = $this->getUser();
 
         $form = $this->createForm(PictureType::class);
         $form->handleRequest($request);
@@ -57,9 +60,10 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/show.html.twig', [
-            'user'    => $user,
-            'picture' => $pictureUser,
-            'form'    => $form->createView(),
+            'user'       => $user,
+            'userDelete' => $userForDelete,
+            'picture'    => $pictureUser,
+            'form'       => $form->createView(),
         ]);
     }
 
@@ -84,10 +88,7 @@ class UserController extends AbstractController
             ->getRepository(User::class)
             ->findOneBy(['mobicoopId' => $id]);
 
-        $form = $this->createForm(MobicoopForm::class, null, [
-            'gender' => $user['gender'],
-            'status' => $user['status'],
-        ]);
+        $form = $this->createForm(MobicoopEditForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -108,9 +109,10 @@ class UserController extends AbstractController
      * route ajax to activate or deactivate users
      * @Route("/ajax/activate/{id}")
      * @param int $id
+     * @param EmailService $emailService
      * @return JsonResponse
      */
-    public function activateUser(int $id)
+    public function activateUser(int $id, EmailService $emailService): JsonResponse
     {
         $entityManager   = $this->getDoctrine()->getManager();
         $user            = $this->getDoctrine()
@@ -121,6 +123,8 @@ class UserController extends AbstractController
 
         $entityManager->persist($user);
         $entityManager->flush();
+
+        $emailService->activateAccountMail($user->getIsActive(), $user->getMobicoopId());
 
         return new JsonResponse('Votre modification a bien été prise en compte');
     }
@@ -139,6 +143,6 @@ class UserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute('logout');
     }
 }

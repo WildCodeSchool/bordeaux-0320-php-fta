@@ -10,6 +10,7 @@ parameters:
     mobicoop_password: '%env(MOBICOOP_PASSWORD)%'
     upload_directory: '%kernel.project_dir%/public/uploads/'
     mailer_from: '%env(MAILER_FROM_ADDRESS)%'
+    email_admin: 'admin@fta.fr'
 
 services:
     # default configuration for services in *this* file

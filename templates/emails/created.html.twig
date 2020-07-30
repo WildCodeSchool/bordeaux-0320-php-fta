@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns:v="urn:schemas-microsoft.com:vml">
+<head>
+    <meta charset="utf-8"> <!-- utf-8 works for most cases -->
+    <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
+    <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
+    <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no"> <!-- Tell iOS not to automatically link certain text strings. -->
+</head>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+    <table align="center"  width="590" border="0" cellpadding="0" cellspacing="0">
+        <tr bgcolor="navy">
+            <td height="10" colspan="3">&nbsp;</td>
+        </tr>
+        <tr bgcolor="navy">
+            <td height="100">&nbsp;</td>
+            <td style="text-align: center; color: white;">
+                <h1>France Terre d'Asile</h1>
+            </td>
+            <td height="30" style="font-size:30px; line-height: 30px;"></td>
+        </tr>
+        <tr>
+            <td height="30" style="font-size:30px; line-height: 30px;">&nbsp;</td>
+            <td>
+                <h1>Accompanying created</h1>
+                <h2>Beneficiary : {{ beneficiary.givenName }} {{ beneficiary.familyName }}</h2>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="30" style="font-size:30px; line-height: 30px;">&nbsp;</td>
+            <td>
+                <h3>Summary</h3>
+                <p>Departure : {{ trip.departure.name }} </p>
+                <p>Arrival : {{ trip.arrival.name }} </p>
+                <p>Date : {{ trip.date|date('Y-m-d') }} at {{ trip.date|date('h:i A') }}</p>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</body>
+</html>
